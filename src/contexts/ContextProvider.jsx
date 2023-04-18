@@ -1,31 +1,39 @@
 import { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
-    currentUser: {},
-    userToken: null,
-    setCurrentUser: () => {},
-    setUserToken: () => {}
-})
+  currentUser: {},
+  userToken: null,
+  setCurrentUser: () => {},
+  setUserToken: () => {},
+});
 
 export const ContextProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState({
-        name: "Phuc Le",
-        email: "phucle@gmail.com",
-        imageUrl: ""
-    })
-    const [userToken, setUserToken] = useState('1234')
-    return (
-        <StateContext.Provider
-            value={{
-                currentUser,
-                setCurrentUser,
-                userToken,
-                setUserToken
-            }}
-        >
-            {children}
-        </StateContext.Provider>
-    )
-}
+  const [currentUser, setCurrentUser] = useState({});
+  const [userToken, _setUserToken] = useState(
+    localStorage.getItem("TOKEN") || ""
+  );
 
-export const userStateContext = () => useContext(StateContext)
+  const setUserToken = (token) => {
+    if (token) {
+      localStorage.setItem("TOKEN", token);
+    } else {
+      localStorage.removeItem("TOKEN");
+    }
+    _setUserToken(token);
+  };
+
+  return (
+    <StateContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        userToken,
+        setUserToken,
+      }}
+    >
+      {children}
+    </StateContext.Provider>
+  );
+};
+
+export const useStateContext = () => useContext(StateContext);

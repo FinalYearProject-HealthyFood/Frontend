@@ -20,7 +20,7 @@ function ScrollTopButton() {
             position="fixed"
             bottom="5%"
             right="5%"
-            backgroundColor="teal.500"
+            backgroundColor="brand.500"
             color="white"
             size="md"
             borderRadius="full"
