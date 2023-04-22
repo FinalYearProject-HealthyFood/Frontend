@@ -13,6 +13,7 @@ import ScrollToTop from "./ScrollToTop";
 import ScrollTopButton from "./components/ScrollTopButton";
 import Login from "./pages/auth/login";
 import Signup from "./pages/auth/signup";
+import TddeCalculator from "./pages/guest/TddeCalculator";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="" element={<Home />} />
           <Route path="meal" element={<Meal />} />
           <Route path="nutrient" element={<Nutrient />} />
-          <Route path="tdde-calculator" element={<Tdde />} />
+          <Route path="tdde-calculator" element={<TddeCalculator />} />
+          <Route path="tdde-index" element={<Tdde />} />
           <Route path="faq" element={""} />
           <Route path="contact" element={""} />
           <Route path="profile" element={""} />

@@ -90,13 +90,6 @@ const Signup = () => {
         display={"flex"}
       >
         <Box>
-          <Image
-            src={Logo}
-            cursor={"pointer"}
-            onClick={() => {
-              navigate("/");
-            }}
-          />
           <Box spacing="1" my={"20px"}>
             <Heading
               fontFamily={"cursive"}

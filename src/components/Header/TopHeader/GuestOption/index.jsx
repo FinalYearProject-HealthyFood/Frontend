@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 const GuestOption = () => {
     const navigate = useNavigate()
     return (
-        <Stack h={"25px"} direction={"row"}>
+        <Stack h={"20px"} direction={"row"}>
             <Button px={2}
-                h={"25px"}
+                h={"20px"}
                 colorScheme="brand"
                 variant={"ghost"}
                 onClick={
@@ -20,7 +20,7 @@ const GuestOption = () => {
             </Button>
             <Divider border={"1px"} borderColor={"gray.400"} orientation='vertical' />
             <Button
-                h={"25px"}
+                h={"20px"}
                 colorScheme="brand"
                 variant={"ghost"}
                 onClick={

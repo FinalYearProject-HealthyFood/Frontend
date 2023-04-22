@@ -20,13 +20,13 @@ import Right from "./Right";
 
 const Tdde = () => {
   return (
-    <Container mb={60} maxW="80%">
-      <Center my={20}>
-        <Heading color={"brand.300"} fontSize={"5xl"}>
+    <Container mb={30} maxW="80%">
+      <Center mt={10} mb={20}>
+        <Heading color={"brand.300"} fontSize={"4xl"}>
           Thông tin TDEE
         </Heading>
       </Center>
-      <Center my={10}>
+      <Center fontSize={"xs"} my={5}>
         <Text mx={2}>Bạn hiện tại là</Text>
         <NumberInput size="xs" maxW={16} defaultValue={22} min={1}>
           <NumberInputField />
@@ -55,7 +55,7 @@ const Tdde = () => {
         </NumberInput>
         <Text mx={2}>kg,</Text>
         <Text mr={2}>với mức độ vận động</Text>
-        <Select defaultValue={"4"} w={"240px"} placeholder="Select option">
+        <Select defaultValue={"4"} size={"xs"} w={"180px"} placeholder="Select option">
           <option value="1">không mấy khi vận động</option>
           <option value="2">vận động ít</option>
           <option value="3">vận động nhẹ</option>

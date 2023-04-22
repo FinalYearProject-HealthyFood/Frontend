@@ -11,7 +11,10 @@ const Logo = () => {
         navigate("/");
       }}
     >
-      <Image src={LogoHealthy} alt="Logo" />
+      {/* <Image src={LogoHealthy} alt="Logo" /> */}
+      <Heading color={"brand.500"} fontFamily={"cursive"} fontSize={{base: "xl"}} >
+        Heathy Food Store
+      </Heading>
     </Box>
   );
 };

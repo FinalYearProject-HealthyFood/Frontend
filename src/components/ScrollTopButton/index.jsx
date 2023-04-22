@@ -29,6 +29,7 @@ function ScrollTopButton() {
             _hover={{ backgroundColor: "teal.600" }}
             animate={{ y: trigger ? 0 : 100 }}
             transition={{ duration: 0.2 }}
+            zIndex={100}
         >
             <FaArrowUp />
         </MotionBox>

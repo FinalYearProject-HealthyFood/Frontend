@@ -48,24 +48,26 @@ const BottomHeader = () => {
             <Button
                 variant="solid"
                 colorScheme="brand"
-                size="md"
+                size="sm"
                 leftIcon={<FaHeart />}
                 boxShadow={"md"}
+                fontSize={"sm"}
             >
                 Yêu thích
             </Button>
             <Button
                 variant="solid"
                 colorScheme="brand"
-                size="md"
+                size="sm"
                 leftIcon={<FaShoppingCart />}
                 boxShadow={"md"}
+                fontSize={"sm"}
             >
                 Giỏ hàng
                 <Box
-                    fontSize='1em'
+                    fontSize='sm'
                     p={2}
-                    boxSize={"2em"}
+                    size={"sm"}
                     bg="red.500"
                     position="absolute"
                     top="-15px"
@@ -75,7 +77,7 @@ const BottomHeader = () => {
                     borderRadius={"full"}
                     boxShadow={"dark-lg"}
                 >
-                    <Text fontSize='1em'>
+                    <Text fontSize='sm'>
                         {15}
                     </Text>
                 </Box>

@@ -40,16 +40,16 @@ const Carousel = (props) => {
   });
   return (
     <Center bgColor="#00051D">
-      <Flex w="1090px" h="572px" overflow="hidden">
+      <Flex w="3xl" h="md" overflow="hidden">
         {props.data.map((meal, index) => (
           <Link key={index} >
             <Image
               src={`${meal.img}`}
               ml={`${id * -100}%`}
-              minW="1090px"
+              minW="3xl"
               objectFit="cover"
-              h="572px"
-              transition="2s"
+              h="md"
+              transition="1s"
               key={meal.id}
               borderLeft={"1px"}
               borderRight={"1px"}
@@ -57,7 +57,7 @@ const Carousel = (props) => {
           </Link>
         ))}
       </Flex>
-      <RadioGroup mt="500px" pos="absolute" color="white" value={id}>
+      <RadioGroup mt="400px" pos="absolute" color="white" value={id}>
         <HStack>
           {Array.from({ length: props.data.length }).map((_, index) => (
             <Radio

@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
-    <Stack alignItems="center" my={4} boxShadow={"xl"} mb={10}>
+    <Stack alignItems="center" mt={4} boxShadow={"xl"} mb={5}>
       <HStack spacing={8}>
         <Link to="/">
           <Button variant="ghost">Home</Button>

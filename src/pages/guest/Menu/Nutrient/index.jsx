@@ -18,11 +18,13 @@ import {
   NumberDecrementStepper,
   Button,
   IconButton,
+  Stack,
 } from "@chakra-ui/react";
 import React from "react";
 import food_14 from "../../../../assets/food14.png";
 import sample_2 from "../../../../assets/Sample 2.png";
 import { StarIcon } from "@chakra-ui/icons";
+import { FaWeightHanging, FaShoppingCart } from "react-icons/fa";
 
 const Nutrient = () => {
   return (
@@ -55,28 +57,29 @@ const Nutrient = () => {
               transition="all 0.2s ease-in-out"
               overflow="hidden"
             >
-              <Box p={5} w={"250px"} bg={"white"}>
-                <Center>
+              <Box px={5} w={"200px"} bg={"white"}>
+                <Stack>
                   <Box>
                     <Image
                       objectFit={"cover"}
                       src={sample_2}
-                      w={"200px"}
+                      w={"150px"}
+                      h={"150px"}
                       alt="recommend"
-                      borderRadius={"2xl"}
-                      borderWidth={"1px"}
                     />
-                    <Heading fontSize={"md"}>Thịt nạc vai bò Mỹ</Heading>
+                    <Heading fontSize={"sm"}>Thịt nạc vai bò Mỹ</Heading>
                     <Flex>
                       {[...Array(5)].map((star, index) => {
                         index += 1;
                         return (
                           <IconButton
                             type="button"
+                            fontSize={"xs"}
+                            size={"10"}
                             variant={"unstyled"}
                             key={index}
                             icon={<StarIcon />}
-                            color={index <= 3 ? "yellow.400" : "gray.200"}
+                            color={index <= 4.5 ? "yellow.400" : "gray.200"}
                             onClick={() => {}}
                             _hover={{
                               color: "red.400",
@@ -84,19 +87,38 @@ const Nutrient = () => {
                           />
                         );
                       })}
+                      <Text ml={1} color={"gray"} mt={"5px"} fontSize={"xs"}>
+                        4.5
+                      </Text>
+                    </Flex>
+                    <Flex mt={"10px"}>
+                      <FaWeightHanging />
+                      <Text ml={2} fontSize={"sm"}>
+                        100 gram
+                      </Text>
                     </Flex>
                     <Flex>
-                      <Text fontWeight={"bold"} mr={"3"}>Giá:</Text>
-                      <Text>$100</Text>
+                      <Text
+                        fontWeight={"bold"}
+                        mr={"3"}
+                        mt={"10px"}
+                        fontSize={"sm"}
+                      >
+                        Giá:
+                      </Text>
+                      <Text mt={"10px"} fontSize={"sm"}>
+                        50.000 vnd
+                      </Text>
                     </Flex>
                     <Box my={"14px"}>
                       <Flex>
                         <Box>
                           <NumberInput
+                            size={"xs"}
                             step={1}
                             defaultValue={1}
                             min={1}
-                            w={"70px"}
+                            w={"50px"}
                           >
                             <NumberInputField />
                             <NumberInputStepper>
@@ -107,14 +129,19 @@ const Nutrient = () => {
                         </Box>
                         <Spacer />
                         <Box>
-                          <Button color={"white"} bg={"brand.500"} w={"100px"}>
-                            Add to Cart
+                          <Button
+                            colorScheme="orange"
+                            ml={2}
+                            borderRadius={"none"}
+                            size={"xs"}
+                          >
+                            <FaShoppingCart />
                           </Button>
                         </Box>
                       </Flex>
                     </Box>
                   </Box>
-                </Center>
+                </Stack>
               </Box>
             </Box>
           ))}
