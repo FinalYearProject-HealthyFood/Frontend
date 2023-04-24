@@ -3,8 +3,10 @@ import { SearchIcon } from "@chakra-ui/icons"
 import React from "react";
 import Logo from "../../Logo";
 import { FaShoppingCart, FaHeart } from "react-icons/fa"
+import { useNavigate } from "react-router-dom";
 
 const BottomHeader = () => {
+    const navigate = useNavigate()
     return (
         <Stack p={5}
             direction="row"
@@ -62,6 +64,9 @@ const BottomHeader = () => {
                 leftIcon={<FaShoppingCart />}
                 boxShadow={"md"}
                 fontSize={"sm"}
+                onClick={() => {
+                    navigate("cart")
+                }}
             >
                 Giỏ hàng
                 <Box

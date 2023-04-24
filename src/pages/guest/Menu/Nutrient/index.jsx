@@ -28,7 +28,7 @@ import { FaWeightHanging, FaShoppingCart } from "react-icons/fa";
 
 const Nutrient = () => {
   return (
-    <Container maxW="60%">
+    <Container maxW="70%">
       <Breadcrumb fontWeight={"semibold"} fontSize={"lg"}>
         <BreadcrumbItem>
           <BreadcrumbLink href="#">Home</BreadcrumbLink>

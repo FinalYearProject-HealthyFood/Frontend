@@ -14,12 +14,17 @@ import ScrollTopButton from "./components/ScrollTopButton";
 import Login from "./pages/auth/login";
 import Signup from "./pages/auth/signup";
 import TddeCalculator from "./pages/guest/TddeCalculator";
+import Profile from "./pages/guest/Profile";
+import Info from "./pages/guest/Profile/Info";
+import ChangePassword from "./pages/guest/Profile/ChangePassword";
+import OrderHistory from "./pages/guest/Profile/OrderHistory";
+import Cart from "./pages/guest/Cart";
 
 function App() {
   return (
     <Box scrollBehavior={"smooth"}>
-      <ScrollToTop/>
-      <ScrollTopButton/>
+      <ScrollToTop />
+      <ScrollTopButton />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="" element={<Home />} />
@@ -29,9 +34,12 @@ function App() {
           <Route path="tdde-index" element={<Tdde />} />
           <Route path="faq" element={""} />
           <Route path="contact" element={""} />
-          <Route path="profile" element={""} />
-          <Route path="changepassword" element={""} />
-          <Route path="order-history" element={""} />
+          <Route path="profile" element={<Profile/>}>
+            <Route path="info" element={<Info/>} />
+            <Route path="change-password" element={<ChangePassword/>} />
+            <Route path="order-history" element={<OrderHistory/>} />
+          </Route>
+          <Route path="cart" element={<Cart/>} />
         </Route>
         <Route path="/admin" element={""}>
           <Route path="order" element={""} />
@@ -40,8 +48,8 @@ function App() {
           <Route path="user" element={""} />
         </Route>
         <Route path="/">
-          <Route path="/login" element={<Login/>} />
-          <Route path="/signup" element={<Signup/>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
       </Routes>
     </Box>

@@ -45,13 +45,13 @@ const UserOption = () => {
         </MenuButton>
         <MenuList>
           <MenuItem>
-            <Link to="/profile">Thông tin tài khoản</Link>
+            <Link to="/profile/info">Thông tin tài khoản</Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/changepassword">Đổi mật khẩu</Link>
+            <Link to="/profile/change-password">Đổi mật khẩu</Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/order-history">Lịch sử mua hàng</Link>
+            <Link to="/profile/order-history">Lịch sử mua hàng</Link>
           </MenuItem>
         </MenuList>
       </Menu>

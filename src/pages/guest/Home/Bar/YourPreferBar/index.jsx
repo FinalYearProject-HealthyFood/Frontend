@@ -54,7 +54,7 @@ const YourPreferBar = (data) => {
         </Text>
         <Text>Liên hệ với HFS để được tư vấn chi tiết nhất</Text>
       </Center>
-      <Container maxW="65%" mt={"50px"}>
+      <Container maxW="70%" mt={"50px"}>
         <SimpleGrid columns={4} spacing="20px" justifyItems={"center"}>
           {[0, 1, 2, 3]?.map((index, data) => (
             <Box
