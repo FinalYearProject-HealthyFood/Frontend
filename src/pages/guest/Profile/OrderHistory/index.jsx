@@ -71,7 +71,10 @@ const OrderHistory = () => {
                   return (
                     <Tr>
                       <Td>{index + 1}</Td>
-                      <Td>ức gà chiên</Td>
+                      <Td><Text whiteSpace="normal" height="auto" noOfLines={4}>
+                          ức gà chiên ức gà chiên ức gà chiên ức gà chiên ức gà
+                          chiên ức gà chiên ức gà chiên ức gà chiên ức gà chiên{" "}
+                        </Text></Td>
                       <Td>25.4</Td>
                       <Td isNumeric>2</Td>
                       <Td isNumeric>25.000 vnđ</Td>

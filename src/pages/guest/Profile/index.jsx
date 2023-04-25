@@ -25,7 +25,7 @@ const Profile = () => {
       <Grid
         boxShadow={"2xl"}
         borderRadius={"xl"}
-        mx={"15%"}
+
         templateColumns={"repeat(5, 1fr)"}
         bg={"gray.50"}
       >
