@@ -19,6 +19,7 @@ import Info from "./pages/guest/Profile/Info";
 import ChangePassword from "./pages/guest/Profile/ChangePassword";
 import OrderHistory from "./pages/guest/Profile/OrderHistory";
 import Cart from "./pages/guest/Cart";
+import Payment from "./pages/guest/Payment";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="order-history" element={<OrderHistory/>} />
           </Route>
           <Route path="cart" element={<Cart/>} />
+          <Route path="cart-payment" element={<Payment/>} />
         </Route>
         <Route path="/admin" element={""}>
           <Route path="order" element={""} />
