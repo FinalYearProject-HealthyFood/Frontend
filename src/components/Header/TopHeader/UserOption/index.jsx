@@ -29,11 +29,10 @@ const UserOption = () => {
     });
   };
   useEffect(() => {
-    axiosClient.get('/me')
-      .then(({ data }) => {
-        setCurrentUser(data)
-      })
-  }, [])
+    axiosClient.get("/me").then(({ data }) => {
+      setCurrentUser(data);
+    });
+  }, []);
   return (
     <Stack h={"25px"} direction={"row"}>
       <Menu isLazy>
@@ -52,6 +51,9 @@ const UserOption = () => {
           </MenuItem>
           <MenuItem>
             <Link to="/profile/order-history">Lịch sử mua hàng</Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/admin">Manager</Link>
           </MenuItem>
         </MenuList>
       </Menu>

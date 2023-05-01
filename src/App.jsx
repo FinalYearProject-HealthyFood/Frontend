@@ -20,8 +20,25 @@ import ChangePassword from "./pages/guest/Profile/ChangePassword";
 import OrderHistory from "./pages/guest/Profile/OrderHistory";
 import Cart from "./pages/guest/Cart";
 import Payment from "./pages/guest/Payment";
+import DashboardLayout from "./pages/layout/DashboardLayout";
+import MealManager from "./pages/admin/MealManager";
+import OrderManager from "./pages/admin/OrderManager";
+import NutrientManager from "./pages/admin/NutrientManager";
+import UserManager from "./pages/admin/UserManager";
+import axiosClient from "./axios";
+import { useStateContext } from "./contexts/ContextProvider";
+import { useEffect } from "react";
 
 function App() {
+  const { currentUser, userToken, setCurrentUser, setUserToken } =
+    useStateContext();
+    useEffect(() => {
+      if (userToken) {
+        axiosClient.get("/me").then(({ data }) => {
+          setCurrentUser(data);
+        });
+      }
+    }, []);
   return (
     <Box scrollBehavior={"smooth"}>
       <ScrollToTop />
@@ -35,20 +52,24 @@ function App() {
           <Route path="tdde-index" element={<Tdde />} />
           <Route path="faq" element={""} />
           <Route path="contact" element={""} />
-          <Route path="profile" element={<Profile/>}>
-            <Route path="info" element={<Info/>} />
-            <Route path="change-password" element={<ChangePassword/>} />
-            <Route path="order-history" element={<OrderHistory/>} />
+          <Route path="profile" element={<Profile />}>
+            <Route path="info" element={<Info />} />
+            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="order-history" element={<OrderHistory />} />
           </Route>
-          <Route path="cart" element={<Cart/>} />
-          <Route path="cart-payment" element={<Payment/>} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="cart-payment" element={<Payment />} />
         </Route>
-        <Route path="/admin" element={""}>
-          <Route path="order" element={""} />
-          <Route path="meal" element={""} />
-          <Route path="nutrient" element={""} />
-          <Route path="user" element={""} />
-        </Route>
+        {Object.keys(currentUser).length !== 0 ? (
+          <Route path="/admin" element={<DashboardLayout />}>
+            <Route path="order" element={<OrderManager />} />
+            <Route path="meal" element={<MealManager />} />
+            <Route path="nutrient" element={<NutrientManager />} />
+            <Route path="user" element={<UserManager />} />
+          </Route>
+        ) : (
+          ""
+        )}
         <Route path="/">
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
