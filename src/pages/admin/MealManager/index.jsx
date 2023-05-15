@@ -73,7 +73,7 @@ const MealManager = () => {
         </Box>
         <Divider bgColor="gray" h={"1px"} />
         <Flex mt="2%" mb="3%" w="100%" h="9%" justifyContent={"center"}>
-          <InputGroup size="md" w="50%" h="100%">
+          <InputGroup size="md" w="70%" h="100%">
             <InputLeftElement>
               <BsSearch />
             </InputLeftElement>
@@ -90,7 +90,7 @@ const MealManager = () => {
         </Flex>
         {/* =================> Add button */}
 
-        <Flex w={"50%"} justifyContent={"right"}>
+        <Flex w={"70%"} justifyContent={"right"}>
           <Button onClick={onOpen} colorScheme="brand">
             <Icon boxSize={"24px"} as={GiMeal} />
             <Icon ml={2} as={AddIcon} />
@@ -112,7 +112,7 @@ const MealManager = () => {
           </ModalContent>
         </Modal>
         {/* =================> Add button */}
-        <TableContainer w={"50%"}>
+        <TableContainer w={"70%"}>
           <Table variant={"striped"}>
             <Thead bgColor={"#1F1D36"}>
               <Tr>

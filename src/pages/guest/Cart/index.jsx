@@ -27,8 +27,10 @@ import {
 import React from "react";
 import food_14 from "../../../assets/food14.png";
 import { FaShoppingCart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
   return (
     <Container maxW={"80%"}>
       <Box my={5}>
@@ -60,7 +62,7 @@ const Cart = () => {
           <Tbody>
             {[0, 1, 2, 3, 4].map((index, data) => {
               return (
-                <Tr key={index} >
+                <Tr key={index}>
                   <Td>{index + 1}</Td>
                   <Td>
                     <Flex>
@@ -107,7 +109,13 @@ const Cart = () => {
               <Th textColor={"white"}></Th>
               <Th textColor={"white"}></Th>
               <Th textColor={"white"}> Tổng giá thành</Th>
-              <Th textColor={"white"}> {(25000*5).toLocaleString(undefined, {maximumFractionDigits:3})} vnđ </Th>
+              <Th textColor={"white"}>
+                {" "}
+                {(25000 * 5).toLocaleString(undefined, {
+                  maximumFractionDigits: 3,
+                })}{" "}
+                vnđ{" "}
+              </Th>
             </Tr>
           </Tfoot>
         </Table>
@@ -121,11 +129,13 @@ const Cart = () => {
           <Box>
             <Button colorScheme="orange">
               <FaShoppingCart />
-              <Text ml={2} >Tiếp tục mua</Text>
+              <Text ml={2}>Tiếp tục mua</Text>
             </Button>
           </Box>
           <Box>
-            <Button colorScheme="brand">Thanh toán</Button>
+            <Button colorScheme="brand" onClick={()=> {navigate("/cart-payment")}}>
+              Thanh toán
+            </Button>
           </Box>
         </HStack>
       </Container>
