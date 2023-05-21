@@ -12,13 +12,38 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Select 
+  Select,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Left from "./Left";
 import Right from "./Right";
+import { useLocation } from "react-router-dom";
 
 const Tdde = () => {
+  const location = useLocation();
+  const [gender, setGender] = useState("1");
+  const [age, setAge] = useState("");
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
+  const [activity, setActivity] = useState("");
+  const [fat, setFat] = useState("");
+
+  const mifflin_cal = () => {
+    return 10 * weight + 6.25 * height - 5 * age + 5;
+  };
+
+  const ideal_weight = () => {
+    return;
+  };
+
+  useEffect(() => {
+    setGender(location.state.gender);
+    setAge(location.state.age);
+    setWeight(location.state.weight);
+    setHeight(location.state.height);
+    setActivity(location.state.activity);
+    setFat(location.state.fat);
+  }, []);
   return (
     <Container mb={30} maxW="80%">
       <Center mt={10} mb={20}>
@@ -28,7 +53,15 @@ const Tdde = () => {
       </Center>
       <Center fontSize={"xs"} my={5}>
         <Text mx={2}>Bạn hiện tại là</Text>
-        <NumberInput size="xs" maxW={16} defaultValue={22} min={1}>
+        <NumberInput
+          size="xs"
+          maxW={16}
+          min={1}
+          value={age}
+          onChange={(value) => {
+            setAge(value);
+          }}
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -37,7 +70,15 @@ const Tdde = () => {
         </NumberInput>
         <Text mx={2}>tuổi,</Text>
         <Text mr={2}>cao</Text>
-        <NumberInput size="xs" maxW={16} defaultValue={22} min={1}>
+        <NumberInput
+          size="xs"
+          maxW={16}
+          min={1}
+          value={height}
+          onChange={(value) => {
+            setHeight(value);
+          }}
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -46,7 +87,15 @@ const Tdde = () => {
         </NumberInput>
         <Text mx={2}>cm,</Text>
         <Text mr={2}>nặng</Text>
-        <NumberInput size="xs" maxW={16} defaultValue={73} min={1}>
+        <NumberInput
+          size="xs"
+          maxW={16}
+          min={1}
+          value={weight}
+          onChange={(value) => {
+            setWeight(value);
+          }}
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -55,16 +104,32 @@ const Tdde = () => {
         </NumberInput>
         <Text mx={2}>kg,</Text>
         <Text mr={2}>với mức độ vận động</Text>
-        <Select defaultValue={"4"} size={"xs"} w={"180px"} placeholder="Select option">
-          <option value="1">không mấy khi vận động</option>
-          <option value="2">vận động ít</option>
-          <option value="3">vận động nhẹ</option>
-          <option value="4">vận động trung bình</option>
-          <option value="5">vận động nặng</option>
-          <option value="6">vận động viên</option>
+        <Select
+          size={"xs"}
+          w={"180px"}
+          placeholder="Select option"
+          value={activity}
+          onChange={(e) => {
+            setActivity(e.target.value);
+          }}
+        >
+          <option value={1}>không mấy khi vận động</option>
+          <option value={1.2}>vận động ít</option>
+          <option value={1.375}>vận động nhẹ</option>
+          <option value={1.55}>vận động trung bình</option>
+          <option value={1.725}>vận động nặng</option>
+          <option value={1.9}>vận động viên</option>
         </Select>
         <Text mx={2}>và tỉ lệ mỡ là</Text>
-        <NumberInput size="xs" maxW={16} defaultValue={18} min={1}>
+        <NumberInput
+          size="xs"
+          maxW={16}
+          min={1}
+          value={fat}
+          onChange={(value) => {
+            setFat(value);
+          }}
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -86,10 +151,10 @@ const Tdde = () => {
       </Center>
       <Flex>
         <Box w={"35%"}>
-            <Left/>
+          <Left state = {location.state} />
         </Box>
         <Box w={"65%"}>
-            <Right/>
+          <Right state = {location.state} />
         </Box>
       </Flex>
     </Container>

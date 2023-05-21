@@ -32,13 +32,13 @@ import { useEffect } from "react";
 function App() {
   const { currentUser, userToken, setCurrentUser, setUserToken } =
     useStateContext();
-    useEffect(() => {
-      if (userToken) {
-        axiosClient.get("/me").then(({ data }) => {
-          setCurrentUser(data);
-        });
-      }
-    }, []);
+  useEffect(() => {
+    if (userToken) {
+      axiosClient.get("/me").then(({ data }) => {
+        setCurrentUser(data);
+      });
+    }
+  }, []);
   return (
     <Box scrollBehavior={"smooth"}>
       <ScrollToTop />
@@ -48,8 +48,10 @@ function App() {
           <Route path="" element={<Home />} />
           <Route path="meal" element={<Meal />} />
           <Route path="nutrient" element={<Nutrient />} />
-          <Route path="tdde-calculator" element={<TddeCalculator />} />
-          <Route path="tdde-index" element={<Tdde />} />
+          <Route path="tdde-calculator">
+            <Route path="" element={<TddeCalculator />} />
+            <Route path="result" element={<Tdde />} />
+          </Route>
           <Route path="faq" element={""} />
           <Route path="contact" element={""} />
           <Route path="profile" element={<Profile />}>

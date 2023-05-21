@@ -26,17 +26,29 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Switch,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { FaUser, FaUserCog } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { MdMoney } from "react-icons/md";
 import { GiMeal, GiMeat } from "react-icons/gi";
+import axios from "axios";
 
 const NutrientManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState(false);
+  const [meals, setMeals] = useState([]);
+
+  useEffect(()=>{
+    axios.get(import.meta.env.VITE_API_BASE_URL+'/api/meals')
+    .then( res => {
+      console.log(res.data.data.data)
+    })
+  },[])
+
   const TableData = [
     {
       name: "Cơm thị bò",
@@ -54,7 +66,13 @@ const NutrientManager = () => {
       name: "Cơm thị bò",
       price: 25000,
     },
+    {
+      name: "Cơm thị bò",
+      price: 25000,
+    },
   ];
+  
+
   return (
     <Stack>
       <VStack>
@@ -113,6 +131,7 @@ const NutrientManager = () => {
                 <Th color={"white"}>STT</Th>
                 <Th color={"white"}>Tên sản phẩm</Th>
                 <Th color={"white"}>Giá đơn vị</Th>
+                <Th color={"white"}>Status</Th>
                 <Th color={"white"}>Action</Th>
               </Tr>
             </Thead>
@@ -124,6 +143,14 @@ const NutrientManager = () => {
                     <Td>{index + 1}</Td>
                     <Td>{data.name}</Td>
                     <Td>{data.price}</Td>
+                    <Td>
+                      <Switch
+                        onChange={(e) => {
+                          setStatus(e.target.checked);
+                        }}
+                        isChecked={status}
+                      />
+                    </Td>
                     <Td>
                       <Stack alignItems={"center"}>
                         <Flex alignItems={"center"}>

@@ -20,11 +20,17 @@ import {
   VStack,
   Button,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const TddeCalculator = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [gender, setGender] = useState("1")
+  const [age, setAge] = useState("")
+  const [weight, setWeight] = useState("")
+  const [height, setHeight] = useState("")
+  const [activity, setActivity] = useState("")
+  const [fat, setFat] = useState("")
   return (
     <Container mb={30} maxW="80%">
       <VStack mt={10} mb={20}>
@@ -60,12 +66,12 @@ const TddeCalculator = () => {
             </Box>
           </Stack>
           <Stack>
-            <RadioGroup size={"sm"} defaultValue="1">
+            <RadioGroup size={"sm"} value={gender}>
               <Stack spacing={5} direction="row">
-                <Radio colorScheme="green" value="1">
+                <Radio colorScheme="green" value="1" onChange={(e) => {setGender(e.target.value)}}>
                   Nam
                 </Radio>
-                <Radio colorScheme="green" value="2">
+                <Radio colorScheme="green" value="2" onChange={(e) => {setGender(e.target.value)}}>
                   Nữ
                 </Radio>
               </Stack>
@@ -77,7 +83,7 @@ const TddeCalculator = () => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput> */}
-            <Input type="number" size={"xs"} w={"10"} />
+            <Input type="number" size={"xs"} w={"10"} value={age} onChange={(e) => {setAge(e.target.value)}} />
 
             {/* <NumberInput size="xs" maxW={16} min={1}>
               <NumberInputField />
@@ -86,7 +92,7 @@ const TddeCalculator = () => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput> */}
-            <Input type="number" size={"xs"} w={"10"} placeholder="kg" />
+            <Input type="number" size={"xs"} w={"10"} placeholder="kg" value={weight} onChange={(e) => {setWeight(e.target.value)}} />
             {/* <NumberInput size="xs" maxW={16} min={1}>
               <NumberInputField />
               <NumberInputStepper>
@@ -94,23 +100,24 @@ const TddeCalculator = () => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput> */}
-            <Input type="number" size={"xs"} w={"10"} placeholder="cm" />
+            <Input type="number" size={"xs"} w={"10"} placeholder="cm" value={height} onChange={(e) => {setHeight(e.target.value)}} />
 
             <Select
-              defaultValue={"4"}
+              value={activity}
               size={"xs"}
               w={"175px"}
               placeholder="Select option"
+              onChange={(e) => {setActivity(e.target.value)}}
             >
-              <option value="1">không mấy khi vận động</option>
-              <option value="2">vận động ít</option>
-              <option value="3">vận động nhẹ</option>
-              <option value="4">vận động trung bình</option>
-              <option value="5">vận động nặng</option>
-              <option value="6">vận động viên</option>
+              <option value={1} >không mấy khi vận động</option>
+              <option value={1.2} >vận động ít</option>
+              <option value={1.375} >vận động nhẹ</option>
+              <option value={1.55} >vận động trung bình</option>
+              <option value={1.725} >vận động nặng</option>
+              <option value={1.9} >vận động viên</option>
             </Select>
             <Flex>
-              <NumberInput size="xs" maxW={16} defaultValue={22} min={1}>
+              <NumberInput size="xs" maxW={16} value={fat} min={1} max={100} onChange={(value) => {setFat(value)}}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -124,9 +131,14 @@ const TddeCalculator = () => {
           </Stack>
         </Stack>
         <Stack>
-          <Button colorScheme="brand" mt={"20px"} size={"lg"}
-            onClick={()=>{
-                navigate("/tdde-index")
+          <Button
+            colorScheme="brand"
+            mt={"20px"}
+            size={"lg"}
+            onClick={() => {
+              navigate("/tdde-calculator/result", {
+                state: { gender: gender, age: age, weight: weight, height: height, activity: activity, fat: fat},
+              });
             }}
           >
             Tính
