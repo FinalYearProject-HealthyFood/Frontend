@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Divider,
   Heading,
@@ -8,10 +9,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Left = (props) => {
-  const mifflin_cal = (w, h, a, activity) => {
-    return Math.floor((10 * w + 6.25 * h - 5 * a + 5) * activity);
+  const navigate = useNavigate();
+  const mifflin_cal = (w, h, a, activity, g) => {
+    if (g == "male") {
+      return Math.floor((10 * w + 6.25 * h - 5 * a + 5) * activity);
+    } else {
+      return Math.floor((10 * w + 6.25 * h - 5 * a - 161) * activity);
+    }
   };
 
   const ideal_weight = () => {
@@ -36,7 +43,8 @@ const Left = (props) => {
               props.state.weight,
               props.state.height,
               props.state.age,
-              props.state.activity
+              props.state.activity,
+              props.state.gender
             )}
           </Heading>
           <Heading fontSize={"md"}>năng lượng trên một ngày</Heading>
@@ -46,14 +54,15 @@ const Left = (props) => {
               props.state.weight,
               props.state.height,
               props.state.age,
-              props.state.activity
+              props.state.activity,
+              props.state.gender
             ) * 7}
           </Heading>
           <Heading fontSize={"md"}>năng lượng trên một tuần</Heading>
         </Stack>
         <Stack
           mt={5}
-          mb={10}
+          mb={5}
           borderRadius={"2xl"}
           p={5}
           w={"70%"}
@@ -70,6 +79,28 @@ const Left = (props) => {
             Trọng lượng cơ thể lý tưởng của bạn được ước tính là từ 64-66 kg
           </Text>
         </Stack>
+        <Center>
+          <Button
+            fontSize={"xl"}
+            colorScheme="orange"
+            onClick={() => {
+              navigate("/diet-recommend",
+              {
+                state: {
+                  calories: mifflin_cal(
+                    props.state.weight,
+                    props.state.height,
+                    props.state.age,
+                    props.state.activity,
+                    props.state.gender
+                  ),
+                },
+              });
+            }}
+          >
+            Chưa biết nên ăn gì ?
+          </Button>
+        </Center>
       </Center>
     </>
   );

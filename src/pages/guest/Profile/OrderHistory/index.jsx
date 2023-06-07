@@ -30,11 +30,33 @@ import React, { useEffect } from "react";
 import { useStateContext } from "../../../../contexts/ContextProvider";
 import axiosClient from "../../../../axios";
 import { useState } from "react";
+import Pagination from "react-js-pagination";
+import "./pagination.css";
+import moment from 'moment'
 
 const OrderHistory = () => {
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  //   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
+  const [itemlist, setItemlist] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const { currentUser, userToken, setCurrentUser, setUserToken } =
+    useStateContext();
+  useEffect(() => {
+    if (userToken) {
+      axiosClient
+        .post(`order-items/item-deliverd-by-user?page=${currentPage}`)
+        .then((response) => {
+          console.log(response.data.data);
+          setItemlist(response.data.data);
+          setTotalPage(response.data.total);
+        });
+    }
+  }, [currentPage]);
+
+  const getData = (pageNumber = 1) => {
+    if (currentPage !== pageNumber) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   const onSave = () => {};
   return (
@@ -54,10 +76,14 @@ const OrderHistory = () => {
             Lịch sử mua hàng
           </Heading>
         </Box>
-        <Box pt={"20px"}>
-          <TableContainer borderLeftWidth={"1px"} borderRightWidth={"1px"} bgColor={"white"} >
+        <Stack alignItems={"center"} pt={"20px"}>
+          <TableContainer
+            borderLeftWidth={"1px"}
+            borderRightWidth={"1px"}
+            bgColor={"white"}
+          >
             <Table size={"md"} variant="striped">
-              <Thead bg={"brand.500"} >
+              <Thead bg={"brand.500"}>
                 <Tr>
                   <Th textColor={"white"}>No.</Th>
                   <Th textColor={"white"}>Tên sản phẩm</Th>
@@ -67,30 +93,56 @@ const OrderHistory = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {[0, 1, 2, 3, 4].map((index, data) => {
+                {itemlist?.map((data, index) => {
                   return (
-                    <Tr>
-                      <Td>{index + 1}</Td>
-                      <Td><Text whiteSpace="normal" height="auto" noOfLines={4}>
-                          ức gà chiên ức gà chiên ức gà chiên ức gà chiên ức gà
-                          chiên ức gà chiên ức gà chiên ức gà chiên ức gà chiên{" "}
-                        </Text></Td>
-                      <Td>25.4</Td>
-                      <Td isNumeric>2</Td>
-                      <Td isNumeric>25.000 vnđ</Td>
+                    <Tr key={data.id}>
+                      <Td>{(index + 1)+5*(currentPage-1)}</Td>
+                      <Td>
+                        <Text whiteSpace="normal" height="auto" noOfLines={4}>
+                          {data?.ingredient_id !== null
+                            ? data.ingredient.name
+                            : data.meal.name}
+                        </Text>
+                      </Td>
+                      <Td>
+                        {data?.quantity}
+                      </Td>
+                      <Td>{moment(data?.updated_at).format("DD/MM/YYYY")}</Td>
+                      <Td isNumeric>{data?.total_price} vnđ</Td>
                     </Tr>
                   );
                 })}
               </Tbody>
             </Table>
           </TableContainer>
-        </Box>
+          <Flex w={"70%"} justifyContent={"center"}>
+            {totalPage > 5 ? (
+              <Pagination
+                hideDisabled
+                activePage={currentPage}
+                totalItemsCount={totalPage}
+                itemsCountPerPage={5}
+                itemClass="page-item"
+                linkClass="page-link"
+                itemClassNext="next-item"
+                itemClassPrev="prev-item"
+                innerClass="container"
+                linkClassFirst="first-link"
+                linkClassLast="last-link"
+                activeClass="paginationActive"
+                activeLinkClass="linkActive"
+                disabledClass="disable"
+                onChange={(pageNumber) => getData(pageNumber)}
+              />
+            ) : (
+              ""
+            )}
+          </Flex>
+        </Stack>
         <Stack>
-            <Box>
-                <Button colorScheme="red" >
-                    Xóa lịch sử
-                </Button>
-            </Box>
+          <Box>
+            <Button colorScheme="red">Xóa lịch sử</Button>
+          </Box>
         </Stack>
       </VStack>
     </>

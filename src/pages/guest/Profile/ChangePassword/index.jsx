@@ -16,6 +16,7 @@ import {
   Switch,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useStateContext } from "../../../../contexts/ContextProvider";
@@ -25,9 +26,48 @@ import { useState } from "react";
 const ChangePassword = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const toast = useToast()
+
+  const showToast = (title, status, description) => {
+    toast({
+      title: title,
+      description: description,
+      status: status,
+      duration: 2500,
+      isClosable: true,
+      position: "top-right",
+      variant: "left-accent"
+    });
+  }
   //   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
 
-  const onSave = () => {};
+  const onSave = () => {
+    const ChangePassword = {
+      new_password: password,
+      confirm_password: password2,
+    };
+    axiosClient
+      .post("/profile/change-password", ChangePassword)
+      .then(({ data }) => {
+        showToast(
+          "Success!",
+          "success",
+          "cập nhật mật khẩu thành công!"
+        );
+      })
+      .catch((error) => {
+        if (error.response) {
+          const finalErrors = Object.values(error.response.data.errors).reduce(
+            (accum, next) => [...accum, ...next],
+            []
+          );
+          finalErrors.map((error) => {
+            showToast("Error!", "error", error);
+          });
+        }
+        console.error(error);
+      });
+  };
   return (
     <>
       <VStack
@@ -48,7 +88,7 @@ const ChangePassword = () => {
         <Box pt={"50px"}>
           <Grid templateColumns={"repeat(6, 1fr)"}>
             <GridItem colStart={2} colSpan={2}>
-              <Box >
+              <Box>
                 <Text color={"gray.500"} fontSize={"md"} fontWeight={"medium"}>
                   Mật khẩu mới
                 </Text>
@@ -89,7 +129,9 @@ const ChangePassword = () => {
           </Grid>
           <VStack pt={20}>
             <Box>
-              <Button colorScheme="brand" py={5} px={10} onClick={onSave}>Lưu</Button>
+              <Button colorScheme="brand" py={5} px={10} onClick={onSave}>
+                Lưu
+              </Button>
             </Box>
           </VStack>
         </Box>

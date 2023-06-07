@@ -28,8 +28,12 @@ const Tdde = () => {
   const [activity, setActivity] = useState("");
   const [fat, setFat] = useState("");
 
-  const mifflin_cal = () => {
-    return 10 * weight + 6.25 * height - 5 * age + 5;
+  const mifflin_cal = (w, h, a, activity, g) => {
+    if (g == "male") {
+      return Math.floor((10 * w + 6.25 * h - 5 * a + 5) * activity);
+    } else {
+      return Math.floor((10 * w + 6.25 * h - 5 * a - 161) * activity);
+    }
   };
 
   const ideal_weight = () => {

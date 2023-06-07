@@ -8,6 +8,7 @@ import {
   GridItem,
   HStack,
   Heading,
+  Icon,
   Input,
   Radio,
   RadioGroup,
@@ -16,11 +17,13 @@ import {
   Switch,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useStateContext } from "../../../../contexts/ContextProvider";
 import axiosClient from "../../../../axios";
 import { useState } from "react";
+import { InfoIcon } from "@chakra-ui/icons";
 
 const Info = () => {
   const [name, setName] = useState("");
@@ -32,7 +35,22 @@ const Info = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("");
   const [edit, setEdit] = useState(false);
-  //   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
+  const [verify, setVerify] = useState("false");
+  const toast = useToast();
+
+  const showToast = (title, status, description) => {
+    toast({
+      title: title,
+      description: description,
+      status: status,
+      duration: 2500,
+      isClosable: true,
+      position: "top-right",
+      variant: "left-accent",
+    });
+  };
+  const { currentUser, userToken, setCurrentUser, setUserToken } =
+    useStateContext();
 
   useEffect(() => {
     axiosClient.get("/me").then(({ data }) => {
@@ -45,12 +63,23 @@ const Info = () => {
       setWeight(data.weight);
       setHeight(data.height);
       setGender(data.gender);
+      setVerify(data.email_verified_at);
       //   console.log(!edit);
     });
   }, []);
+  const resendVeriyLink = () => {
+    showToast("Warning!", "warning", "Đang gửi link xác thực. Vui lòng chờ đợi.");
+    axiosClient.post("email/verify/resend").then(data => {
+      showToast("Success!", "success", "Gửi link xác thực thành công. Vui lòng check email của bạn.");
+    })
+    .catch(error => {
+      console.log(error);
+      showToast("Error!", "error", "Lỗi gửi link xác thực.");
+    })
+  }
   const getInfo = () => {
     axiosClient.get("/me").then(({ data }) => {
-    //   setCurrentUser(data);
+      setCurrentUser(data);
       setName(data.name);
       setEmail(data.email);
       setPhone(data.phone);
@@ -63,8 +92,38 @@ const Info = () => {
     });
   };
   const onSave = () => {
-
-  }
+    const updateProfile = {
+      name: name,
+      email: email,
+      age: age,
+      weight: weight,
+      height: height,
+      gender: gender,
+      address: address,
+      phone: phone,
+    };
+    axiosClient
+      .post("/profile/update", updateProfile)
+      .then((data) => {
+        showToast(
+          "Success!",
+          "success",
+          "cập nhật thông tin tài khoản thành công!"
+        );
+      })
+      .catch((error) => {
+        if (error.response) {
+          const finalErrors = Object.values(error.response.data.errors).reduce(
+            (accum, next) => [...accum, ...next],
+            []
+          );
+          finalErrors.map((error) => {
+            showToast("Error!", "error", error);
+          });
+        }
+        console.error(error);
+      });
+  };
   return (
     <>
       <VStack
@@ -77,11 +136,29 @@ const Info = () => {
         borderColor={"gray.300"}
         borderBottomLeftRadius={"xl"}
       >
-        <Box mb={5}>
+        <Stack spacing={0} mb={5} alignItems={"center"}>
           <Heading color={"brand.300"} fontSize={"2xl"}>
             Thông tin tài khoản
           </Heading>
-        </Box>
+          {(verify == "" || verify == null) && (
+            <Flex>
+              <Text color={"red"} fontSize={"xs"}>
+                <Icon as={InfoIcon} /> Bạn chưa xác thực email. Làm ơn hãy xác
+                thực email của bạn.
+              </Text>
+              <Button
+                cursor={"pointer"}
+                as="u"
+                fontSize={"xs"}
+                colorScheme="red"
+                variant="link"
+                onClick={resendVeriyLink}
+              >
+                Gửi lại
+              </Button>
+            </Flex>
+          )}
+        </Stack>
         <Flex w={"100%"} px={"20%"}>
           <Spacer />
           <Center gap={2}>
@@ -132,7 +209,7 @@ const Info = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              readOnly={!edit}
+              readOnly={true}
             />
             <Input
               fontSize={"md"}
@@ -222,10 +299,10 @@ const Info = () => {
                 isDisabled={!edit}
               >
                 <Stack spacing={5} direction="row">
-                  <Radio colorScheme="green" value="1">
+                  <Radio colorScheme="green" value="male">
                     Nam
                   </Radio>
-                  <Radio colorScheme="green" value="2">
+                  <Radio colorScheme="green" value="female">
                     Nữ
                   </Radio>
                 </Stack>
@@ -236,9 +313,7 @@ const Info = () => {
       </VStack>
       {edit ? (
         <HStack justifyContent={"center"} p={5}>
-          <Button colorScheme="brand" boxShadow={"lg"}
-            onClick={onSave}
-          >
+          <Button colorScheme="brand" boxShadow={"lg"} onClick={onSave}>
             Lưu thay đổi
           </Button>
           {/* <Button colorScheme="red" boxShadow={"lg"}

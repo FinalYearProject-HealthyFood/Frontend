@@ -10,9 +10,15 @@ const TopHeader = () => {
     useStateContext();
   useEffect(() => {
     if (userToken) {
-      axiosClient.get("/me").then(({ data }) => {
-        setCurrentUser(data);
-      });
+      axiosClient
+        .get("/me")
+        .then(({ data }) => {
+          setCurrentUser(data);
+        })
+        .catch(() => {
+          setCurrentUser({});
+          setUserToken(null);
+        });
     }
   }, []);
   return (

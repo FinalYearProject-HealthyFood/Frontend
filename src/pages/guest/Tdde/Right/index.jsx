@@ -19,8 +19,12 @@ import {
 import React from "react";
 
 const Right = (props) => {
-  const mifflin_cal = (w, h, a, activity) => {
-    return Math.floor((10 * w + 6.25 * h - 5 * a + 5) * activity);
+  const mifflin_cal = (w, h, a, activity, g) => {
+    if (g == "male") {
+      return Math.floor((10 * w + 6.25 * h - 5 * a + 5) * activity);
+    } else {
+      return Math.floor((10 * w + 6.25 * h - 5 * a - 161) * activity);
+    }
   };
 
   const BMI_Score = (w, h) => {
@@ -46,30 +50,36 @@ const Right = (props) => {
           <Box mb={10}>
             <Text fontWeight={"medium"} fontSize={"sm"}>
               Dựa trên số liệu thống kê của bạn, ước tính tốt nhất cho lượng
-              calo duy trì của bạn là 2.221 calo mỗi ngày dựa trên Công thức
-              Katch-McArdle, được biết đến rộng rãi là chính xác nhất khi cung
-              cấp chất béo trong cơ thể.
+              calo duy trì của bạn là{" "}
+              {mifflin_cal(
+                props.state.weight,
+                props.state.height,
+                props.state.age,
+                props.state.activity,
+                props.state.gender
+              )}{" "}
+              calo mỗi ngày dựa trên Công thức Mifflin-St. Jeor, được biết đến rộng
+              rãi là khá chính xác khi cung cấp giới tính, độ tuổi, chiều cao, cân nặng.
             </Text>
             <Text fontWeight={"medium"} fontSize={"sm"} my={5}>
               Bảng dưới đây cho thấy sự khác biệt nếu bạn đã chọn một cấp độ
-              hoạt động khác.
+              hoạt động khác:
             </Text>
             <TableContainer>
               <Table size={"sm"}>
                 <Tbody fontSize={"xs"} fontWeight={"medium"}>
-                  <Tr>
-                    <Td
-                      color={props.state.activity == 1 && "brand.500"}
-                      fontWeight={props.state.activity == 1 && "bold"}
-                    >
-                      Không mấy khi vận động
-                    </Td>
+                  <Tr
+                    color={props.state.activity == 1 && "brand.500"}
+                    fontWeight={props.state.activity == 1 && "bold"}
+                  >
+                    <Td>Không mấy khi vận động</Td>
                     <Td isNumeric>
                       {mifflin_cal(
                         props.state.weight,
                         props.state.height,
                         props.state.age,
-                        1
+                        1,
+                        props.state.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
@@ -84,7 +94,8 @@ const Right = (props) => {
                         props.state.weight,
                         props.state.height,
                         props.state.age,
-                        1.2
+                        1.2,
+                        props.state.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
@@ -99,7 +110,8 @@ const Right = (props) => {
                         props.state.weight,
                         props.state.height,
                         props.state.age,
-                        1.375
+                        1.375,
+                        props.state.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
@@ -114,7 +126,8 @@ const Right = (props) => {
                         props.state.weight,
                         props.state.height,
                         props.state.age,
-                        1.55
+                        1.55,
+                        props.state.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
@@ -129,7 +142,8 @@ const Right = (props) => {
                         props.state.weight,
                         props.state.height,
                         props.state.age,
-                        1.725
+                        1.725,
+                        props.state.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
@@ -144,7 +158,8 @@ const Right = (props) => {
                         props.state.weight,
                         props.state.height,
                         props.state.age,
-                        1.9
+                        1.9,
+                        props.state.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>

@@ -31,6 +31,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [error, setError] = useState({ __html: "" });
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
 
   const showToast = (title, status, description) => {
@@ -48,6 +49,7 @@ const Signup = () => {
   const onSubmit = (ev) => {
     ev.preventDefault();
     setError({ __html: "" });
+    setLoading(true)
     console.log({ name, email, password, password_confirmation });
     axiosClient
       .post("/signup", {
@@ -60,6 +62,7 @@ const Signup = () => {
         setCurrentUser(data.user);
         setUserToken(data.token);
         showToast("Success!", "success", "Tạo tài khoản thành công!");
+        setLoading(false)
       })
       .catch((error) => {
         if (error.response) {
@@ -72,11 +75,12 @@ const Signup = () => {
             showToast("Error!", "error", error);
           })
           setError({ __html: finalErrors.join("<br>") });
-        //   showToast("Error!", "error", finalErrors.join("\n"));
+          showToast("Error!", "error", finalErrors.join("\n"));
         }
         console.error(error);
+        setLoading(false)
       });
-  };
+    };
   return (
     <Box w={"100%"} h={"100%"} position={"fixed"}>
       <Box
@@ -212,7 +216,7 @@ const Signup = () => {
                 <Button
                   mt={4}
                   colorScheme="brand"
-                  isLoading={false}
+                  isLoading={loading}
                   type="submit"
                 >
                   Đăng ký

@@ -28,6 +28,10 @@ import UserManager from "./pages/admin/UserManager";
 import axiosClient from "./axios";
 import { useStateContext } from "./contexts/ContextProvider";
 import { useEffect } from "react";
+import IngredientDetail from "./pages/guest/Menu/Nutrient/IngredientDetail";
+import DietRecommender from "./pages/guest/DietRecommender";
+import SuccessVerify from "./pages/guest/Email/Verify/SuccessVerify";
+import AlreadyVerify from "./pages/guest/Email/Verify/AlreadyVerify";
 
 function App() {
   const { currentUser, userToken, setCurrentUser, setUserToken } =
@@ -38,6 +42,7 @@ function App() {
         setCurrentUser(data);
       });
     }
+    console.log(currentUser)
   }, []);
   return (
     <Box scrollBehavior={"smooth"}>
@@ -46,12 +51,19 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="" element={<Home />} />
+          <Route path="verify" >
+            <Route path="success" element={<SuccessVerify/>} />
+            <Route path="already-verify" element={<AlreadyVerify/>} />
+            <Route/>
+          </Route>
           <Route path="meal" element={<Meal />} />
           <Route path="nutrient" element={<Nutrient />} />
+          <Route path="nutrient/:id" element={<IngredientDetail />} />
           <Route path="tdde-calculator">
             <Route path="" element={<TddeCalculator />} />
             <Route path="result" element={<Tdde />} />
           </Route>
+          <Route path="diet-recommend" element={<DietRecommender/>} />
           <Route path="faq" element={""} />
           <Route path="contact" element={""} />
           <Route path="profile" element={<Profile />}>

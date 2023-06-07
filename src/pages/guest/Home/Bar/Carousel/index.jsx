@@ -31,7 +31,7 @@ const Carousel = (props) => {
     if (id !== 0) {
       setId(id - 1);
     } else {
-      setId(9);
+      setId(2);
     }
   }
   useEffect(() => {

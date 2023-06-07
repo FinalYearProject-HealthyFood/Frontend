@@ -29,8 +29,9 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ __html: "" });
-  const toast = useToast()
+  const toast = useToast();
 
   const showToast = (title, status, description) => {
     toast({
@@ -40,14 +41,14 @@ const Login = () => {
       duration: 2500,
       isClosable: true,
       position: "top-right",
-      variant: "left-accent"
+      variant: "left-accent",
     });
-  }
+  };
 
   const onSubmit = (ev) => {
     ev.preventDefault();
     setError({ __html: "" });
-
+    setLoading(true);
     axiosClient
       .post("/login", {
         email,
@@ -57,6 +58,7 @@ const Login = () => {
         setCurrentUser(data.user);
         setUserToken(data.token);
         showToast("Success!", "success", "Đăng nhập thành công!");
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
@@ -67,9 +69,10 @@ const Login = () => {
           );
           finalErrors.map((error) => {
             showToast("Error!", "error", error);
-          })
+          });
         }
-        console.error(error);
+        // console.log(error.response.data.errors);
+        setLoading(false);
       });
   };
   return (
@@ -185,7 +188,7 @@ const Login = () => {
                 <Button
                   mt={4}
                   colorScheme="brand"
-                  isLoading={false}
+                  isLoading={loading}
                   type="submit"
                 >
                   Đăng nhập

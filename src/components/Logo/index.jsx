@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, Heading, Image } from "@chakra-ui/react";
 import LogoHealthy from "../../assets/Logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Logo = () => {
+  const navigate = useNavigate()
   return (
     <Box
       w={"200px"}

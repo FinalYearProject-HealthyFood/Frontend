@@ -27,6 +27,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Switch,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
@@ -35,43 +36,79 @@ import { IoLogOut } from "react-icons/io5";
 import { MdMoney } from "react-icons/md";
 import { GiMeal, GiMeat } from "react-icons/gi";
 import axios from "axios";
+import { api } from "../../../api";
+import Pagination from "react-js-pagination";
+import "./pagination.css";
+import EditIngredientModal from "./EditIngredientModal";
+import { useDashboardActionContext } from "../../../contexts/DashboardActionContextProvider";
+import AddIngredientModal from "./AddIngredientModal";
 
 const NutrientManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState(false);
-  const [meals, setMeals] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const { onEdit, setOnEdit } = useDashboardActionContext();
+  const toast = useToast();
 
-  useEffect(()=>{
-    axios.get(import.meta.env.VITE_API_BASE_URL+'/api/meals')
-    .then( res => {
-      console.log(res.data.data.data)
-    })
-  },[])
+  const showToast = (title, status, description) => {
+    toast({
+      title: title,
+      description: description,
+      status: status,
+      duration: 2500,
+      isClosable: true,
+      position: "top-right",
+      variant: "left-accent",
+    });
+  };
 
-  const TableData = [
-    {
-      name: "Cơm thị bò",
-      price: 25000,
-    },
-    {
-      name: "Cơm thị bò",
-      price: 25000,
-    },
-    {
-      name: "Cơm thị bò",
-      price: 25000,
-    },
-    {
-      name: "Cơm thị bò",
-      price: 25000,
-    },
-    {
-      name: "Cơm thị bò",
-      price: 25000,
-    },
-  ];
-  
+  useEffect(() => {
+    let timer;
+
+    const fetchData = () => {
+      axios
+        .get(`${api}/ingredients/all/?page=${currentPage}`, {
+          params: {
+            search: search,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setIngredients(response.data.data);
+          setTotalPage(response.data.total);
+        });
+    };
+    const delayedFetchData = () => {
+      clearTimeout(timer);
+      timer = setTimeout(fetchData, 500); // Adjust the delay as needed (in milliseconds)
+    };
+
+    delayedFetchData();
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currentPage, onEdit, search]);
+
+  const getData = (pageNumber = 1) => {
+    if (currentPage !== pageNumber) {
+      setCurrentPage(pageNumber);
+    }
+  };
+  const deleteIngredient = (id) => {
+    axios
+      .delete(`${api}/ingredients/delete/${id}`)
+      .then((res) => {
+        showToast("Success!", "success", "Xóa thành phần thành công!");
+        setOnEdit(onEdit + 1);
+      })
+      .catch((error) => {
+        showToast("Error!", "error", "Lỗi xảy ra khi xóa thành phần ăn!");
+      });
+  };
 
   return (
     <Stack>
@@ -101,19 +138,14 @@ const NutrientManager = () => {
         {/* =================> Add button */}
 
         <Flex w={"70%"} justifyContent={"right"}>
-          <Button onClick={onOpen} colorScheme="brand">
-            <Icon boxSize={"24px"} as={GiMeat} />
-            <Icon ml={2} as={AddIcon} />
-          </Button>
+          <AddIngredientModal />
         </Flex>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Modal Title</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>
-              {/* <Lorem count={2} /> */}
-            </ModalBody>
+            <ModalBody>{/* <Lorem count={2} /> */}</ModalBody>
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -124,7 +156,7 @@ const NutrientManager = () => {
           </ModalContent>
         </Modal>
         {/* =================> Add button */}
-        <TableContainer w={"70%"} >
+        <TableContainer w={"70%"}>
           <Table variant={"striped"}>
             <Thead bgColor={"#1F1D36"}>
               <Tr>
@@ -137,19 +169,24 @@ const NutrientManager = () => {
             </Thead>
 
             <Tbody>
-              {TableData.map((data, index) => {
+              {ingredients?.map((data, index) => {
                 return (
                   <Tr>
-                    <Td>{index + 1}</Td>
+                    <Td>{index + 1 + 5 * (currentPage - 1)}</Td>
                     <Td>{data.name}</Td>
-                    <Td>{data.price}</Td>
                     <Td>
-                      <Switch
-                        onChange={(e) => {
-                          setStatus(e.target.checked);
-                        }}
-                        isChecked={status}
-                      />
+                      {data.price?.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}{" "}
+                      vnđ
+                    </Td>
+                    <Td
+                      fontWeight={"semibold"}
+                      color={data.status == "active" ? "brand.500" : "red"}
+                    >
+                      {data.status == "active"
+                        ? "Hoạt động"
+                        : "Ngừng hoạt động"}
                     </Td>
                     <Td>
                       <Stack alignItems={"center"}>
@@ -158,10 +195,13 @@ const NutrientManager = () => {
                             <Icon as={ViewIcon} />
                           </Button>
                           <Stack>
-                            <Button colorScheme="yellow">
-                              <Icon as={EditIcon} />
-                            </Button>
-                            <Button colorScheme="red">
+                            <EditIngredientModal data={data} />
+                            <Button
+                              colorScheme="red"
+                              onClick={() => {
+                                deleteIngredient(data.id);
+                              }}
+                            >
                               <Icon as={DeleteIcon} />
                             </Button>
                           </Stack>
@@ -174,6 +214,29 @@ const NutrientManager = () => {
             </Tbody>
           </Table>
         </TableContainer>
+        <Flex w={"70%"} justifyContent={"center"}>
+          {totalPage > 5 ? (
+            <Pagination
+              hideDisabled
+              activePage={currentPage}
+              totalItemsCount={totalPage}
+              itemsCountPerPage={5}
+              itemClass="page-item"
+              linkClass="page-link"
+              itemClassNext="next-item"
+              itemClassPrev="prev-item"
+              innerClass="container"
+              linkClassFirst="first-link"
+              linkClassLast="last-link"
+              activeClass="paginationActive"
+              activeLinkClass="linkActive"
+              disabledClass="disable"
+              onChange={(pageNumber) => getData(pageNumber)}
+            />
+          ) : (
+            ""
+          )}
+        </Flex>
       </VStack>
     </Stack>
   );

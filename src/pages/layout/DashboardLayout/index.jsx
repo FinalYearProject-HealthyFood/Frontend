@@ -25,6 +25,7 @@ import { Outlet } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { DashboardActionContextProvider } from "../../../contexts/DashboardActionContextProvider";
 
 const DashboardLayout = () => {
   const navLinks = [
@@ -184,7 +185,9 @@ const DashboardLayout = () => {
         ))}
       </VStack>
       <Box w="80%" ml="20%" mt="5%">
-        <Outlet />
+        <DashboardActionContextProvider>
+          <Outlet />
+        </DashboardActionContextProvider>
       </Box>
     </>
   );
