@@ -46,6 +46,7 @@ const UserManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const { onEdit, setOnEdit } = useDashboardActionContext();
@@ -63,7 +64,7 @@ const UserManager = () => {
     });
   };
   useEffect(() => {
-    let timer
+    let timer;
     const fetchData = () => {
       axios
         .get(`${api}/users/?page=${currentPage}`, {
@@ -77,6 +78,9 @@ const UserManager = () => {
           console.log(users);
           setTotalPage(response.data.total);
         });
+      axios.get(`${api}/roles`).then((response) => {
+        setRoles(response.data);
+      });
     };
     const delayedFetchData = () => {
       clearTimeout(timer);
@@ -112,19 +116,19 @@ const UserManager = () => {
       <VStack>
         <Box>
           <Heading fontSize={"2xl"} color={"brand.800"}>
-            Quản lý xuất ăn
+            Quản lý User
           </Heading>
         </Box>
         <Divider bgColor="gray" h={"1px"} />
         <Flex mt="2%" mb="3%" w="100%" h="9%" justifyContent={"center"}>
-          <InputGroup size="md" w="70%" h="100%">
+          <InputGroup size="md" w="90%" h="100%">
             <InputLeftElement>
               <BsSearch />
             </InputLeftElement>
             <Input
               onChange={(e) => {
                 setSearch(e.target.value);
-                setCurrentPage(1)
+                setCurrentPage(1);
               }}
               border="2px"
               focusBorderColor="none"
@@ -136,19 +140,32 @@ const UserManager = () => {
 
         {/* =================> Add button */}
 
-        <Flex w={"70%"} justifyContent={"right"}>
-          <AddUserModal/>
+        <Flex w={"90%"} justifyContent={"right"}>
+          <AddUserModal roles = {roles} />
         </Flex>
         {/* =================> Add button */}
-        <TableContainer w={"70%"}>
+        <TableContainer w={"90%"}>
           <Table variant={"striped"}>
             <Thead bgColor={"#1F1D36"}>
               <Tr>
-                <Th color={"white"}>STT</Th>
-                <Th color={"white"}>Tên user</Th>
-                <Th color={"white"}>email</Th>
-                <Th color={"white"}>email đã kích hoạt</Th>
-                <Th color={"white"}>Action</Th>
+                <Th textAlign={"center"} color={"white"}>
+                  STT
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Tên user
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  email
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  email đã kích hoạt
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  role
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Action
+                </Th>
               </Tr>
             </Thead>
 
@@ -156,18 +173,35 @@ const UserManager = () => {
               {users?.map((data, index) => {
                 return (
                   <Tr>
-                    <Td>{index + 1 + 5 * (currentPage - 1)}</Td>
-                    <Td>{data.name}</Td>
-                    <Td>{data.email}</Td>
-                    <Td fontWeight={"semibold"} color={(data.email_verified_at)?"brand.500":"red"} >{(data.email_verified_at)?"Đã kích hoạt": "Chưa kích hoạt"}</Td>
-                    <Td>
+                    <Td textAlign={"center"}>
+                      {index + 1 + 5 * (currentPage - 1)}
+                    </Td>
+                    <Td textAlign={"center"}>{data.name}</Td>
+                    <Td textAlign={"center"}>{data.email}</Td>
+                    <Td
+                      textAlign={"center"}
+                      fontWeight={"semibold"}
+                      color={data.email_verified_at ? "brand.500" : "red"}
+                    >
+                      {data.email_verified_at
+                        ? "Đã kích hoạt"
+                        : "Chưa kích hoạt"}
+                    </Td>
+                    <Td
+                      textAlign={"center"}
+                      fontWeight={"semibold"}
+                      color={data.email_verified_at ? "brand.500" : "red"}
+                    >
+                      {data.role.name}
+                    </Td>
+                    <Td textAlign={"center"}>
                       <Stack alignItems={"center"}>
                         <Flex alignItems={"center"}>
                           <Button mr={2} colorScheme="blue">
                             <Icon as={ViewIcon} />
                           </Button>
                           <Stack>
-                            <EditUserModal user={data} />
+                            <EditUserModal user={data} roles = {roles} />
                             <Button
                               colorScheme="red"
                               onClick={() => {
@@ -186,7 +220,7 @@ const UserManager = () => {
             </Tbody>
           </Table>
         </TableContainer>
-        <Flex w={"70%"} justifyContent={"center"}>
+        <Flex w={"90%"} justifyContent={"center"}>
           {totalPage > 5 ? (
             <Pagination
               hideDisabled

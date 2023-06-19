@@ -7,18 +7,12 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Box,
   Flex,
   Image,
   Text,
   Button,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Heading,
   Center,
   HStack,
@@ -37,39 +31,35 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  AlertDialogCloseButton,
   useDisclosure,
   useToast,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import food_14 from "../../../assets/Sample 2.png";
 import { FaShoppingCart } from "react-icons/fa";
-import { MdDeliveryDining } from "react-icons/md";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios";
 import { api_image } from "../../../api";
 import { useNavigate } from "react-router-dom";
+import OnlineButton from "./PayPalButton";
 
 const Payment = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { currentUser, userToken, setCurrentUser, setUserToken } =
     useStateContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [cartList, setCartList] = useState([]);
-  const [sumPrice, setSumPrice] = useState([]);
+  const [sumPrice, setSumPrice] = useState(0);
+  const [deliveryFee, setDeliveryFee] = useState(10000);
   const [username, setUsername] = useState(currentUser?.name);
   const [address, setAddress] = useState(currentUser?.address);
   const [phone, setPhone] = useState(currentUser?.phone);
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   useEffect(() => {
     if (Object.keys(currentUser).length == 0) {
-      navigate("/");
+      // navigate("/");
     }
   }, []);
 
@@ -86,7 +76,7 @@ const Payment = () => {
   };
   useEffect(() => {
     if (userToken) {
-      axiosClient.post("order-items/on-pending-by-user").then((res) => {
+      axiosClient.post("order-items/on-cart-by-user").then((res) => {
         console.log(res.data);
         setCartList(res.data);
         setSumPrice(
@@ -98,26 +88,32 @@ const Payment = () => {
     }
   }, []);
   const onSubmit = () => {
+    setLoading(true);
     showToast("Warning!", "warning", "Đang xử lý. Vui lòng chờ đợi.");
     const data = {
       username: username,
       delivery_address: address,
       phone: phone,
+      total_price: Math.round((sumPrice + deliveryFee) / 1000) * 1000,
     };
     axiosClient
       .post("orders/store", data)
       .then((res) => {
         showToast("Success!", "success", "Thanh toán thành công!");
+        setLoading(false);
+        navigate("/payment/success");
       })
       .catch((error) => {
         console.log(error.response.data.message);
         showToast("Error!", "error", error.response.data.message);
+        setLoading(false);
       });
   };
   return (
     <>
       {Object.keys(currentUser).length == 0 ? (
-        navigate("/")
+        // navigate("/")
+        ""
       ) : (
         <Container maxW={"80%"}>
           <Box my={5}>
@@ -322,7 +318,7 @@ const Payment = () => {
                 <Flex pb={2}>
                   <Text fontSize={"md"}>Phí vận chuyển</Text>
                   <Spacer />
-                  <Text fontSize={"md"}>10.000 vnđ</Text>
+                  <Text fontSize={"md"}>{deliveryFee} vnđ</Text>
                 </Flex>
                 <Flex pb={5}>
                   <Text fontSize={"xl"} fontWeight={"medium"}>
@@ -330,7 +326,9 @@ const Payment = () => {
                   </Text>
                   <Spacer />
                   <Text fontSize={"xl"} color={"red"} fontWeight={"medium"}>
-                    {(sumPrice + 10000)?.toLocaleString(undefined, {
+                    {(
+                      Math.round((sumPrice + deliveryFee) / 1000) * 1000
+                    )?.toLocaleString(undefined, {
                       maximumFractionDigits: 3,
                     })}{" "}
                     vnđ
@@ -341,10 +339,11 @@ const Payment = () => {
           </Grid>
           <VStack mt={10}>
             <Stack>
-              <Box>
+              <Flex gap={2}>
                 <Button
                   colorScheme={"brand"}
                   variant={"solid"}
+                  isLoading={loading}
                   onClick={() => {
                     if (username == "" || address == "" || phone == "") {
                       showToast(
@@ -407,7 +406,17 @@ const Payment = () => {
                     </AlertDialogContent>
                   </AlertDialogOverlay>
                 </AlertDialog>
-              </Box>
+                {currentUser.email_verified_at && (
+                  <OnlineButton
+                    username={username}
+                    delivery_address={address}
+                    phone={phone}
+                    total_price={
+                      Math.round((sumPrice + deliveryFee) / 1000) * 1000
+                    }
+                  />
+                )}
+              </Flex>
             </Stack>
           </VStack>
         </Container>

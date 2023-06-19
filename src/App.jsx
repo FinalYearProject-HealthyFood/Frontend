@@ -32,17 +32,33 @@ import IngredientDetail from "./pages/guest/Menu/Nutrient/IngredientDetail";
 import DietRecommender from "./pages/guest/DietRecommender";
 import SuccessVerify from "./pages/guest/Email/Verify/SuccessVerify";
 import AlreadyVerify from "./pages/guest/Email/Verify/AlreadyVerify";
+import MealDetail from "./pages/guest/Menu/Meal/MealDetail";
+import Page404 from "./pages/pageNotFound/Page404";
+import RatingList from "./pages/guest/RatingList";
+import PaymentSuccess from "./pages/guest/Payment/PaymentSuccess";
 
 function App() {
+  const permission = {
+    adminPermission: ["admin"],
+    ManagerPermission: ["admin", "manager"],
+    foodPermission: ["admin", "foodmod", "manager"],
+    orderPermission: ["admin", "ordermod", "foodmod", "manager"],
+    DashboardPermission: ["admin", "ordermod", "foodmod", "manager"],
+  };
   const { currentUser, userToken, setCurrentUser, setUserToken } =
     useStateContext();
   useEffect(() => {
     if (userToken) {
-      axiosClient.get("/me").then(({ data }) => {
-        setCurrentUser(data);
-      });
+      axiosClient
+        .get("/me")
+        .then(({ data }) => {
+          setCurrentUser(data);
+        })
+        .catch(() => {
+          setCurrentUser({});
+          setUserToken(null);
+        });
     }
-    console.log(currentUser)
   }, []);
   return (
     <Box scrollBehavior={"smooth"}>
@@ -51,19 +67,23 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="" element={<Home />} />
-          <Route path="verify" >
-            <Route path="success" element={<SuccessVerify/>} />
-            <Route path="already-verify" element={<AlreadyVerify/>} />
-            <Route/>
+          <Route path="/payment">
+            <Route path="success" element={<PaymentSuccess />} />
+          </Route>
+          <Route path="verify">
+            <Route path="success" element={<SuccessVerify />} />
+            <Route path="already-verify" element={<AlreadyVerify />} />
+            <Route />
           </Route>
           <Route path="meal" element={<Meal />} />
+          <Route path="meal/:id" element={<MealDetail />} />
           <Route path="nutrient" element={<Nutrient />} />
           <Route path="nutrient/:id" element={<IngredientDetail />} />
           <Route path="tdde-calculator">
             <Route path="" element={<TddeCalculator />} />
             <Route path="result" element={<Tdde />} />
           </Route>
-          <Route path="diet-recommend" element={<DietRecommender/>} />
+          <Route path="diet-recommend" element={<DietRecommender />} />
           <Route path="faq" element={""} />
           <Route path="contact" element={""} />
           <Route path="profile" element={<Profile />}>
@@ -71,15 +91,27 @@ function App() {
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="order-history" element={<OrderHistory />} />
           </Route>
+          <Route path="ratings" element={<RatingList />} />
           <Route path="cart" element={<Cart />} />
           <Route path="cart-payment" element={<Payment />} />
         </Route>
-        {Object.keys(currentUser).length !== 0 ? (
+        {userToken &&
+        Object.keys(currentUser).length !== 0 &&
+        permission.DashboardPermission.includes(currentUser.role.name) ? (
           <Route path="/admin" element={<DashboardLayout />}>
-            <Route path="order" element={<OrderManager />} />
-            <Route path="meal" element={<MealManager />} />
-            <Route path="nutrient" element={<NutrientManager />} />
-            <Route path="user" element={<UserManager />} />
+            {permission.orderPermission.includes(currentUser.role.name) && (
+              <Route path="order" element={<OrderManager />} />
+            )}
+            {permission.foodPermission.includes(currentUser.role.name) && (
+              <>
+                <Route path="meal" element={<MealManager />} />
+                <Route path="nutrient" element={<NutrientManager />} />
+              </>
+            )}
+            {permission.adminPermission.includes(currentUser.role.name) && (
+              <Route path="user" element={<UserManager />} />
+            )}
+            <Route path="*" element={<Page404 />} />
           </Route>
         ) : (
           ""
@@ -87,6 +119,9 @@ function App() {
         <Route path="/">
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+        </Route>
+        <Route path="/" element={<MainLayout />}>
+          <Route path="*" element={<Page404 />} />
         </Route>
       </Routes>
     </Box>

@@ -16,7 +16,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, StarIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import Logo from "../../Logo";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
@@ -36,7 +36,7 @@ const BottomHeader = () => {
   useEffect(() => {
     if (userToken) {
       axiosClient.post("order-items/cart-count-by-user").then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setCartCount(res.data);
       });
     }
@@ -200,11 +200,14 @@ const BottomHeader = () => {
             variant="solid"
             colorScheme="brand"
             size="sm"
-            leftIcon={<FaHeart />}
+            leftIcon={<StarIcon />}
             boxShadow={"md"}
             fontSize={"sm"}
+            onClick={() => {
+              navigate("ratings");
+            }}
           >
-            Yêu thích
+            Đánh giá
           </Button>
           <Button
             variant="solid"
@@ -218,21 +221,6 @@ const BottomHeader = () => {
             }}
           >
             Giỏ hàng
-            <Box
-              fontSize="sm"
-              p={2}
-              size={"sm"}
-              bg="red.500"
-              position="absolute"
-              top="-15px"
-              right="-10px"
-              alignItems={"center"}
-              justifyContent={"center"}
-              borderRadius={"full"}
-              boxShadow={"dark-lg"}
-            >
-              <Text fontSize="sm">{cartCount}</Text>
-            </Box>
           </Button>
         </>
       )}

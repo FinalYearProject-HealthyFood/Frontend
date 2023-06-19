@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  CloseButton,
   Divider,
   Flex,
   FormControl,
@@ -9,6 +10,7 @@ import {
   FormLabel,
   HStack,
   Heading,
+  Icon,
   Image,
   Input,
   SimpleGrid,
@@ -22,6 +24,7 @@ import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../../public/Logo.png";
+import { InfoIcon } from "@chakra-ui/icons";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -45,10 +48,31 @@ const Login = () => {
     });
   };
 
+  const showToastError = (title, status, description) => {
+    toast({
+      render: ({onClose}) => (
+        <Box borderLeft={"2px"} borderLeftColor={"red.500"} p={4} bg="red.100" rounded="md" shadow="md">
+          <CloseButton position="absolute" right={2} top={2} onClick={onClose} />
+          <Text justifyItems={"center"} fontWeight="bold" fontSize="lg" mb={2}>
+             <Icon color={"red.500"} as={InfoIcon} /> {title}
+          </Text>
+          {description.map((item, index) => (
+            <Text>{item}</Text>
+          ))}
+        </Box>
+      ),
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+      isMultiline: true,
+    });
+  };
+
   const onSubmit = (ev) => {
     ev.preventDefault();
     setError({ __html: "" });
     setLoading(true);
+    showToast("Warning!", "warning", "Đang xử lý!");
     axiosClient
       .post("/login", {
         email,
@@ -67,9 +91,10 @@ const Login = () => {
             (accum, next) => [...accum, ...next],
             []
           );
-          finalErrors.map((error) => {
-            showToast("Error!", "error", error);
-          });
+          // finalErrors.map((error) => {
+          //   showToast("Error!", "error", error);
+          // });
+          showToastError("Error!", "error", finalErrors);
         }
         // console.log(error.response.data.errors);
         setLoading(false);

@@ -28,7 +28,7 @@ const Profile = () => {
       {Object.keys(currentUser).length == 0 ? (
         navigate("/")
       ) : (
-        <Container maxW={"80%"}>
+        <Container maxW={"90%"}>
           <Center my={10}>
             <Heading color={"brand.500"} fontSize={"4xl"}>
               Trang thông tin cá nhân
@@ -95,7 +95,7 @@ const Profile = () => {
                       navigate("/profile/order-history");
                     }}
                   >
-                    Lịch sử mua hàng
+                    Lịch sử đặt hàng
                   </Button>
                 </Box>
               </VStack>

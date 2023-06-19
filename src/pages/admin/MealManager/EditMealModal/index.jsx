@@ -355,7 +355,7 @@ const EditMealModal = (props) => {
                   <Stack mt={2}>
                     {ingredients.map((data, index) => {
                       return (
-                        <Box>
+                        <Box key={data.id}>
                           <Flex alignItems={"center"}>
                             <Text>{data.name}</Text>
                             <Spacer />

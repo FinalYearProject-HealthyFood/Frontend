@@ -45,6 +45,7 @@ const Nutrient = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [quantities, setQuantities] = useState([]);
+  const [clickRate, setClickRate] = useState(0);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -72,7 +73,7 @@ const Nutrient = () => {
         })
       );
     });
-  }, [currentPage]);
+  }, [currentPage, clickRate]);
 
   const getData = (pageNumber = 1) => {
     if (currentPage !== pageNumber) {
@@ -200,18 +201,35 @@ const Nutrient = () => {
                     <Box px={5} w={"200px"} bg={"white"}>
                       <Stack>
                         <Box>
-                          <Image
-                            mt={"10px"}
-                            borderRadius={"5px"}
-                            objectFit={"cover"}
-                            src={`${api_image}/storage/${data.image}`}
-                            // w={"150px"}
-                            // h={"150px"}
-                            alt="recommend"
-                            onClick={() => {
-                              navigate(`/nutrient/${data.id}`);
-                            }}
-                          />
+                          {data.image ? (
+                            <Image
+                              mt={"10px"}
+                              borderRadius={"5px"}
+                              objectFit={"cover"}
+                              src={`${api_image}/storage/${data.image}`}
+                              // w={"150px"}
+                              // h={"150px"}
+                              alt="recommend"
+                              onClick={() => {
+                                navigate(`/nutrient/${data.id}`);
+                              }}
+                            />
+                          ) : (
+                            <Center
+                              bgColor={"brand.100"}
+                              h={"160px"}
+                              w={"160px"}
+                              mt={5}
+                            >
+                              <Text
+                                fontWeight={"bold"}
+                                color={"white"}
+                                fontFamily={"cursive"}
+                              >
+                                HFS Meal
+                              </Text>
+                            </Center>
+                          )}
                           <Heading
                             fontSize={"sm"}
                             _hover={{
@@ -239,7 +257,23 @@ const Nutrient = () => {
                                       ? "yellow.400"
                                       : "gray.200"
                                   }
-                                  onClick={() => {}}
+                                  onClick={() => {
+                                    axiosClient
+                                      .get(`/rate/ingredient/${data.id}`, {
+                                        params: {
+                                          user_id: currentUser.id,
+                                          rating: index,
+                                        },
+                                      })
+                                      .then((res) => {
+                                        showToast(
+                                          "Success!",
+                                          "success",
+                                          `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
+                                        );
+                                        setClickRate(clickRate + 1);
+                                      });
+                                  }}
                                   _hover={{
                                     color: "red.400",
                                   }}
@@ -253,6 +287,11 @@ const Nutrient = () => {
                               fontSize={"xs"}
                             >
                               {data.rate}
+                            </Text>
+                          </Flex>
+                          <Flex>
+                            <Text color={"gray"} fontSize={"xs"}>
+                              {data.rating_count} đánh giá
                             </Text>
                           </Flex>
                           <Flex mt={"10px"}>
@@ -321,10 +360,10 @@ const Nutrient = () => {
               </SimpleGrid>
             </Center>
           ) : (
-            <Center mt={5} flexDirection={"column"}>
+            <Center py={40} mt={5} flexDirection={"column"}>
               <Icon color={"brand.500"} boxSize={"150px"} as={GiShoppingCart} />
-              <Heading color={"brand.500"}>
-                Hiện tại không có khẩu phần ăn nào
+              <Heading fontFamily={"cursive"} color={"brand.500"}>
+                Hiện tại không có thành phần ăn nào
               </Heading>
             </Center>
           )}

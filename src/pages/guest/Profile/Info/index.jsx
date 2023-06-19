@@ -12,6 +12,7 @@ import {
   Input,
   Radio,
   RadioGroup,
+  Select,
   Spacer,
   Stack,
   Switch,
@@ -34,6 +35,8 @@ const Info = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("");
+  const [plan, setPlan] = useState("");
+  const [activity, setActivity] = useState("");
   const [edit, setEdit] = useState(false);
   const [verify, setVerify] = useState("false");
   const toast = useToast();
@@ -54,7 +57,7 @@ const Info = () => {
 
   useEffect(() => {
     axiosClient.get("/me").then(({ data }) => {
-      //   setCurrentUser(data);
+      setCurrentUser(data);
       setName(data.name);
       setEmail(data.email);
       setPhone(data.phone);
@@ -63,20 +66,32 @@ const Info = () => {
       setWeight(data.weight);
       setHeight(data.height);
       setGender(data.gender);
+      setPlan(data.plan);
+      setActivity(data.activity);
       setVerify(data.email_verified_at);
-      //   console.log(!edit);
+      // console.log(data);
     });
   }, []);
   const resendVeriyLink = () => {
-    showToast("Warning!", "warning", "Đang gửi link xác thực. Vui lòng chờ đợi.");
-    axiosClient.post("email/verify/resend").then(data => {
-      showToast("Success!", "success", "Gửi link xác thực thành công. Vui lòng check email của bạn.");
-    })
-    .catch(error => {
-      console.log(error);
-      showToast("Error!", "error", "Lỗi gửi link xác thực.");
-    })
-  }
+    showToast(
+      "Warning!",
+      "warning",
+      "Đang gửi link xác thực. Vui lòng chờ đợi."
+    );
+    axiosClient
+      .post("email/verify/resend")
+      .then((data) => {
+        showToast(
+          "Success!",
+          "success",
+          "Gửi link xác thực thành công. Vui lòng check email của bạn."
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+        showToast("Error!", "error", "Lỗi gửi link xác thực.");
+      });
+  };
   const getInfo = () => {
     axiosClient.get("/me").then(({ data }) => {
       setCurrentUser(data);
@@ -101,6 +116,8 @@ const Info = () => {
       gender: gender,
       address: address,
       phone: phone,
+      activity: activity,
+      plan: plan,
     };
     axiosClient
       .post("/profile/update", updateProfile)
@@ -110,6 +127,7 @@ const Info = () => {
           "success",
           "cập nhật thông tin tài khoản thành công!"
         );
+        getInfo();
       })
       .catch((error) => {
         if (error.response) {
@@ -238,7 +256,7 @@ const Info = () => {
         <Text py={2} color={"brand.400"} fontWeight={"medium"}>
           Thông tin sức khỏe
         </Text>
-        <Grid pb={5} gap={15} templateColumns={"repeat(4, 1fr)"}>
+        <Grid pb={5} gap={0} templateColumns={"repeat(4, 1fr)"}>
           <GridItem colSpan={2}>
             <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
               Tuổi
@@ -251,6 +269,12 @@ const Info = () => {
             </Text>
             <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
               Giới tính
+            </Text>
+            <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
+              Mức độ vận dộng
+            </Text>
+            <Text color={"gray.500"} fontWeight={"medium"} mt={4}>
+              Số bửa ăn trong ngày
             </Text>
           </GridItem>
           <GridItem colSpan={2}>
@@ -307,6 +331,39 @@ const Info = () => {
                   </Radio>
                 </Stack>
               </RadioGroup>
+              <Select
+                disabled={!edit}
+                mt={2}
+                value={activity}
+                size={"sm"}
+                w={"200px"}
+                onChange={(e) => {
+                  setActivity(e.target.value);
+                }}
+              >
+                <option value={1}>không mấy khi vận động</option>
+                <option value={1.2}>vận động ít</option>
+                <option value={1.375}>vận động nhẹ</option>
+                <option value={1.55}>vận động trung bình</option>
+                <option value={1.725}>vận động nặng</option>
+                <option value={1.9}>vận động viên</option>
+              </Select>
+              <Select
+                disabled={!edit}
+                value={plan}
+                size={"sm"}
+                w={"100px"}
+                mt={2}
+                // placeholder="Select option"
+                onChange={(e) => {
+                  setPlan(e.target.value);
+                }}
+              >
+                <option value={1}>1 bửa</option>
+                <option value={2}>2 bửa</option>
+                <option value={3}>3 bửa</option>
+                <option value={4}>4 bửa</option>
+              </Select>
             </Flex>
           </GridItem>
         </Grid>

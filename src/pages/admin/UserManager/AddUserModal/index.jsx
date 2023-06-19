@@ -21,6 +21,7 @@ import {
   RadioGroup,
   Radio,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -28,7 +29,7 @@ import { api } from "../../../../api";
 import { useDashboardActionContext } from "../../../../contexts/DashboardActionContextProvider";
 import { FaUser } from "react-icons/fa";
 
-const AddUserModal = () => {
+const AddUserModal = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,8 +41,11 @@ const AddUserModal = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("");
   const [verify, setVerify] = useState("no");
+  const [roles, setRoles] = useState(props?.roles);
+  const [userRole, setUserRole] = useState(1);
   const toast = useToast();
   const { onEdit, setOnEdit } = useDashboardActionContext();
+  const [count, setCount] = useState(0);
 
   const showToast = (title, status, description) => {
     toast({
@@ -54,6 +58,9 @@ const AddUserModal = () => {
       variant: "left-accent",
     });
   };
+  useEffect(() => {
+    setRoles(props.roles);
+  }, [props.roles, onEdit, count]);
 
   const submit = () => {
     const data = {
@@ -67,6 +74,7 @@ const AddUserModal = () => {
       address: address,
       phone: phone,
       verify: verify,
+      role: userRole
     };
     axios
       .post(`${api}/users/store`, data)
@@ -95,7 +103,10 @@ const AddUserModal = () => {
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="brand">
+      <Button onClick={()=> {
+        onOpen()
+        setCount(count + 1);
+      }} colorScheme="brand">
         <Icon boxSize={"24px"} as={FaUser} />
         <Icon ml={2} as={AddIcon} />
       </Button>
@@ -189,6 +200,9 @@ const AddUserModal = () => {
                   <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
                     Email verify
                   </Text>
+                  <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
+                    Role
+                  </Text>
                 </GridItem>
                 <GridItem colSpan={2}>
                   <Flex direction={"column"}>
@@ -255,6 +269,22 @@ const AddUserModal = () => {
                         </Radio>
                       </Stack>
                     </RadioGroup>
+                    <Select
+                      mt={2}
+                      value={userRole}
+                      size={"sm"}
+                      w={"200px"}
+                      onChange={(e) => {
+                        setUserRole(e.target.value);
+                      }}
+                    >
+                      {roles.map((data, index) => {
+                        return(
+
+                          <option value={data.id}>{data.name}</option>
+                          )
+                      })}
+                    </Select>
                   </Flex>
                 </GridItem>
               </Grid>
@@ -271,7 +301,7 @@ const AddUserModal = () => {
                 submit();
               }}
             >
-              Cập nhật
+              Thêm tài khoản
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -66,7 +66,7 @@ const Cart = () => {
   useEffect(() => {
     if (userToken) {
       // setLoading(true);
-      axiosClient.post("order-items/on-pending-by-user").then((res) => {
+      axiosClient.post("order-items/on-cart-by-user").then((res) => {
         console.log(res.data);
         setCartList(res.data);
         setSumPrice(
@@ -93,7 +93,7 @@ const Cart = () => {
     });
   };
   const removeAllItem = () => {
-    axiosClient.delete(`order-items/delete-all-pending-by-user`).then((res) => {
+    axiosClient.delete(`order-items/delete-all-incart-by-user`).then((res) => {
       showToast("Success!", "warning", "Đã xóa tất cả giỏ hàng!");
       setNumberSlot(numberSlot + 1);
     });
@@ -180,14 +180,30 @@ const Cart = () => {
                               <Td>{index + 1}</Td>
                               <Td>
                                 <Flex>
-                                  <Image
-                                    boxSize={"100px"}
-                                    src={`${api_image}/storage/${
-                                      data?.ingredient_id !== null
-                                        ? data.ingredient.image
-                                        : data.meal.image
-                                    }`}
-                                  />
+                                  {data.image ? (
+                                    <Image
+                                      boxSize={"100px"}
+                                      src={`${api_image}/storage/${
+                                        data?.ingredient_id !== null
+                                          ? data.ingredient.image
+                                          : data.meal.image
+                                      }`}
+                                    />
+                                  ) : (
+                                    <Center
+                                      bgColor={"brand.100"}
+                                      h={"100px"}
+                                      w={"100px"}
+                                    >
+                                      <Text
+                                        fontWeight={"bold"}
+                                        color={"white"}
+                                        fontFamily={"cursive"}
+                                      >
+                                        HFS Cart
+                                      </Text>
+                                    </Center>
+                                  )}
                                   <Box ml={5}>
                                     <Text
                                       whiteSpace="normal"
@@ -302,13 +318,15 @@ const Cart = () => {
                 </>
               ) : (
                 <Container mt={5} maxW={"80%"}>
-                  <Center flexDirection={"column"}>
+                  <Center py={40} flexDirection={"column"}>
                     <Icon
                       color={"brand.500"}
                       boxSize={"150px"}
                       as={GiShoppingCart}
                     />
-                    <Heading color={"brand.500"}>Giỏ hàng rổng</Heading>
+                    <Heading fontFamily={"cursive"} color={"brand.500"}>
+                      Giỏ hàng rổng
+                    </Heading>
                   </Center>
                 </Container>
               )}

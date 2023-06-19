@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  CloseButton,
   Divider,
   Flex,
   FormControl,
@@ -9,6 +10,7 @@ import {
   FormLabel,
   HStack,
   Heading,
+  Icon,
   Image,
   Input,
   SimpleGrid,
@@ -22,6 +24,7 @@ import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../../public/Logo.png";
+import { InfoIcon } from "@chakra-ui/icons";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
-  const [error, setError] = useState({ __html: "" });
+  const [toastError, setToastError] = useState({ __html: "" });
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
@@ -42,15 +45,37 @@ const Signup = () => {
       duration: 2500,
       isClosable: true,
       position: "top-right",
-        variant: "left-accent"
+      variant: "left-accent",
+      isMultiline: true,
+    });
+  };
+
+  const showToastError = (title, status, description) => {
+    toast({
+      render: ({onClose}) => (
+        <Box borderLeft={"2px"} borderLeftColor={"red.500"} p={4} bg="red.100" rounded="md" shadow="md">
+          <CloseButton position="absolute" right={2} top={2} onClick={onClose} />
+          <Text justifyItems={"center"} fontWeight="bold" fontSize="lg" mb={2}>
+             <Icon color={"red.500"} as={InfoIcon} /> {title}
+          </Text>
+          {description.map((item, index) => (
+            <Text>{item}</Text>
+          ))}
+        </Box>
+      ),
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+      isMultiline: true,
     });
   };
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
-    setLoading(true)
+    setToastError({ __html: "" });
+    setLoading(true);
     console.log({ name, email, password, password_confirmation });
+    showToast("Warning!", "warning", "Đang xử lý!");
     axiosClient
       .post("/signup", {
         name,
@@ -62,7 +87,8 @@ const Signup = () => {
         setCurrentUser(data.user);
         setUserToken(data.token);
         showToast("Success!", "success", "Tạo tài khoản thành công!");
-        setLoading(false)
+        setLoading(false);
+        navigate("/login");
       })
       .catch((error) => {
         if (error.response) {
@@ -71,16 +97,14 @@ const Signup = () => {
             []
           );
           console.log(finalErrors);
-          finalErrors.map((error) => {
-            showToast("Error!", "error", error);
-          })
-          setError({ __html: finalErrors.join("<br>") });
-          showToast("Error!", "error", finalErrors.join("\n"));
+          setToastError({ __html: finalErrors.join("<br>") });
+          console.log(toastError);
+          showToastError("Error!", "error", finalErrors);
         }
         console.error(error);
-        setLoading(false)
+        setLoading(false);
       });
-    };
+  };
   return (
     <Box w={"100%"} h={"100%"} position={"fixed"}>
       <Box

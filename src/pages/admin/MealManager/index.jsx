@@ -51,7 +51,7 @@ const MealManager = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const { onEdit, setOnEdit } = useDashboardActionContext();
-  const [ ingredientList, setIngredientList] = useState([])
+  const [ingredientList, setIngredientList] = useState([]);
   const toast = useToast();
 
   const showToast = (title, status, description) => {
@@ -124,7 +124,7 @@ const MealManager = () => {
         </Box>
         <Divider bgColor="gray" h={"1px"} />
         <Flex mt="2%" mb="3%" w="100%" h="9%" justifyContent={"center"}>
-          <InputGroup size="md" w="70%" h="100%">
+          <InputGroup size="md" w="90%" h="100%">
             <InputLeftElement>
               <BsSearch />
             </InputLeftElement>
@@ -141,8 +141,8 @@ const MealManager = () => {
         </Flex>
         {/* =================> Add button */}
 
-        <Flex w={"70%"} justifyContent={"right"}>
-          <AddMealModal ingredientList = {ingredientList} />
+        <Flex w={"90%"} justifyContent={"right"}>
+          <AddMealModal ingredientList={ingredientList} />
         </Flex>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -160,31 +160,44 @@ const MealManager = () => {
           </ModalContent>
         </Modal>
         {/* =================> Add button */}
-        <TableContainer w={"70%"}>
+        <TableContainer w={"90%"}>
           <Table variant={"striped"}>
             <Thead bgColor={"#1F1D36"}>
               <Tr>
-                <Th color={"white"}>STT</Th>
-                <Th color={"white"}>Tên sản phẩm</Th>
-                <Th color={"white"}>Giá đơn vị</Th>
-                <Th color={"white"}>Status</Th>
-                <Th color={"white"}>Action</Th>
+                <Th textAlign={"center"} color={"white"}>
+                  STT
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Tên sản phẩm
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Giá đơn vị
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Status
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Action
+                </Th>
               </Tr>
             </Thead>
 
             <Tbody>
               {meals?.map((data, index) => {
                 return (
-                  <Tr>
-                    <Td>{index + 1 + 5 * (currentPage - 1)}</Td>
-                    <Td>{data.name}</Td>
-                    <Td>
+                  <Tr key={data.id}>
+                    <Td textAlign={"center"}>
+                      {index + 1 + 5 * (currentPage - 1)}
+                    </Td>
+                    <Td textAlign={"center"}>{data.name}</Td>
+                    <Td textAlign={"center"}>
                       {data.price?.toLocaleString(undefined, {
                         maximumFractionDigits: 3,
                       })}{" "}
                       vnđ
                     </Td>
                     <Td
+                      textAlign={"center"}
                       fontWeight={"semibold"}
                       color={data.status == "active" ? "brand.500" : "red"}
                     >
@@ -192,14 +205,17 @@ const MealManager = () => {
                         ? "Hoạt động"
                         : "Ngừng hoạt động"}
                     </Td>
-                    <Td>
+                    <Td textAlign={"center"}>
                       <Stack alignItems={"center"}>
                         <Flex alignItems={"center"}>
                           <Button mr={2} colorScheme="blue">
                             <Icon as={ViewIcon} />
                           </Button>
                           <Stack>
-                            <EditMealModal ingredientList = {ingredientList} data={data} />
+                            <EditMealModal
+                              ingredientList={ingredientList}
+                              data={data}
+                            />
                             <Button
                               colorScheme="red"
                               onClick={() => {

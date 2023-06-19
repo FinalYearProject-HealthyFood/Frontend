@@ -8,19 +8,19 @@ import axiosClient from "../../../axios";
 const TopHeader = () => {
   const { currentUser, userToken, setCurrentUser, setUserToken } =
     useStateContext();
-  useEffect(() => {
-    if (userToken) {
-      axiosClient
-        .get("/me")
-        .then(({ data }) => {
-          setCurrentUser(data);
-        })
-        .catch(() => {
-          setCurrentUser({});
-          setUserToken(null);
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userToken) {
+  //     axiosClient
+  //       .get("/me")
+  //       .then(({ data }) => {
+  //         setCurrentUser(data);
+  //       })
+  //       .catch(() => {
+  //         setCurrentUser({});
+  //         setUserToken(null);
+  //       });
+  //   }
+  // }, []);
   return (
     <Stack
       p={2}

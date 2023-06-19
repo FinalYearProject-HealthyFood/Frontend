@@ -14,11 +14,19 @@ import {
 import React, { useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../../../axios";
 import { useStateContext } from "../../../../contexts/ContextProvider";
 
 const UserOption = () => {
+  const navigate =useNavigate();
+  const permission = {
+    adminPermission: ["admin"],
+    ManagerPermission: ["admin", "manager"],
+    foodPermission: ["admin", "foodmod", "manager"],
+    orderPermission: ["admin", "ordermod", "foodmod", "manager"],
+    DashboardPermission: ["admin", "ordermod", "foodmod", "manager"],
+  };
   const { currentUser, userToken, setCurrentUser, setUserToken } =
     useStateContext();
   const logout = (ev) => {
@@ -26,6 +34,7 @@ const UserOption = () => {
     axiosClient.post("/logout").then((res) => {
       setCurrentUser({});
       setUserToken(null);
+      navigate("/")
     });
   };
   useEffect(() => {
@@ -50,11 +59,17 @@ const UserOption = () => {
             <Link to="/profile/change-password">Đổi mật khẩu</Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/profile/order-history">Lịch sử mua hàng</Link>
+            <Link to="/profile/order-history">Lịch sử đặt hàng</Link>
           </MenuItem>
-          <MenuItem>
-            <Link to="/admin">Manager</Link>
-          </MenuItem>
+          {userToken &&
+          Object.keys(currentUser).length !== 0 &&
+          permission.DashboardPermission.includes(currentUser.role.name) ? (
+            <MenuItem>
+              <Link to="/admin/order">Manager</Link>
+            </MenuItem>
+          ) : (
+            ""
+          )}
         </MenuList>
       </Menu>
 

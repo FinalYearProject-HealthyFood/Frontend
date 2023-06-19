@@ -57,7 +57,7 @@ const AddMealModal = (props) => {
   const [imageView, setImageView] = useState(imgPreview);
   const [image, setImage] = useState("");
   const [filter, setFilter] = useState("");
-  const [ingredientList, setIngredientList] = useState(props.ingredientList);
+  const [ingredientList, setIngredientList] = useState(props?.ingredientList);
   const [ingredients, setIngredients] = useState([]);
   const [nextId, setNextId] = useState(0);
   const toast = useToast();
@@ -119,7 +119,7 @@ const AddMealModal = (props) => {
     setDescription("");
     setImage("");
     setImageView(imgPreview);
-    setIngredientList(props.ingredientList);
+    setIngredientList(props?.ingredientList);
     setFilter("");
     setIngredients([]);
     setNextId(0);
@@ -355,18 +355,18 @@ const AddMealModal = (props) => {
                                       },
                                     ]);
                                     setNextId(nextId + 1);
-                                    setServing(
-                                      ingredients.reduce(
-                                        (accumulator, object) => {
-                                          return (
-                                            accumulator +
-                                            object.serving_size *
-                                              object.quantity
-                                          );
-                                        },
-                                        0
-                                      )
-                                    );
+                                    // setServing(
+                                    //   ingredients.reduce(
+                                    //     (accumulator, object) => {
+                                    //       return (
+                                    //         accumulator +
+                                    //         object.serving_size *
+                                    //           object.quantity
+                                    //       );
+                                    //     },
+                                    //     0
+                                    //   )
+                                    // );
                                   }}
                                 >
                                   Add
@@ -379,7 +379,7 @@ const AddMealModal = (props) => {
                   <Stack mt={2}>
                     {ingredients.map((data, index) => {
                       return (
-                        <Box>
+                        <Box key={data.id}>
                           <Flex alignItems={"center"}>
                             <Text>{data.name}</Text>
                             <Spacer />
@@ -396,14 +396,14 @@ const AddMealModal = (props) => {
                                     1
                                   )
                                 );
-                                setServing(
-                                  ingredients.reduce((accumulator, object) => {
-                                    return (
-                                      accumulator +
-                                      object.serving_size * object.quantity
-                                    );
-                                  }, 0)
-                                );
+                                // setServing(
+                                //   ingredients.reduce((accumulator, object) => {
+                                //     return (
+                                //       accumulator +
+                                //       object.serving_size * object.quantity
+                                //     );
+                                //   }, 0)
+                                // );
                               }}
                             />
                             <Text ml={2}>gram</Text>
@@ -415,14 +415,14 @@ const AddMealModal = (props) => {
                                     (a) => a.index !== data.index
                                   )
                                 );
-                                setServing(
-                                  ingredients.reduce((accumulator, object) => {
-                                    return (
-                                      accumulator +
-                                      object.serving_size * object.quantity
-                                    );
-                                  }, 0)
-                                );
+                                // setServing(
+                                //   ingredients.reduce((accumulator, object) => {
+                                //     return (
+                                //       accumulator +
+                                //       object.serving_size * object.quantity
+                                //     );
+                                //   }, 0)
+                                // );
                               }}
                             >
                               X
@@ -500,10 +500,6 @@ const AddMealModal = (props) => {
                           setDescription(e.target.value);
                         }}
                       />
-                      <Spacer />
-                      <Text ml={4} fontSize={"md"}>
-                        vnđ
-                      </Text>
                     </Flex>
                   </Box>
                 </Stack>

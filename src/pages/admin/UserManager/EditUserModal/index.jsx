@@ -21,6 +21,7 @@ import {
   RadioGroup,
   Radio,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -37,10 +38,12 @@ const EditUserModal = (props) => {
   const [weight, setWeight] = useState(props.user?.weight);
   const [height, setHeight] = useState(props.user?.height);
   const [gender, setGender] = useState(props.user?.gender);
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
   const [verify, setVerify] = useState(
     props.user?.email_verified_at ? "yes" : "no"
   );
+  const [roles, setRoles] = useState(props.roles);
+  const [userRoles, setUserRoles] = useState(props.user?.role.id);
   const toast = useToast();
   const { onEdit, setOnEdit } = useDashboardActionContext();
 
@@ -67,6 +70,8 @@ const EditUserModal = (props) => {
     setHeight(props.user.height);
     setGender(props.user.gender);
     setVerify(props.user?.email_verified_at ? "yes" : "no");
+    setUserRoles(props.user?.role.id);
+    setRoles(props.roles);
   }, [props.user, onEdit, count]);
 
   const submit = () => {
@@ -81,6 +86,7 @@ const EditUserModal = (props) => {
       address: address,
       phone: phone,
       verify: verify,
+      role: userRoles,
     };
     axios
       .post(`${api}/users/update-by-manager`, data)
@@ -194,6 +200,9 @@ const EditUserModal = (props) => {
                   <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
                     Email verify
                   </Text>
+                  <Text color={"gray.500"} fontWeight={"medium"} mt={1}>
+                    Role
+                  </Text>
                 </GridItem>
                 <GridItem colSpan={2}>
                   <Flex direction={"column"}>
@@ -260,6 +269,22 @@ const EditUserModal = (props) => {
                         </Radio>
                       </Stack>
                     </RadioGroup>
+                    <Select
+                      mt={2}
+                      value={userRoles}
+                      size={"sm"}
+                      w={"200px"}
+                      onChange={(e) => {
+                        setUserRoles(e.target.value);
+                      }}
+                    >
+                      {roles.map((data, index) => {
+                        return(
+
+                          <option value={data.id}>{data.name}</option>
+                          )
+                      })}
+                    </Select>
                   </Flex>
                 </GridItem>
               </Grid>

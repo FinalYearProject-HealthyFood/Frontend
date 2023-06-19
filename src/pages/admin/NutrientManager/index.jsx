@@ -92,6 +92,15 @@ const NutrientManager = () => {
       clearTimeout(timer);
     };
   }, [currentPage, onEdit, search]);
+  useEffect(()=> {
+    axios.get("http://127.0.0.1:5000/fetching")
+    .then( res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },[onEdit])
 
   const getData = (pageNumber = 1) => {
     if (currentPage !== pageNumber) {
@@ -115,12 +124,12 @@ const NutrientManager = () => {
       <VStack>
         <Box>
           <Heading fontSize={"2xl"} color={"brand.800"}>
-            Quản lý xuất ăn
+            Quản lý thành phần ăn
           </Heading>
         </Box>
         <Divider bgColor="gray" h={"1px"} />
         <Flex mt="2%" mb="3%" w="100%" h="9%" justifyContent={"center"}>
-          <InputGroup size="md" w="70%" h="100%">
+          <InputGroup size="md" w="90%" h="100%">
             <InputLeftElement>
               <BsSearch />
             </InputLeftElement>
@@ -137,50 +146,48 @@ const NutrientManager = () => {
         </Flex>
         {/* =================> Add button */}
 
-        <Flex w={"70%"} justifyContent={"right"}>
+        <Flex w={"90%"} justifyContent={"right"}>
           <AddIngredientModal />
         </Flex>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{/* <Lorem count={2} /> */}</ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost">Secondary Action</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
         {/* =================> Add button */}
-        <TableContainer w={"70%"}>
+        <TableContainer w={"90%"}>
           <Table variant={"striped"}>
             <Thead bgColor={"#1F1D36"}>
               <Tr>
-                <Th color={"white"}>STT</Th>
-                <Th color={"white"}>Tên sản phẩm</Th>
-                <Th color={"white"}>Giá đơn vị</Th>
-                <Th color={"white"}>Status</Th>
-                <Th color={"white"}>Action</Th>
+                <Th textAlign={"center"} color={"white"}>
+                  STT
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Tên sản phẩm
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Giá đơn vị
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Status
+                </Th>
+                <Th textAlign={"center"} color={"white"}>
+                  Action
+                </Th>
               </Tr>
             </Thead>
 
             <Tbody>
               {ingredients?.map((data, index) => {
                 return (
-                  <Tr>
-                    <Td>{index + 1 + 5 * (currentPage - 1)}</Td>
-                    <Td>{data.name}</Td>
-                    <Td>
+                  <Tr key={data.id}>
+                    <Td textAlign={"center"}>
+                      {index + 1 + 5 * (currentPage - 1)}
+                    </Td>
+                    <Td textAlign={"center"}>{data.name}</Td>
+                    <Td textAlign={"center"}>
                       {data.price?.toLocaleString(undefined, {
                         maximumFractionDigits: 3,
                       })}{" "}
                       vnđ
                     </Td>
                     <Td
+                      textAlign={"center"}
                       fontWeight={"semibold"}
                       color={data.status == "active" ? "brand.500" : "red"}
                     >
@@ -188,7 +195,7 @@ const NutrientManager = () => {
                         ? "Hoạt động"
                         : "Ngừng hoạt động"}
                     </Td>
-                    <Td>
+                    <Td textAlign={"center"}>
                       <Stack alignItems={"center"}>
                         <Flex alignItems={"center"}>
                           <Button mr={2} colorScheme="blue">
@@ -214,7 +221,7 @@ const NutrientManager = () => {
             </Tbody>
           </Table>
         </TableContainer>
-        <Flex w={"70%"} justifyContent={"center"}>
+        <Flex w={"90%"} justifyContent={"center"}>
           {totalPage > 5 ? (
             <Pagination
               hideDisabled

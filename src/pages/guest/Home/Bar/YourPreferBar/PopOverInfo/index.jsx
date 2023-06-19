@@ -26,7 +26,7 @@ const PopOverInfo = (props) => {
           color="gray"
           mr={2}
           size={"xs"}
-          fontSize={"20px"}
+          fontSize={"18px"}
           variant="unstyled"
           icon={<InfoIcon />}
         />
@@ -85,7 +85,7 @@ const PopOverInfo = (props) => {
             <Flex>
               <Text>Cholesterol</Text>
               <Spacer />
-              <Text>{props.data?.cholesterol} mg</Text>
+              <Text>{props.data?.cholesterol} g</Text>
             </Flex>
             <Flex>
               <Text>Sodium</Text>

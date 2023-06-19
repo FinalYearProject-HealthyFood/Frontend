@@ -36,6 +36,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { api, api_image } from "../../../../api";
 import { GiShoppingCart } from "react-icons/gi";
+import axiosClient from "../../../../axios";
 
 const Meal = () => {
   const { currentUser, userToken, setCurrentUser, setUserToken } =
@@ -45,6 +46,7 @@ const Meal = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [quantities, setQuantities] = useState([]);
+  const [clickRate, setClickRate] = useState(0);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -73,7 +75,7 @@ const Meal = () => {
         })
       );
     });
-  }, [currentPage]);
+  }, [currentPage, clickRate]);
 
   const getData = (pageNumber = 1) => {
     if (currentPage !== pageNumber) {
@@ -195,16 +197,28 @@ const Meal = () => {
                     transition="all 0.2s ease-in-out"
                     overflow="hidden"
                   >
-                    <Image
-                      objectFit={"cover"}
-                      src={`${api_image}/storage/${data.image}`}
-                      h={"150px"}
-                      w={"150px"}
-                      alt="recommend"
-                      onClick={() => {
-                        navigate(`/meal/${data.id}`);
-                      }}
-                    />
+                    {data.image ? (
+                      <Image
+                        objectFit={"cover"}
+                        src={`${api_image}/storage/${data.image}`}
+                        h={"150px"}
+                        w={"150px"}
+                        alt="recommend"
+                        onClick={() => {
+                          navigate(`/meal/${data.id}`);
+                        }}
+                      />
+                    ) : (
+                      <Center bgColor={"brand.100"} h={"150px"} w={"150px"}>
+                        <Text
+                          fontWeight={"bold"}
+                          color={"white"}
+                          fontFamily={"cursive"}
+                        >
+                          HFS Meal
+                        </Text>
+                      </Center>
+                    )}
                     <Stack p={2} w={"250px"} bg={"white"}>
                       <Heading
                         color={""}
@@ -229,7 +243,23 @@ const Meal = () => {
                               color={
                                 index <= data.rate ? "yellow.400" : "gray.200"
                               }
-                              onClick={() => {}}
+                              onClick={() => {
+                                axiosClient
+                                  .get(`/rate/meal/${data.id}`, {
+                                    params: {
+                                      user_id: currentUser.id,
+                                      rating: index,
+                                    },
+                                  })
+                                  .then((res) => {
+                                    showToast(
+                                      "Success!",
+                                      "success",
+                                      `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
+                                    );
+                                    setClickRate(clickRate + 1);
+                                  });
+                              }}
                               _hover={{
                                 color: "red.400",
                               }}
@@ -241,7 +271,7 @@ const Meal = () => {
                         </Text>
                         <Spacer />
                         <Text color={"gray"} mt={"5px"} fontSize={"xs"}>
-                          220 đánh giá
+                          {data.rating_count} đánh giá
                         </Text>
                       </Flex>
                       <Flex>
@@ -249,7 +279,7 @@ const Meal = () => {
                         <Text fontSize={"sm"}>{data.calories} KCal</Text>
                       </Flex>
                       <Progress
-                        value={(550 / 1000) * 100}
+                        value={(data.calories / 800) * 100}
                         size="xs"
                         colorScheme="orange"
                       />
@@ -298,9 +328,9 @@ const Meal = () => {
               </SimpleGrid>
             </Center>
           ) : (
-            <Center mt={5} flexDirection={"column"}>
+            <Center py={40} mt={5} flexDirection={"column"}>
               <Icon color={"brand.500"} boxSize={"150px"} as={GiShoppingCart} />
-              <Heading color={"brand.500"}>
+              <Heading fontFamily={"cursive"} color={"brand.500"}>
                 Hiện tại không có khẩu phần ăn nào
               </Heading>
             </Center>

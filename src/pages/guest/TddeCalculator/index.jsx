@@ -31,7 +31,8 @@ const TddeCalculator = () => {
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
-  const [activity, setActivity] = useState("");
+  const [activity, setActivity] = useState(1);
+  const [plan, setPlan] = useState(3);
   const [fat, setFat] = useState("");
   const { currentUser, userToken, setCurrentUser, setUserToken } =
     useStateContext();
@@ -52,10 +53,10 @@ const TddeCalculator = () => {
           setGender(data.gender);
         }
         if (data.activity) {
-          setGender(data.activity);
+          setActivity(data.activity);
         }
         if (data.fat) {
-          setGender(data.fat);
+          setFat(data?.fat);
         }
       });
     }
@@ -150,7 +151,6 @@ const TddeCalculator = () => {
               value={activity}
               size={"xs"}
               w={"175px"}
-              placeholder="Select option"
               onChange={(e) => {
                 setActivity(e.target.value);
               }}

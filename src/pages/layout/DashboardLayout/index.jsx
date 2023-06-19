@@ -29,10 +29,25 @@ import { DashboardActionContextProvider } from "../../../contexts/DashboardActio
 
 const DashboardLayout = () => {
   const navLinks = [
-    { to: "order", icon: MdMoney, text: "Order" },
-    { to: "meal", icon: GiMeal, text: "Xuất ăn" },
-    { to: "nutrient", icon: GiMeat, text: "Thành phần ăn" },
-    { to: "user", icon: FaUserCog, text: "User" },
+    {
+      to: "order",
+      icon: MdMoney,
+      text: "Order",
+      permissions: ["admin", "ordermod", "foodmod", "manager"],
+    },
+    {
+      to: "meal",
+      icon: GiMeal,
+      text: "Xuất ăn",
+      permissions: ["admin", "foodmod", "manager"],
+    },
+    {
+      to: "nutrient",
+      icon: GiMeat,
+      text: "Thành phần ăn",
+      permissions: ["admin", "foodmod", "manager"],
+    },
+    { to: "user", icon: FaUserCog, text: "User", permissions: ["admin"] },
   ];
   const navigate = useNavigate();
   const { currentUser, userToken, setCurrentUser, setUserToken } =
@@ -47,6 +62,7 @@ const DashboardLayout = () => {
     axiosClient.post("/logout").then((res) => {
       setCurrentUser({});
       setUserToken(null);
+      navigate("/")
     });
   };
   return (
@@ -100,7 +116,7 @@ const DashboardLayout = () => {
                 <Link to="/profile/order-history">Lịch sử mua hàng</Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/admin">Manager</Link>
+                <Link to="/admin/order">Manager</Link>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -156,33 +172,36 @@ const DashboardLayout = () => {
           </Text>
         </Box>
         <Divider mt={"2%"} />
-        {navLinks.map((link) => (
-          <Box w={"80%"} key={link.to}>
-            <Flex
-              as={NavLink}
-              _activeLink={{
-                bgColor: "brand.200",
-                color: "white",
-                fontWeight: "bold",
-              }}
-              to={link.to}
-              py={5}
-              borderRadius="lg"
-              _hover={{
-                bgColor: "brand.50",
-                color: "white",
-                transition: "all 0.2s ease-in-out",
-              }}
-              transition="all 0.2s ease-in-out"
-              color={"black"}
-              bgColor={"white"}
-              alignItems="center"
-            >
-              <Icon as={link.icon} boxSize={"24px"} ml={"7%"} />
-              <Text ml={"7%"}>{link.text}</Text>
-            </Flex>
-          </Box>
-        ))}
+        {navLinks.map(
+          (link) =>
+            link.permissions.includes(currentUser.role.name) && (
+              <Box w={"80%"} key={link.to}>
+                <Flex
+                  as={NavLink}
+                  _activeLink={{
+                    bgColor: "brand.200",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  to={link.to}
+                  py={5}
+                  borderRadius="lg"
+                  _hover={{
+                    bgColor: "brand.50",
+                    color: "white",
+                    transition: "all 0.2s ease-in-out",
+                  }}
+                  transition="all 0.2s ease-in-out"
+                  color={"black"}
+                  bgColor={"white"}
+                  alignItems="center"
+                >
+                  <Icon as={link.icon} boxSize={"24px"} ml={"7%"} />
+                  <Text ml={"7%"}>{link.text}</Text>
+                </Flex>
+              </Box>
+            )
+        )}
       </VStack>
       <Box w="80%" ml="20%" mt="5%">
         <DashboardActionContextProvider>
