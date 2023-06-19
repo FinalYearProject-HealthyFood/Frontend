@@ -28,7 +28,7 @@ const Profile = () => {
       {Object.keys(currentUser).length == 0 ? (
         navigate("/")
       ) : (
-        <Container maxW={"90%"}>
+        <Container maxW={"100%"}>
           <Center my={10}>
             <Heading color={"brand.500"} fontSize={"4xl"}>
               Trang thông tin cá nhân
@@ -37,7 +37,7 @@ const Profile = () => {
           <Grid
             boxShadow={"2xl"}
             borderRadius={"xl"}
-            templateColumns={"repeat(5, 1fr)"}
+            templateColumns={"repeat(6, 1fr)"}
             bg={"gray.50"}
           >
             <GridItem colSpan={1}>
@@ -100,7 +100,7 @@ const Profile = () => {
                 </Box>
               </VStack>
             </GridItem>
-            <GridItem colSpan={4}>
+            <GridItem colSpan={5}>
               <Outlet />
             </GridItem>
           </Grid>
