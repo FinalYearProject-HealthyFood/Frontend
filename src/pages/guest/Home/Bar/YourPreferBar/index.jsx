@@ -27,7 +27,7 @@ import food_14 from "../../../../../assets/food14.png";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../../../contexts/ContextProvider";
 import axios from "axios";
-import { api } from "../../../../../api";
+import { api, api_ai } from "../../../../../api";
 import axiosClient from "../../../../../axios";
 import { GiCheckMark, GiHotMeal, GiMeal } from "react-icons/gi";
 import { StarIcon } from "@chakra-ui/icons";
@@ -106,7 +106,7 @@ const YourPreferBar = (props) => {
         if (likeList.length > 0 || dislikeList.length > 0) {
           axios
             .post(
-              `http://127.0.0.1:5000/diet-list`,
+              `${api_ai}/diet-list`,
               {
                 calories: willEatCalories,
                 ingredient: likeList,
@@ -133,7 +133,7 @@ const YourPreferBar = (props) => {
         } else {
           axios
             .post(
-              `http://127.0.0.1:5000/diet-list`,
+              `${api_ai}/diet-list`,
               {
                 calories: willEatCalories,
                 ingredient: [],
@@ -160,7 +160,7 @@ const YourPreferBar = (props) => {
         if (twoday.length > 0) {
           axios
             .post(
-              `http://127.0.0.1:5000/diet-list`,
+              `${api_ai}/diet-list`,
               {
                 calories: willEatCalories,
                 ingredient: [],
@@ -185,7 +185,7 @@ const YourPreferBar = (props) => {
         } else {
           axios
             .post(
-              `http://127.0.0.1:5000/diet-list`,
+              `${api_ai}/diet-list`,
               {
                 calories: willEatCalories,
                 ingredient: [],
@@ -212,7 +212,7 @@ const YourPreferBar = (props) => {
         if (today.length > 0) {
           axios
             .post(
-              `http://127.0.0.1:5000/diet-list`,
+              `${api_ai}/diet-list`,
               {
                 calories: willEatCalories,
                 ingredient: [],
@@ -237,7 +237,7 @@ const YourPreferBar = (props) => {
         }
         axios
           .post(
-            `http://127.0.0.1:5000/diet-list`,
+            `${api_ai}/diet-list`,
             {
               calories: willEatCalories,
               ingredient: [],
@@ -262,7 +262,7 @@ const YourPreferBar = (props) => {
       } else {
         axios
           .post(
-            `http://127.0.0.1:5000/diet-list`,
+            `${api_ai}/diet-list`,
             {
               calories: 400,
               ingredient: [],
@@ -286,7 +286,7 @@ const YourPreferBar = (props) => {
           });
         axios
           .post(
-            `http://127.0.0.1:5000/diet-list`,
+            `${api_ai}/diet-list`,
             {
               calories: 500,
               ingredient: [],
@@ -310,7 +310,7 @@ const YourPreferBar = (props) => {
           });
         axios
           .post(
-            `http://127.0.0.1:5000/diet-list`,
+            `${api_ai}/diet-list`,
             {
               calories: 600,
               ingredient: [],
@@ -334,7 +334,7 @@ const YourPreferBar = (props) => {
           });
         axios
           .post(
-            `http://127.0.0.1:5000/diet-list`,
+            `${api_ai}/diet-list`,
             {
               calories: 700,
               ingredient: [],

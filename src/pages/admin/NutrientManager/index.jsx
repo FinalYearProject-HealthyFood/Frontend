@@ -36,7 +36,7 @@ import { IoLogOut } from "react-icons/io5";
 import { MdMoney } from "react-icons/md";
 import { GiMeal, GiMeat } from "react-icons/gi";
 import axios from "axios";
-import { api } from "../../../api";
+import { api, api_ai } from "../../../api";
 import Pagination from "react-js-pagination";
 import "./pagination.css";
 import EditIngredientModal from "./EditIngredientModal";
@@ -93,7 +93,7 @@ const NutrientManager = () => {
     };
   }, [currentPage, onEdit, search]);
   useEffect(()=> {
-    axios.get("http://127.0.0.1:5000/fetching")
+    axios.get(`${api_ai}/fetching`)
     .then( res => {
       console.log(res)
     })
