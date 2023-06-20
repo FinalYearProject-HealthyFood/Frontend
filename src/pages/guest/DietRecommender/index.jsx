@@ -36,7 +36,7 @@ import { useLocation } from "react-router-dom";
 import sample_2 from "../../../assets/Sample 2.png";
 import { FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
-import { api, api_image } from "../../../api";
+import { api, api_ai, api_image } from "../../../api";
 import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import PopOverInfo from "./PopOverInfo";
