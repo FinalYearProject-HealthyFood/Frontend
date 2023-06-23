@@ -44,6 +44,7 @@ import "./pagination.css";
 import { useDashboardActionContext } from "../../../contexts/DashboardActionContextProvider";
 import OrderStatus from "./OrderStatus";
 import ViewOrderModal from "./ViewOrderModal";
+import DeleteOrderModal from "./DeleteOrderModal";
 // import AddMealModal from "./AddMealModal";
 
 const OrderManager = () => {
@@ -115,7 +116,7 @@ const OrderManager = () => {
 
   return (
     <Stack>
-      <VStack>
+      <VStack mb={"50px"}>
         <Box>
           <Heading fontSize={"2xl"} color={"brand.800"}>
             Quản lý xuất ăn
@@ -197,9 +198,6 @@ const OrderManager = () => {
                           : "red"
                       }
                     >
-                      {/* {data.status == "active"
-                        ? "Hoạt động"
-                        : "Ngừng hoạt động"} */}
                       <OrderStatus data={data} />
                       {data.payment_mode == "paypal"
                         ? "Đã thanh toán PayPpal"
@@ -210,14 +208,7 @@ const OrderManager = () => {
                         <Flex alignItems={"center"}>
                           <ViewOrderModal data={data} />
                           <Stack>
-                            <Button
-                              colorScheme="red"
-                              onClick={() => {
-                                deleteMeal(data.id);
-                              }}
-                            >
-                              <Icon as={DeleteIcon} />
-                            </Button>
+                            <DeleteOrderModal data={data} />
                           </Stack>
                         </Flex>
                       </Stack>

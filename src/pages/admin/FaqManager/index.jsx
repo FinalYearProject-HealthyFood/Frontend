@@ -27,6 +27,8 @@ import {
   ModalCloseButton,
   useDisclosure,
   useToast,
+  Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, { createContext, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
@@ -38,15 +40,16 @@ import axios from "axios";
 import { api } from "../../../api";
 import Pagination from "react-js-pagination";
 import "./pagination.css";
-import EditUserModal from "./EditUserModal";
+import EditFaqrModal from "./EditFaqModal";
 import { useDashboardActionContext } from "../../../contexts/DashboardActionContextProvider";
-import AddUserModal from "./AddUserModal";
-import DeleteUserModal from "./DeleteUserModal";
+import AddFaqModal from "./AddFaqModal";
+import EditFaqModal from "./EditFaqModal";
+import DeleteFaqModal from "./DeleteFaqModal";
 
-const UserManager = () => {
+const FaqManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = useState("");
-  const [users, setUsers] = useState([]);
+  const [faqs, setFaqs] = useState([]);
   const [roles, setRoles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
@@ -68,15 +71,15 @@ const UserManager = () => {
     let timer;
     const fetchData = () => {
       axios
-        .get(`${api}/users/?page=${currentPage}`, {
+        .get(`${api}/faq/all/?page=${currentPage}`, {
           params: {
             search: search,
           },
         })
         .then((response) => {
           console.log(response.data);
-          setUsers(response.data.data);
-          console.log(users);
+          setFaqs(response.data.data);
+          console.log(faqs);
           setTotalPage(response.data.total);
         });
       axios.get(`${api}/roles`).then((response) => {
@@ -102,7 +105,7 @@ const UserManager = () => {
 
   const deleteAccount = (id) => {
     axios
-      .delete(`${api}/users/delete/${id}`)
+      .delete(`${api}/faq/${id}`)
       .then((res) => {
         showToast("Success!", "success", "Xóa tài khoản thành công!");
         setOnEdit(onEdit + 1);
@@ -117,7 +120,7 @@ const UserManager = () => {
       <VStack mb={"50px"}>
         <Box>
           <Heading fontSize={"2xl"} color={"brand.800"}>
-            Quản lý User
+            Quản lý Faq
           </Heading>
         </Box>
         <Divider bgColor="gray" h={"1px"} />
@@ -142,7 +145,7 @@ const UserManager = () => {
         {/* =================> Add button */}
 
         <Flex w={"90%"} justifyContent={"right"}>
-          <AddUserModal roles = {roles} />
+          <AddFaqModal />
         </Flex>
         {/* =================> Add button */}
         <TableContainer w={"90%"}>
@@ -152,18 +155,8 @@ const UserManager = () => {
                 <Th textAlign={"center"} color={"white"}>
                   STT
                 </Th>
-                <Th textAlign={"center"} color={"white"}>
-                  Tên user
-                </Th>
-                <Th textAlign={"center"} color={"white"}>
-                  email
-                </Th>
-                <Th textAlign={"center"} color={"white"}>
-                  email đã kích hoạt
-                </Th>
-                <Th textAlign={"center"} color={"white"}>
-                  role
-                </Th>
+                <Th color={"white"}>question</Th>
+                <Th color={"white"}>answer</Th>
                 <Th textAlign={"center"} color={"white"}>
                   Action
                 </Th>
@@ -171,29 +164,35 @@ const UserManager = () => {
             </Thead>
 
             <Tbody>
-              {users?.map((data, index) => {
+              {faqs?.map((data, index) => {
                 return (
                   <Tr>
                     <Td textAlign={"center"}>
                       {index + 1 + 5 * (currentPage - 1)}
                     </Td>
-                    <Td textAlign={"center"}>{data.name}</Td>
-                    <Td textAlign={"center"}>{data.email}</Td>
-                    <Td
-                      textAlign={"center"}
-                      fontWeight={"semibold"}
-                      color={data.email_verified_at ? "brand.500" : "red"}
-                    >
-                      {data.email_verified_at
-                        ? "Đã kích hoạt"
-                        : "Chưa kích hoạt"}
+                    <Td>
+                      <Tooltip label={data?.question} fontSize="md">
+                        <Text
+                          whiteSpace="normal"
+                          width={"auto"}
+                          height="auto"
+                          noOfLines={2}
+                        >
+                          {data?.question}
+                        </Text>
+                      </Tooltip>
                     </Td>
-                    <Td
-                      textAlign={"center"}
-                      fontWeight={"semibold"}
-                      color={data.email_verified_at ? "brand.500" : "red"}
-                    >
-                      {data.role.name}
+                    <Td>
+                      <Tooltip label={data?.answer} fontSize="md">
+                        <Text
+                          whiteSpace="normal"
+                          width={"auto"}
+                          height="auto"
+                          noOfLines={2}
+                        >
+                          {data?.answer}
+                        </Text>
+                      </Tooltip>
                     </Td>
                     <Td textAlign={"center"}>
                       <Stack alignItems={"center"}>
@@ -202,8 +201,8 @@ const UserManager = () => {
                             <Icon as={ViewIcon} />
                           </Button> */}
                           <Stack>
-                            <EditUserModal user={data} roles = {roles} />
-                            <DeleteUserModal data={data} />
+                            <EditFaqModal faq={data} />
+                            <DeleteFaqModal faq={data}/>
                           </Stack>
                         </Flex>
                       </Stack>
@@ -242,4 +241,4 @@ const UserManager = () => {
   );
 };
 
-export default UserManager;
+export default FaqManager;

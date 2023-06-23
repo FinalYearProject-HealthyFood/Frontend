@@ -36,6 +36,9 @@ import MealDetail from "./pages/guest/Menu/Meal/MealDetail";
 import Page404 from "./pages/pageNotFound/Page404";
 import RatingList from "./pages/guest/RatingList";
 import PaymentSuccess from "./pages/guest/Payment/PaymentSuccess";
+import Contact from "./pages/guest/Contact";
+import FAQ from "./pages/guest/FAQ";
+import FaqManager from "./pages/admin/FaqManager";
 
 function App() {
   const permission = {
@@ -84,8 +87,8 @@ function App() {
             <Route path="result" element={<Tdde />} />
           </Route>
           <Route path="diet-recommend" element={<DietRecommender />} />
-          <Route path="faq" element={""} />
-          <Route path="contact" element={""} />
+          <Route path="faq" element={<FAQ/>} />
+          <Route path="contact" element={<Contact/>} />
           <Route path="profile" element={<Profile />}>
             <Route path="info" element={<Info />} />
             <Route path="change-password" element={<ChangePassword />} />
@@ -106,6 +109,11 @@ function App() {
               <>
                 <Route path="meal" element={<MealManager />} />
                 <Route path="nutrient" element={<NutrientManager />} />
+              </>
+            )}
+            {permission.ManagerPermission.includes(currentUser.role.name) && (
+              <>
+                <Route path="faq" element={<FaqManager />} />
               </>
             )}
             {permission.adminPermission.includes(currentUser.role.name) && (

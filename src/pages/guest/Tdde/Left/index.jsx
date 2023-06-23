@@ -20,10 +20,20 @@ const Left = (props) => {
       return Math.floor((10 * w + 6.25 * h - 5 * a - 161) * activity);
     }
   };
+  function calculateIdealWeight(height, gender) {
+    let idealWeight;
 
-  const ideal_weight = () => {
-    return;
-  };
+    if (gender === "male") {
+      idealWeight = 48 + 2.7 * ((height - 152.4) / 2.54);
+    } else if (gender === "female") {
+      idealWeight = 45.5 + 2.2 * ((height - 152.4) / 2.54);
+    } else {
+      // Handle invalid gender input
+      return null;
+    }
+
+    return idealWeight;
+  }
 
   return (
     <>
@@ -40,22 +50,22 @@ const Left = (props) => {
         >
           <Heading fontSize={"3xl"}>
             {mifflin_cal(
-              props.state.weight,
-              props.state.height,
-              props.state.age,
-              props.state.activity,
-              props.state.gender
+              props.weight,
+              props.height,
+              props.age,
+              props.activity,
+              props.gender
             )}
           </Heading>
           <Heading fontSize={"md"}>năng lượng trên một ngày</Heading>
           <Divider />
           <Heading fontSize={"3xl"}>
             {mifflin_cal(
-              props.state.weight,
-              props.state.height,
-              props.state.age,
-              props.state.activity,
-              props.state.gender
+              props.weight,
+              props.height,
+              props.age,
+              props.activity,
+              props.gender
             ) * 7}
           </Heading>
           <Heading fontSize={"md"}>năng lượng trên một tuần</Heading>
@@ -73,10 +83,22 @@ const Left = (props) => {
             Cân nặng lý tưởng:
           </Heading>
           <Heading color={"brand.500"} fontWeight={"bold"} fontSize={"3xl"}>
-            64-66kg
+            {calculateIdealWeight(
+              props.height,
+              props.gender
+            )?.toFixed(0)}{" "}
+            kg
           </Heading>
           <Text fontWeight={"medium"} fontSize={"sm"}>
-            Trọng lượng cơ thể lý tưởng của bạn được ước tính là từ 64-66 kg
+            Trọng lượng cơ thể lý tưởng của bạn được ước tính là từ{" "}
+            {calculateIdealWeight(
+              props.height,
+              props.gender
+            )?.toFixed(0)}{" "}
+            kg
+          </Text>
+          <Text fontWeight={"light"} fontSize={"xs"}>
+            G.J. Hamwi Formula (1964)
           </Text>
         </Stack>
         <Center>
@@ -84,15 +106,14 @@ const Left = (props) => {
             fontSize={"xl"}
             colorScheme="orange"
             onClick={() => {
-              navigate("/diet-recommend",
-              {
+              navigate("/diet-recommend", {
                 state: {
                   calories: mifflin_cal(
-                    props.state.weight,
-                    props.state.height,
-                    props.state.age,
-                    props.state.activity,
-                    props.state.gender
+                    props.weight,
+                    props.height,
+                    props.age,
+                    props.activity,
+                    props.gender
                   ),
                 },
               });

@@ -16,7 +16,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { FaUser, FaUserCog } from "react-icons/fa";
+import { FaQuoteRight, FaUser, FaUserCog } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { MdMoney } from "react-icons/md";
 import { GiMeal, GiMeat } from "react-icons/gi";
@@ -48,6 +48,12 @@ const DashboardLayout = () => {
       permissions: ["admin", "foodmod", "manager"],
     },
     { to: "user", icon: FaUserCog, text: "User", permissions: ["admin"] },
+    {
+      to: "faq",
+      icon: FaQuoteRight,
+      text: "Faq",
+      permissions: ["admin", "manager"],
+    },
   ];
   const navigate = useNavigate();
   const { currentUser, userToken, setCurrentUser, setUserToken } =
@@ -62,7 +68,7 @@ const DashboardLayout = () => {
     axiosClient.post("/logout").then((res) => {
       setCurrentUser({});
       setUserToken(null);
-      navigate("/")
+      navigate("/");
     });
   };
   return (

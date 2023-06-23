@@ -42,6 +42,7 @@ import "./pagination.css";
 import EditIngredientModal from "./EditIngredientModal";
 import { useDashboardActionContext } from "../../../contexts/DashboardActionContextProvider";
 import AddIngredientModal from "./AddIngredientModal";
+import DeleteIngredientModal from "./DeleteIngredientModal";
 
 const NutrientManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -121,7 +122,7 @@ const NutrientManager = () => {
 
   return (
     <Stack>
-      <VStack>
+      <VStack mb={"50px"}>
         <Box>
           <Heading fontSize={"2xl"} color={"brand.800"}>
             Quản lý thành phần ăn
@@ -198,19 +199,12 @@ const NutrientManager = () => {
                     <Td textAlign={"center"}>
                       <Stack alignItems={"center"}>
                         <Flex alignItems={"center"}>
-                          <Button mr={2} colorScheme="blue">
+                          {/* <Button mr={2} colorScheme="blue">
                             <Icon as={ViewIcon} />
-                          </Button>
+                          </Button> */}
                           <Stack>
                             <EditIngredientModal data={data} />
-                            <Button
-                              colorScheme="red"
-                              onClick={() => {
-                                deleteIngredient(data.id);
-                              }}
-                            >
-                              <Icon as={DeleteIcon} />
-                            </Button>
+                            <DeleteIngredientModal data={data} />
                           </Stack>
                         </Flex>
                       </Stack>

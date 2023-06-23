@@ -42,6 +42,7 @@ import "./pagination.css";
 import EditMealModal from "./EditMealModal";
 import { useDashboardActionContext } from "../../../contexts/DashboardActionContextProvider";
 import AddMealModal from "./AddMealModal";
+import DeleteMealModal from "./DeleteMealModal";
 
 const MealManager = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -116,7 +117,7 @@ const MealManager = () => {
 
   return (
     <Stack>
-      <VStack>
+      <VStack mb={"50px"}>
         <Box>
           <Heading fontSize={"2xl"} color={"brand.800"}>
             Quản lý xuất ăn
@@ -208,22 +209,15 @@ const MealManager = () => {
                     <Td textAlign={"center"}>
                       <Stack alignItems={"center"}>
                         <Flex alignItems={"center"}>
-                          <Button mr={2} colorScheme="blue">
+                          {/* <Button mr={2} colorScheme="blue">
                             <Icon as={ViewIcon} />
-                          </Button>
+                          </Button> */}
                           <Stack>
                             <EditMealModal
                               ingredientList={ingredientList}
                               data={data}
                             />
-                            <Button
-                              colorScheme="red"
-                              onClick={() => {
-                                deleteMeal(data.id);
-                              }}
-                            >
-                              <Icon as={DeleteIcon} />
-                            </Button>
+                            <DeleteMealModal data={data} />
                           </Stack>
                         </Flex>
                       </Stack>

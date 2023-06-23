@@ -52,11 +52,11 @@ const Right = (props) => {
               Dựa trên số liệu thống kê của bạn, ước tính tốt nhất cho lượng
               calo duy trì của bạn là{" "}
               {mifflin_cal(
-                props.state.weight,
-                props.state.height,
-                props.state.age,
-                props.state.activity,
-                props.state.gender
+                props.weight,
+                props.height,
+                props.age,
+                props.activity,
+                props.gender
               )}{" "}
               calo mỗi ngày dựa trên Công thức Mifflin-St. Jeor, được biết đến rộng
               rãi là khá chính xác khi cung cấp giới tính, độ tuổi, chiều cao, cân nặng.
@@ -69,97 +69,97 @@ const Right = (props) => {
               <Table size={"sm"}>
                 <Tbody fontSize={"xs"} fontWeight={"medium"}>
                   <Tr
-                    color={props.state.activity == 1 && "brand.500"}
-                    fontWeight={props.state.activity == 1 && "bold"}
+                    color={props.activity == 1 && "brand.500"}
+                    fontWeight={props.activity == 1 && "bold"}
                   >
                     <Td>Không mấy khi vận động</Td>
                     <Td isNumeric>
                       {mifflin_cal(
-                        props.state.weight,
-                        props.state.height,
-                        props.state.age,
+                        props.weight,
+                        props.height,
+                        props.age,
                         1,
-                        props.state.gender,
+                        props.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
                   </Tr>
                   <Tr
-                    color={props.state.activity == 1.2 && "brand.500"}
-                    fontWeight={props.state.activity == 1.2 && "bold"}
+                    color={props.activity == 1.2 && "brand.500"}
+                    fontWeight={props.activity == 1.2 && "bold"}
                   >
                     <Td>Vận động ít</Td>
                     <Td isNumeric>
                       {mifflin_cal(
-                        props.state.weight,
-                        props.state.height,
-                        props.state.age,
+                        props.weight,
+                        props.height,
+                        props.age,
                         1.2,
-                        props.state.gender,
+                        props.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
                   </Tr>
                   <Tr
-                    color={props.state.activity == 1.375 && "brand.500"}
-                    fontWeight={props.state.activity == 1.375 && "bold"}
+                    color={props.activity == 1.375 && "brand.500"}
+                    fontWeight={props.activity == 1.375 && "bold"}
                   >
                     <Td>Vận động nhẹ</Td>
                     <Td isNumeric>
                       {mifflin_cal(
-                        props.state.weight,
-                        props.state.height,
-                        props.state.age,
+                        props.weight,
+                        props.height,
+                        props.age,
                         1.375,
-                        props.state.gender,
+                        props.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
                   </Tr>
                   <Tr
-                    color={props.state.activity == 1.55 && "brand.500"}
-                    fontWeight={props.state.activity == 1.55 && "bold"}
+                    color={props.activity == 1.55 && "brand.500"}
+                    fontWeight={props.activity == 1.55 && "bold"}
                   >
                     <Td>Vận động trung bình</Td>
                     <Td isNumeric>
                       {mifflin_cal(
-                        props.state.weight,
-                        props.state.height,
-                        props.state.age,
+                        props.weight,
+                        props.height,
+                        props.age,
                         1.55,
-                        props.state.gender,
+                        props.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
                   </Tr>
                   <Tr
-                    color={props.state.activity == 1.725 && "brand.500"}
-                    fontWeight={props.state.activity == 1.725 && "bold"}
+                    color={props.activity == 1.725 && "brand.500"}
+                    fontWeight={props.activity == 1.725 && "bold"}
                   >
                     <Td>Vận động nặng</Td>
                     <Td isNumeric>
                       {mifflin_cal(
-                        props.state.weight,
-                        props.state.height,
-                        props.state.age,
+                        props.weight,
+                        props.height,
+                        props.age,
                         1.725,
-                        props.state.gender,
+                        props.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
                   </Tr>
                   <Tr
-                    color={props.state.activity == 1.9 && "brand.500"}
-                    fontWeight={props.state.activity == 1.9 && "bold"}
+                    color={props.activity == 1.9 && "brand.500"}
+                    fontWeight={props.activity == 1.9 && "bold"}
                   >
                     <Td>Vận động viên</Td>
                     <Td isNumeric>
                       {mifflin_cal(
-                        props.state.weight,
-                        props.state.height,
-                        props.state.age,
+                        props.weight,
+                        props.height,
+                        props.age,
                         1.9,
-                        props.state.gender,
+                        props.gender,
                       )}
                     </Td>
                     <Td>năng lượng / ngày</Td>
@@ -175,25 +175,25 @@ const Right = (props) => {
               fontWeight={"medium"}
               fontSize={"2xl"}
             >
-              BMI Score: {BMI_Score(props.state.weight, props.state.height)}
+              BMI Score: {BMI_Score(props.weight, props.height)}
             </Heading>
             <Heading fontWeight={"normal"} fontSize={"xl"}>
-              BMI của bạn là {BMI_Score(props.state.weight, props.state.height)}
+              BMI của bạn là {BMI_Score(props.weight, props.height)}
               , có nghĩa là bạn được phân loại là
             </Heading>
             <Heading mb={5} mt={5} fontSize={"xl"}>
-              {Rank_BMI(BMI_Score(props.state.weight, props.state.height))}
+              {Rank_BMI(BMI_Score(props.weight, props.height))}
             </Heading>
             <TableContainer>
               <Table size={"sm"}>
                 <Tbody fontWeight={"medium"}>
                   <Tr
                     color={
-                      BMI_Score(props.state.weight, props.state.height) <=
+                      BMI_Score(props.weight, props.height) <=
                         18.5 && "brand.500"
                     }
                     fontWeight={
-                      BMI_Score(props.state.weight, props.state.height) <=
+                      BMI_Score(props.weight, props.height) <=
                         18.5 && "bold"
                     }
                   >
@@ -202,16 +202,16 @@ const Right = (props) => {
                   </Tr>
                   <Tr
                     color={
-                      BMI_Score(props.state.weight, props.state.height) >
+                      BMI_Score(props.weight, props.height) >
                         18.5 &&
-                      BMI_Score(props.state.weight, props.state.height) <=
+                      BMI_Score(props.weight, props.height) <=
                         24.99 &&
                       "brand.500"
                     }
                     fontWeight={
-                      BMI_Score(props.state.weight, props.state.height) >
+                      BMI_Score(props.weight, props.height) >
                         18.5 &&
-                      BMI_Score(props.state.weight, props.state.height) <=
+                      BMI_Score(props.weight, props.height) <=
                         24.99 &&
                       "bold"
                     }
@@ -221,14 +221,14 @@ const Right = (props) => {
                   </Tr>
                   <Tr
                     color={
-                      BMI_Score(props.state.weight, props.state.height) >= 25 &&
-                      BMI_Score(props.state.weight, props.state.height) <=
+                      BMI_Score(props.weight, props.height) >= 25 &&
+                      BMI_Score(props.weight, props.height) <=
                         29.99 &&
                       "brand.500"
                     }
                     fontWeight={
-                      BMI_Score(props.state.weight, props.state.height) >= 25 &&
-                      BMI_Score(props.state.weight, props.state.height) <=
+                      BMI_Score(props.weight, props.height) >= 25 &&
+                      BMI_Score(props.weight, props.height) <=
                         29.99 &&
                       "bold"
                     }
@@ -238,11 +238,11 @@ const Right = (props) => {
                   </Tr>
                   <Tr
                     color={
-                      BMI_Score(props.state.weight, props.state.height) >= 30 &&
+                      BMI_Score(props.weight, props.height) >= 30 &&
                       "brand.500"
                     }
                     fontWeight={
-                      BMI_Score(props.state.weight, props.state.height) >= 30 &&
+                      BMI_Score(props.weight, props.height) >= 30 &&
                       "bold"
                     }
                   >

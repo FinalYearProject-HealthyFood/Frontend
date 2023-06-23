@@ -14,7 +14,7 @@ const InfoCol1 = () => {
                 HEALTHY FOOD STORE
             </Text>
             <Text>
-                123 Hoan Kiem District, Ha Noi City
+                123 Thanh Khe District, Da Nang City
             </Text>
             <Text>
                 Tel: +84 234 56789
@@ -23,7 +23,7 @@ const InfoCol1 = () => {
                 Hotline: +84 (0) 909 123 456
             </Text>
             <Text>
-                hanoi@healthyfoodstore.net
+                danang@healthyfoodstore.site
             </Text>
             <Text>
                 Vietnam
@@ -32,7 +32,7 @@ const InfoCol1 = () => {
                 Certificate of business registration : 0303030303
             </Text>
             <Text>
-                Issued: 06/09/2021 in Ha Noi City
+                Issued: 09/06/2023 in Da Nang City
             </Text>
         </Stack>
     )

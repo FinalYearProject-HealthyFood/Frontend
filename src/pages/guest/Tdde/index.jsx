@@ -155,10 +155,26 @@ const Tdde = () => {
       </Center>
       <Flex>
         <Box w={"35%"}>
-          <Left state = {location.state} />
+          <Left
+            state={location.state}
+            gender={gender}
+            age={age}
+            weight={weight}
+            height={height}
+            activity={activity}
+            fat={fat}
+          />
         </Box>
         <Box w={"65%"}>
-          <Right state = {location.state} />
+          <Right
+            state={location.state}
+            gender={gender}
+            age={age}
+            weight={weight}
+            height={height}
+            activity={activity}
+            fat={fat}
+          />
         </Box>
       </Flex>
     </Container>

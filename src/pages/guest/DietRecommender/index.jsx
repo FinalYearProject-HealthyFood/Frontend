@@ -227,6 +227,7 @@ const DietRecommender = () => {
           calcium: calciumChecked,
           iron: ironChecked,
           zinc: zincChecked,
+          gramon: gramOn,
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -319,6 +320,7 @@ const DietRecommender = () => {
             return accumulator + object.zinc * object.OptimalValue;
           }, 0)
         );
+        showToast("Success!", "success", "Tạo thực đơn thành công!");
       });
     console.log(listOrder);
     // setSumCalo(sum)
@@ -510,8 +512,8 @@ const DietRecommender = () => {
                                   {
                                     id: value.id,
                                     name: value.name,
-                                    quantity: 1,
                                     serving_size: value.serving_size,
+                                    quantity: 1,
                                     index: nextId,
                                   },
                                   // value.name
@@ -527,26 +529,60 @@ const DietRecommender = () => {
                     })}
                 </Stack>
                 <Stack mt={2}>
+                  {ingredients.length > 0 && (
+                    <Checkbox
+                      colorScheme="orange"
+                      defaultChecked={gramOn}
+                      onChange={(e) => setGramOn(e.target.checked)}
+                    >
+                      Điều chỉnh lượng gram
+                    </Checkbox>
+                  )}
                   {ingredients.map((data, index) => {
                     return (
                       <Box key={data.id}>
                         <Flex alignItems={"center"}>
                           <Text>{data.name}</Text>
                           <Spacer />
-                          <Input
-                            maxW={"80px"}
-                            type="number"
-                            value={Math.floor(
-                              data.serving_size * data.quantity
-                            )}
-                            onChange={(e) => {
-                              handleQtyChange(
-                                data.id,
-                                (e.target.value / data.serving_size).toFixed(1)
-                              );
-                            }}
-                          />
-                          <Text ml={2}>gram</Text>
+                          {gramOn && (
+                            <>
+                              {/* <Input
+                                maxW={"80px"}
+                                type="number"
+                                value={Math.floor(
+                                  data.serving_size * data.quantity
+                                )}
+                                onChange={(e) => {
+                                  handleQtyChange(
+                                    data.id,
+                                    (
+                                      e.target.value / data.serving_size
+                                    ).toFixed(1)
+                                  );
+                                }}
+                              /> */}
+                              <NumberInput
+                                maxW="80px"
+                                mr="2rem"
+                                max={300}
+                                min={10}
+                                value={Math.floor(
+                                  data.serving_size * data.quantity
+                                )}
+                                onChange={(value) => {
+                                  handleQtyChange(
+                                    data.id,
+                                    (
+                                      value / data.serving_size
+                                    ).toFixed(1)
+                                  );
+                                }}
+                              >
+                                <NumberInputField />
+                              </NumberInput>
+                              <Text ml={2}>gram</Text>
+                            </>
+                          )}
                           <Button
                             variant={"ghost"}
                             onClick={() => {
@@ -637,7 +673,12 @@ const DietRecommender = () => {
           </GridItem>
           <GridItem mb={5} rowSpan={1} colSpan={4}>
             <Stack textAlign={"center"}>
-              <Box color={"green"} mt={2} fontSize={"xl"} fontWeight={"extrabold"}>
+              <Box
+                color={"green"}
+                mt={2}
+                fontSize={"xl"}
+                fontWeight={"extrabold"}
+              >
                 Bửa ăn của bạn sẽ có: {Math.round(calories / plan)} Calories
               </Box>
             </Stack>
@@ -786,6 +827,7 @@ const DietRecommender = () => {
                       {recommendList?.map((value, index) => {
                         return (
                           <Box
+                            key={index}
                             _hover={{
                               transform: "scale(1.00)",
                               transition: "all 0.2s ease-in-out",
