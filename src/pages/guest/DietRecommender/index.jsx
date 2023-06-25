@@ -46,6 +46,7 @@ const DietRecommender = () => {
     useStateContext();
   const location = useLocation();
   const [calories, setCalories] = useState("");
+  const [name, setName] = useState("");
   const [plan, setPlan] = useState(currentUser.id ? currentUser.plan : 3);
   const [recommendList, setRecommendList] = useState([]);
   const [sumCalo, setSumCalo] = useState(0);
@@ -148,6 +149,7 @@ const DietRecommender = () => {
     axios.get(`${api}/ingredients/all-filter`).then((response) => {
       setIngredientList(response.data);
     });
+    setName("bữa ăn " + calories + " KCal");
     console.log(ingredientList);
     console.log(location.state.calories);
     console.log(recommendList);
@@ -328,10 +330,10 @@ const DietRecommender = () => {
   const onSubmit = () => {
     if (userToken) {
       const dataSubmit = {
-        name: "Bửa ăn " + calories + "KCal",
+        name: name,
         for_me: personal ? "yes" : "no",
         description:
-          "Bửa ăn " + calories + "KCal, Người yêu cầu:" + currentUser.name,
+          "bữa ăn " + calories + "KCal, Người yêu cầu:" + currentUser.name,
         price: Math.round(sumPrice),
         serving_size: Math.round(sumServ),
         calories: Math.round(sumCalo),
@@ -448,10 +450,10 @@ const DietRecommender = () => {
                     setPlan(e.target.value);
                   }}
                 >
-                  <option value={1}>1 bửa</option>
-                  <option value={2}>2 bửa</option>
-                  <option value={3}>3 bửa</option>
-                  <option value={4}>4 bửa</option>
+                  <option value={1}>1 bữa</option>
+                  <option value={2}>2 bữa</option>
+                  <option value={3}>3 bữa</option>
+                  <option value={4}>4 bữa</option>
                 </Select>
               </Box>
             </Stack>
@@ -572,9 +574,7 @@ const DietRecommender = () => {
                                 onChange={(value) => {
                                   handleQtyChange(
                                     data.id,
-                                    (
-                                      value / data.serving_size
-                                    ).toFixed(1)
+                                    (value / data.serving_size).toFixed(1)
                                   );
                                 }}
                               >
@@ -679,7 +679,7 @@ const DietRecommender = () => {
                 fontSize={"xl"}
                 fontWeight={"extrabold"}
               >
-                Bửa ăn của bạn sẽ có: {Math.round(calories / plan)} Calories
+                bữa ăn của bạn sẽ có: {Math.round(calories / plan)} Calories
               </Box>
             </Stack>
           </GridItem>
@@ -821,6 +821,16 @@ const DietRecommender = () => {
                     </Button>
                   </Flex>
                 </Flex>
+                <Grid my={3} gap={5} templateColumns="repeat(4, 1fr)">
+                  <GridItem textAlign={"right"} colSpan={1}>
+                    <Text fontWeight={"medium"} fontSize={"xl"}>
+                      Đặt tên:
+                    </Text>
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <Input size={"md"} fontWeight={"medium"} fontSize={"xl"} value={name} onChange={(e)=> {setName(e.target.value)}} />
+                  </GridItem>
+                </Grid>
                 <Grid templateColumns="repeat(4, 1fr)">
                   <GridItem colSpan={2}>
                     <Stack mt={2} mx={"25px"} spacing={2}>
@@ -909,10 +919,10 @@ const DietRecommender = () => {
                   <GridItem colSpan={2}>
                     {recommendList.length > 0 && (
                       <>
-                        <Box>Serving size: {Math.round(sumServ)}</Box>
-                        <Box>Protein: {Math.round(sumProtein)}</Box>
-                        <Box>Fat: {Math.round(sumFat)}</Box>
-                        <Box>Carbohydrate: {Math.round(sumCarb)}</Box>
+                        <Box>Serving size: {Math.round(sumServ)} gram</Box>
+                        <Box>Protein: {Math.round(sumProtein)} g</Box>
+                        <Box>Fat: {Math.round(sumFat)} g</Box>
+                        <Box>Carbohydrate: {Math.round(sumCarb)} g</Box>
                         <Box fontWeight={"bold"}>
                           Giá:{" "}
                           {Math.round(sumPrice).toLocaleString(undefined, {

@@ -191,7 +191,7 @@ const TddeCalculator = () => {
             mt={"20px"}
             size={"lg"}
             onClick={() => {
-              navigate("/tdde-calculator/result", {
+              navigate("/tdee-calculator/result", {
                 state: {
                   gender: gender,
                   age: age,

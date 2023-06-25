@@ -145,7 +145,6 @@ const Payment = () => {
                       <Th textColor={"white"}>Tên sản phẩm</Th>
                       <Th textColor={"white"}>số lượng</Th>
                       <Th textColor={"white"}>Giá </Th>
-                      <Th textColor={"white"}></Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -186,9 +185,6 @@ const Payment = () => {
                             })}{" "}
                             vnđ
                           </Td>
-                          <Td>
-                            <Button colorScheme="red">X</Button>
-                          </Td>
                         </Tr>
                       );
                     })}
@@ -217,12 +213,14 @@ const Payment = () => {
                             ml={2}
                             fontSize={"18px"}
                             variant={"link"}
+                            onClick={()=> {
+                              navigate(-1)
+                            }}
                           >
-                            <Text as={"u"}>Tiếp tục mua sắm</Text>
+                            <Text as={"u"}>Quay lại giỏ hàng</Text>
                           </Button>
                         </Flex>
                       </Th>
-                      <Th textColor={"white"}></Th>
                       <Th textColor={"white"}> Tổng giá thành</Th>
                       <Th textColor={"white"}>
                         {" "}
@@ -301,7 +299,7 @@ const Payment = () => {
                     <Text fontWeight={"bold"}>Đơn hàng</Text>
                   </Center>
                   <Stack w={"100%"}>
-                    <Text>5 Sản phẩm</Text>
+                    <Text>{cartList?.length} Sản phẩm</Text>
                   </Stack>
                 </Box>
                 <Divider borderColor={"black"} />

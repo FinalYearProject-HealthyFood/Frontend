@@ -144,7 +144,7 @@ const Nutrient = () => {
               <BreadcrumbLink href="#">Tự chọn khẩu phần ăn</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-          <VStack mt={"50px"} alignItems={"center"}>
+          <VStack mb={"300px"} mt={"100px"} alignItems={"center"}>
             <Box mt={"100px"}>
               <Spinner
                 thickness="4px"
@@ -220,6 +220,9 @@ const Nutrient = () => {
                               h={"160px"}
                               w={"160px"}
                               mt={5}
+                              onClick={() => {
+                                navigate(`/nutrient/${data.id}`);
+                              }}
                             >
                               <Text
                                 fontWeight={"bold"}
@@ -258,21 +261,29 @@ const Nutrient = () => {
                                       : "gray.200"
                                   }
                                   onClick={() => {
-                                    axiosClient
-                                      .get(`/rate/ingredient/${data.id}`, {
-                                        params: {
-                                          user_id: currentUser.id,
-                                          rating: index,
-                                        },
-                                      })
-                                      .then((res) => {
-                                        showToast(
-                                          "Success!",
-                                          "success",
-                                          `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
-                                        );
-                                        setClickRate(clickRate + 1);
-                                      });
+                                    if (userToken) {
+                                      axiosClient
+                                        .get(`/rate/ingredient/${data.id}`, {
+                                          params: {
+                                            user_id: currentUser.id,
+                                            rating: index,
+                                          },
+                                        })
+                                        .then((res) => {
+                                          showToast(
+                                            "Success!",
+                                            "success",
+                                            `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
+                                          );
+                                          setClickRate(clickRate + 1);
+                                        });
+                                    } else {
+                                      showToast(
+                                        "Warning!",
+                                        "warning",
+                                        `Bạn chưa đăng nhập`
+                                      );
+                                    }
                                   }}
                                   _hover={{
                                     color: "red.400",
@@ -362,7 +373,7 @@ const Nutrient = () => {
           ) : (
             <Center py={40} mt={5} flexDirection={"column"}>
               <Icon color={"brand.500"} boxSize={"150px"} as={GiShoppingCart} />
-              <Heading fontFamily={"cursive"} color={"brand.500"}>
+              <Heading color={"brand.500"}>
                 Hiện tại không có thành phần ăn nào
               </Heading>
             </Center>

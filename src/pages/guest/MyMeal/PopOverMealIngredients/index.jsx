@@ -20,13 +20,13 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { IoNutrition } from "react-icons/io5";
 import { GiMeat } from "react-icons/gi";
 
-const PopOverIngredients = (props) => {
+const PopOverMealIngredients = (props) => {
   return (
     <Popover placement="right">
       <PopoverTrigger>
-      <Button size={"sm"} colorScheme="yellow">
+        <Button colorScheme="yellow">
           <GiMeat />
-          <Text></Text>
+          <Text ml={2}>Chi tiết</Text>
         </Button>
       </PopoverTrigger>
       <PopoverContent bgColor={"black"} color="white">
@@ -41,7 +41,7 @@ const PopOverIngredients = (props) => {
                   <Text>{value.name}</Text>
                   <Spacer />
                   <Text>
-                    {Math.round(value.serving_size * value.OptimalValue)} grams
+                    {Math.round(value.serving_size * value.pivot.quantity)} grams
                   </Text>
                 </Flex>
               );
@@ -53,4 +53,4 @@ const PopOverIngredients = (props) => {
   );
 };
 
-export default PopOverIngredients;
+export default PopOverMealIngredients;

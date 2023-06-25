@@ -27,6 +27,16 @@ import {
   Icon,
   VStack,
   Spinner,
+  Checkbox,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Input,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import food_14 from "../../../assets/food14.png";
@@ -35,7 +45,7 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { api_image } from "../../../api";
-import { GiShoppingCart } from "react-icons/gi";
+import { GiMeal, GiMeat, GiShoppingCart } from "react-icons/gi";
 
 const Cart = () => {
   const { currentUser, userToken, setCurrentUser, setUserToken } =
@@ -43,9 +53,11 @@ const Cart = () => {
   const navigate = useNavigate();
   const [cartList, setCartList] = useState([]);
   const [sumPrice, setSumPrice] = useState([]);
+  const [nameCreate, setNameCreate] = useState("");
   const [numberSlot, setNumberSlot] = useState(0);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const showToast = (title, status, description) => {
     toast({
@@ -86,6 +98,14 @@ const Cart = () => {
         showToast("Success!", "warning", "Đã thay đổi số lượng giỏ hàng!");
       });
   };
+  const onUpdateFormeItem = (for_me, id) => {
+    axiosClient
+      .put(`order-items/update-forme/${id}`, { for_me: for_me ? "yes" : "no" })
+      .then((res) => {
+        setNumberSlot(numberSlot + 1);
+        showToast("Success!", "warning", "Đã thay đổi tình trạng giỏ hàng!");
+      });
+  };
   const removeItem = (id) => {
     axiosClient.delete(`order-items/delete-by-user/${id}`).then((res) => {
       showToast("Success!", "warning", "Đã loại khỏi giỏ hàng!");
@@ -117,6 +137,31 @@ const Cart = () => {
     setQuantities(nextCounters);
     console.log(quantities);
   }
+  const onSubmit = () => {
+    if (userToken) {
+      const dataSubmit = {
+        name: nameCreate,
+        description: "bữa ăn tự mix, Người yêu cầu:" + currentUser.name,
+      };
+      if (nameCreate == "") {
+        showToast("Error!", "error", "Bạn cần đặt tên cho khẩu phần ăn này!");
+      } else {
+        console.log(dataSubmit);
+        axiosClient
+          .post(`order-items/create-from-cart`, dataSubmit)
+          .then(({ data }) => {
+            setNumberSlot(numberSlot + 1);
+            showToast("Success!", "warning", "Đã thêm khẩu phần ăn mới vào giỏ!");
+          })
+          .catch((error) => {
+            console.log(error);
+            showToast("Error!", "error", "Lỗi xảy ra khi thêm khẩu phần ăn mới vào giỏ!");
+          });
+      }
+    } else {
+      showToast("Error!", "error", "Bạn chưa đăng nhập!");
+    }
+  };
   return (
     <>
       {Object.keys(currentUser).length == 0 ? (
@@ -167,6 +212,8 @@ const Cart = () => {
                         <Tr>
                           <Th textColor={"white"}>No.</Th>
                           <Th textColor={"white"}>Tên sản phẩm</Th>
+                          <Th textColor={"white"}>Loại sản phẩm</Th>
+                          <Th textColor={"white"}>Tôi ăn</Th>
                           <Th textColor={"white"}>số lượng</Th>
                           <Th textColor={"white"}>Giá đơn vị</Th>
                           <Th textColor={"white"}>Giá tổng</Th>
@@ -195,11 +242,7 @@ const Cart = () => {
                                       h={"100px"}
                                       w={"100px"}
                                     >
-                                      <Text
-                                        fontWeight={"bold"}
-                                        color={"white"}
-                                        fontFamily={"cursive"}
-                                      >
+                                      <Text fontWeight={"bold"} color={"white"}>
                                         HFS Cart
                                       </Text>
                                     </Center>
@@ -216,6 +259,41 @@ const Cart = () => {
                                     </Text>
                                   </Box>
                                 </Flex>
+                              </Td>
+                              <Td>
+                                <Text
+                                  whiteSpace="normal"
+                                  height="auto"
+                                  noOfLines={4}
+                                  fontWeight={"bold"}
+                                  color={
+                                    data?.ingredient_id !== null
+                                      ? "green"
+                                      : "orange"
+                                  }
+                                >
+                                  {data?.ingredient_id !== null
+                                    ? "Thành phần ăn"
+                                    : "Xuất ăn"}
+                                </Text>
+                              </Td>
+                              <Td>
+                                {data?.ingredient_id !== null ? (
+                                  ""
+                                ) : (
+                                  <Checkbox
+                                    colorScheme="green"
+                                    defaultChecked={
+                                      data.for_me == "yes" ? true : false
+                                    }
+                                    onChange={(e) =>
+                                      onUpdateFormeItem(
+                                        e.target.checked,
+                                        data?.id
+                                      )
+                                    }
+                                  ></Checkbox>
+                                )}
                               </Td>
                               <Td>
                                 <Box>
@@ -277,6 +355,8 @@ const Cart = () => {
                           <Th textColor={"white"}></Th>
                           <Th textColor={"white"}></Th>
                           <Th textColor={"white"}></Th>
+                          <Th textColor={"white"}></Th>
+                          <Th textColor={"white"}></Th>
                           <Th textColor={"white"}> Tổng giá thành</Th>
                           <Th textColor={"white"}>
                             {" "}
@@ -298,10 +378,102 @@ const Cart = () => {
                       </Box>
                       <Spacer />
                       <Box>
-                        <Button colorScheme="orange">
+                        <Button
+                          onClick={() => {
+                            navigate(-1);
+                          }}
+                          colorScheme="orange"
+                        >
                           <FaShoppingCart />
                           <Text ml={2}>Tiếp tục mua</Text>
                         </Button>
+                      </Box>
+                      <Box>
+                        <Button onClick={onOpen} colorScheme="yellow">
+                          <Icon as={GiMeat} />
+                          <Text ml={2}>Tạo khẩu phần ăn</Text>
+                        </Button>
+                        <Modal size={"lg"} isOpen={isOpen} onClose={onClose}>
+                          <ModalOverlay />
+                          <ModalContent>
+                            <ModalHeader>Tạo khẩu phần ăn</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                              <Box>
+                                <Text>Đặt tên</Text>
+                                <Input value={nameCreate} onChange={(e)=> {setNameCreate(e.target.value)}} />
+                              </Box>
+                              <Box>
+                                <Text>Danh sách thành phần ăn:</Text>
+                              </Box>
+                              <TableContainer mt={2}>
+                                <Table size={"sm"} variant="striped">
+                                  <Thead fontSize={"xs"} bg={"brand.500"}>
+                                    <Tr>
+                                      <Td textColor={"white"}>Tên sản phẩm</Td>
+                                      <Td textColor={"white"}>Khối lượng</Td>
+                                      <Td textColor={"white"}>số lượng</Td>
+                                      <Td textColor={"white"}>Giá</Td>
+                                    </Tr>
+                                  </Thead>
+                                  <Tbody fontSize={"xs"}>
+                                    {cartList?.map((data, index) => {
+                                      if (data?.ingredient_id !== null) {
+                                        return (
+                                          <Tr>
+                                            <Td>{data?.ingredient.name}</Td>
+                                            <Td>
+                                              {data?.ingredient.serving_size}{" "}
+                                              gram
+                                            </Td>
+                                            <Td>{data?.quantity}</Td>
+                                            <Td>
+                                              {data.total_price?.toLocaleString(
+                                                undefined,
+                                                {
+                                                  maximumFractionDigits: 3,
+                                                }
+                                              )}{" "}
+                                              vnđ
+                                            </Td>
+                                          </Tr>
+                                        );
+                                      }
+                                    })}
+                                  </Tbody>
+                                  <Tfoot bg={"brand.500"}>
+                                    <Tr>
+                                      <Td textColor={"white"}></Td>
+                                      <Td textColor={"white"}></Td>
+                                      <Td textColor={"white"}>
+                                        {" "}
+                                        Tổng giá thành
+                                      </Td>
+                                      <Td textColor={"white"}>
+                                        {" "}
+                                        {sumPrice.toLocaleString(undefined, {
+                                          maximumFractionDigits: 3,
+                                        })}{" "}
+                                        vnđ{" "}
+                                      </Td>
+                                    </Tr>
+                                  </Tfoot>
+                                </Table>
+                              </TableContainer>
+                            </ModalBody>
+
+                            <ModalFooter>
+                              <Button
+                                colorScheme="blue"
+                                mr={3}
+                                onClick={onClose}
+                              >
+                                Hủy
+                              </Button>
+                              <Button colorScheme="yellow" onClick={()=> {onSubmit()}} >Tạo</Button>
+                            </ModalFooter>
+                          </ModalContent>
+                        </Modal>
                       </Box>
                       <Box>
                         <Button
@@ -324,9 +496,7 @@ const Cart = () => {
                       boxSize={"150px"}
                       as={GiShoppingCart}
                     />
-                    <Heading fontFamily={"cursive"} color={"brand.500"}>
-                      Giỏ hàng rổng
-                    </Heading>
+                    <Heading color={"brand.500"}>Giỏ hàng rổng</Heading>
                   </Center>
                 </Container>
               )}

@@ -18,30 +18,32 @@ import {
   Text,
   VStack,
   useToast,
+  PinInput,
+  PinInputField,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../../../public/Logo.png";
 import { InfoIcon } from "@chakra-ui/icons";
 
-const Signup = () => {
+const ResetPassword = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(location?.state);
+  const [pin, setPin] = useState("");
   const [password, setPassword] = useState("");
-  const [password_confirmation, setPassword_confirmation] = useState("");
-  const [toastError, setToastError] = useState({ __html: "" });
+  const [password2, setPassword2] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ __html: "" });
   const toast = useToast();
   useEffect(()=> {
     if(userToken) {
       navigate("/")
     }
   },[])
-
   const showToast = (title, status, description) => {
     toast({
       title: title,
@@ -51,17 +53,28 @@ const Signup = () => {
       isClosable: true,
       position: "top-right",
       variant: "left-accent",
-      isMultiline: true,
     });
   };
 
   const showToastError = (title, status, description) => {
     toast({
-      render: ({onClose}) => (
-        <Box borderLeft={"2px"} borderLeftColor={"red.500"} p={4} bg="red.100" rounded="md" shadow="md">
-          <CloseButton position="absolute" right={2} top={2} onClick={onClose} />
+      render: ({ onClose }) => (
+        <Box
+          borderLeft={"2px"}
+          borderLeftColor={"red.500"}
+          p={4}
+          bg="red.100"
+          rounded="md"
+          shadow="md"
+        >
+          <CloseButton
+            position="absolute"
+            right={2}
+            top={2}
+            onClick={onClose}
+          />
           <Text justifyItems={"center"} fontWeight="bold" fontSize="lg" mb={2}>
-             <Icon color={"red.500"} as={InfoIcon} /> {title}
+            <Icon color={"red.500"} as={InfoIcon} /> {title}
           </Text>
           {description.map((item, index) => (
             <Text>{item}</Text>
@@ -77,21 +90,18 @@ const Signup = () => {
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    setToastError({ __html: "" });
+    setError({ __html: "" });
     setLoading(true);
-    console.log({ name, email, password, password_confirmation });
     showToast("Warning!", "warning", "Đang xử lý!");
     axiosClient
-      .post("/signup", {
-        name,
-        email,
-        password,
-        password_confirmation,
+      .post("/reset-password", {
+        email: email,
+        pin: pin,
+        password: password,
+        password_confirmation: password2,
       })
       .then(({ data }) => {
-        setCurrentUser(data.user);
-        setUserToken(data.token);
-        showToast("Success!", "success", "Tạo tài khoản thành công!");
+        showToast("Success!", "success", "Khôi phục mật khẩu thành công!");
         setLoading(false);
         navigate("/login");
       })
@@ -101,12 +111,8 @@ const Signup = () => {
             (accum, next) => [...accum, ...next],
             []
           );
-          console.log(finalErrors);
-          setToastError({ __html: finalErrors.join("<br>") });
-          console.log(toastError);
           showToastError("Error!", "error", finalErrors);
         }
-        console.error(error);
         setLoading(false);
       });
   };
@@ -175,7 +181,7 @@ const Signup = () => {
         >
           <Center mx="10">
             <Heading color={"brand.400"} size={"xl"}>
-              Đăng ký tài khoản
+              Đặt lại mật khẩu
             </Heading>
           </Center>
           <HStack spacing="1" justify="center">
@@ -199,27 +205,64 @@ const Signup = () => {
             bgColor={"white"}
           >
             <form onSubmit={onSubmit}>
-              <Stack spacing={5} w={"300px"}>
+              <Stack spacing={5} w={""}>
                 <FormControl>
                   <FormLabel>Email</FormLabel>
                   <Input
+                  readOnly
+                    type="email"
                     variant="flushed"
                     placeholder="example@gmail.com"
                     value={email}
-                    name="email"
                     onChange={(ev) => setEmail(ev.target.value)}
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>User name</FormLabel>
-                  <Input
-                    variant="flushed"
-                    placeholder="john"
-                    value={name}
-                    name="name"
-                    onChange={(ev) => setName(ev.target.value)}
-                  />
+                  <FormLabel>Mã PIN</FormLabel>
+                  <HStack>
+                    <PinInput
+                      value={pin}
+                      onChange={(e) => {
+                        setPin(e);
+                      }}
+                    >
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                      <PinInputField />
+                    </PinInput>
+                  </HStack>
                 </FormControl>
+                <Button
+                  variant="link"
+                  colorScheme="blue"
+                  onClick={() => {
+                    showToast("Warning!", "warning", "Đang xử lý!");
+                    axiosClient
+                      .post("/forgot-password", {
+                        email: email,
+                      })
+                      .then(({ data }) => {
+                        showToast(
+                          "Success!",
+                          "success",
+                          "Gửi mã PIN thành công. Vui lòng check email của bạn!"
+                        );
+                      })
+                      .catch((error) => {
+                        if (error.response) {
+                          const finalErrors = Object.values(
+                            error.response.data.errors
+                          ).reduce((accum, next) => [...accum, ...next], []);
+                          showToastError("Error!", "error", finalErrors);
+                        }
+                      });
+                  }}
+                >
+                  Gửi lại
+                </Button>
                 <FormControl>
                   <FormLabel>Password</FormLabel>
                   <Input
@@ -238,8 +281,8 @@ const Signup = () => {
                     variant="flushed"
                     placeholder="password"
                     name="password_confirmation"
-                    value={password_confirmation}
-                    onChange={(ev) => setPassword_confirmation(ev.target.value)}
+                    value={password2}
+                    onChange={(ev) => setPassword2(ev.target.value)}
                   />
                 </FormControl>
                 <Button
@@ -248,7 +291,7 @@ const Signup = () => {
                   isLoading={loading}
                   type="submit"
                 >
-                  Đăng ký
+                  Đặt lại
                 </Button>
               </Stack>
             </form>
@@ -259,4 +302,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ResetPassword;

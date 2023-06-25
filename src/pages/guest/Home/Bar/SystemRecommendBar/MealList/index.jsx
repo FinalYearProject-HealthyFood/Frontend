@@ -111,7 +111,7 @@ const MealList = () => {
     <>
       {meals.length > 0 ? (
         <Box>
-          <Heading mb={5} color={"brand.200"} fontFamily={"cursive"} fontSize={"lg"}>
+          <Heading mb={5} color={"brand.200"} fontSize={"lg"}>
             Danh sách xuất ăn được đánh giá cao gần đây
           </Heading>
           {loading ? (
@@ -161,7 +161,14 @@ const MealList = () => {
                       }}
                     />
                   ) : (
-                    <Center bgColor={"brand.100"} h={"150px"} w={"150px"}>
+                    <Center
+                      bgColor={"brand.100"}
+                      h={"150px"}
+                      w={"150px"}
+                      onClick={() => {
+                        navigate(`/meal/${data.id}`);
+                      }}
+                    >
                       <Text
                         fontWeight={"bold"}
                         color={"white"}
@@ -196,21 +203,29 @@ const MealList = () => {
                               index <= data.rate ? "yellow.400" : "gray.200"
                             }
                             onClick={() => {
-                              axiosClient
-                                .get(`/rate/meal/${data.id}`, {
-                                  params: {
-                                    user_id: currentUser.id,
-                                    rating: index,
-                                  },
-                                })
-                                .then((res) => {
-                                  showToast(
-                                    "Success!",
-                                    "success",
-                                    `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
-                                  );
-                                  setClickRate(clickRate + 1);
-                                });
+                              if (userToken) {
+                                axiosClient
+                                  .get(`/rate/meal/${data.id}`, {
+                                    params: {
+                                      user_id: currentUser.id,
+                                      rating: index,
+                                    },
+                                  })
+                                  .then((res) => {
+                                    showToast(
+                                      "Success!",
+                                      "success",
+                                      `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
+                                    );
+                                    setClickRate(clickRate + 1);
+                                  });
+                              } else {
+                                showToast(
+                                  "Warning!",
+                                  "warning",
+                                  `Bạn chưa đăng nhập`
+                                );
+                              }
                             }}
                             _hover={{
                               color: "red.400",
@@ -282,7 +297,7 @@ const MealList = () => {
         </Box>
       ) : (
         <Box>
-          <Heading color={"brand.200"} fontFamily={"cursive"} fontSize={"lg"}>
+          <Heading color={"brand.200"} fontSize={"lg"}>
             Hiện tại không có xuất ăn nào
           </Heading>
         </Box>

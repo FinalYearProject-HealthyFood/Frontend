@@ -18,16 +18,16 @@ import {
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 
-const PopOverInfo = (props) => {
+const PopOverMealInfo = (props) => {
   return (
     <Popover placement="right">
       <PopoverTrigger>
-      <Button mr={2} size={"xs"} colorScheme="yellow">
+        <Button colorScheme="yellow">
           <InfoIcon mr={2} />
           Chi tiết
         </Button>
       </PopoverTrigger>
-      <PopoverContent bgColor={"black"} color="white" >
+      <PopoverContent bgColor={"black"} color="white">
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader fontWeight={"bold"}>Nutrion Fact!</PopoverHeader>
@@ -36,12 +36,12 @@ const PopOverInfo = (props) => {
             <Flex>
               <Text>Serving Size</Text>
               <Spacer />
-              <Text>{props.data?.serving} gram</Text>
+              <Text>{props.data?.serving_size} gram</Text>
             </Flex>
             <Flex>
               <Text>KCal</Text>
               <Spacer />
-              <Text>{props.data?.calo}</Text>
+              <Text>{props.data?.calories}</Text>
             </Flex>
             <Flex>
               <Text>Protein</Text>
@@ -110,4 +110,4 @@ const PopOverInfo = (props) => {
   );
 };
 
-export default PopOverInfo;
+export default PopOverMealInfo;

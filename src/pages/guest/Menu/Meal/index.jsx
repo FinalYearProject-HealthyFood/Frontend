@@ -146,7 +146,7 @@ const Meal = () => {
               <BreadcrumbLink href="#">Chọn khẩu phần ăn</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-          <VStack mt={"50px"} alignItems={"center"}>
+          <VStack mb={"300px"} mt={"100px"} alignItems={"center"}>
             <Box mt={"100px"}>
               <Spinner
                 thickness="4px"
@@ -209,7 +209,14 @@ const Meal = () => {
                         }}
                       />
                     ) : (
-                      <Center bgColor={"brand.100"} h={"150px"} w={"150px"}>
+                      <Center
+                        bgColor={"brand.100"}
+                        h={"150px"}
+                        w={"150px"}
+                        onClick={() => {
+                          navigate(`/meal/${data.id}`);
+                        }}
+                      >
                         <Text
                           fontWeight={"bold"}
                           color={"white"}
@@ -244,21 +251,29 @@ const Meal = () => {
                                 index <= data.rate ? "yellow.400" : "gray.200"
                               }
                               onClick={() => {
-                                axiosClient
-                                  .get(`/rate/meal/${data.id}`, {
-                                    params: {
-                                      user_id: currentUser.id,
-                                      rating: index,
-                                    },
-                                  })
-                                  .then((res) => {
-                                    showToast(
-                                      "Success!",
-                                      "success",
-                                      `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
-                                    );
-                                    setClickRate(clickRate + 1);
-                                  });
+                                if (userToken) {
+                                  axiosClient
+                                    .get(`/rate/meal/${data.id}`, {
+                                      params: {
+                                        user_id: currentUser.id,
+                                        rating: index,
+                                      },
+                                    })
+                                    .then((res) => {
+                                      showToast(
+                                        "Success!",
+                                        "success",
+                                        `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
+                                      );
+                                      setClickRate(clickRate + 1);
+                                    });
+                                } else {
+                                  showToast(
+                                    "Warning!",
+                                    "warning",
+                                    `Bạn chưa đăng nhập`
+                                  );
+                                }
                               }}
                               _hover={{
                                 color: "red.400",
@@ -330,7 +345,7 @@ const Meal = () => {
           ) : (
             <Center py={40} mt={5} flexDirection={"column"}>
               <Icon color={"brand.500"} boxSize={"150px"} as={GiShoppingCart} />
-              <Heading fontFamily={"cursive"} color={"brand.500"}>
+              <Heading color={"brand.500"}>
                 Hiện tại không có khẩu phần ăn nào
               </Heading>
             </Center>

@@ -13,13 +13,15 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Select,
+  Button,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import Left from "./Left";
 import Right from "./Right";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Tdde = () => {
+  const navigate = useNavigate()
   const location = useLocation();
   const [gender, setGender] = useState("1");
   const [age, setAge] = useState("");
@@ -141,6 +143,7 @@ const Tdde = () => {
           </NumberInputStepper>
         </NumberInput>
         <Text mx={2}>%</Text>
+        <Button colorScheme={"yellow"} size={"xs"} onClick={()=> {navigate(-1)}}> Tính lại</Button>
       </Center>
       <Divider
         boxShadow={"2xl"}

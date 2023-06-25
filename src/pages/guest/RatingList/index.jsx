@@ -114,7 +114,7 @@ const RatingList = () => {
             ) : (
               <Center py={40} flexDirection={"column"}>
                 <Icon color={"brand.500"} boxSize={"150px"} as={StarIcon} />
-                <Heading fontFamily={"cursive"} color={"brand.500"}>
+                <Heading color={"brand.500"}>
                   Không có đánh giá gần đây
                 </Heading>
               </Center>

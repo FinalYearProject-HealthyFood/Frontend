@@ -401,10 +401,10 @@ const YourPreferBar = (props) => {
   ) => {
     if (userToken) {
       const dataSubmit = {
-        name: "Bửa ăn " + calories + "KCal",
+        name: "bữa ăn " + calories + "KCal",
         for_me: for_me,
         description:
-          "Bửa ăn " + calories + "KCal, Người yêu cầu: " + currentUser.name,
+          "bữa ăn " + calories + "KCal, Người yêu cầu: " + currentUser.name,
         price: price,
         serving_size: serving_size,
         calories: calories,
@@ -499,7 +499,7 @@ const YourPreferBar = (props) => {
                     khỏe.
                   </Text>
                   <Text color={"orange"}>
-                    Nên chúng tôi sẽ dựa trên 1500 KCal/ 3 bửa ăn trong 1 ngày
+                    Nên chúng tôi sẽ dựa trên 1500 KCal/ 3 bữa ăn trong 1 ngày
                     để đề xuất cho quý khách.
                   </Text>
                   <Text color={"orange"}>
@@ -510,7 +510,7 @@ const YourPreferBar = (props) => {
               )}
               <Text mt={5}>
                 Theo trong hôm nay quý đã ăn {eatenCalories}/{calories} Kcal.
-                Chúng tôi sẽ đề xuất bửa ăn tiếp theo gần với {willEatCalories}{" "}
+                Chúng tôi sẽ đề xuất bữa ăn tiếp theo gần với {willEatCalories}{" "}
                 calories
               </Text>
             </>
@@ -532,7 +532,7 @@ const YourPreferBar = (props) => {
                     khỏe.
                   </Text>
                   <Text color={"orange"}>
-                    Nên chúng tôi sẽ dựa trên 1500 KCal/ 3 bửa ăn trong 1 ngày
+                    Nên chúng tôi sẽ dựa trên 1500 KCal/ 3 bữa ăn trong 1 ngày
                     để đề xuất cho quý khách.
                   </Text>
                   <Text color={"orange"}>
@@ -542,21 +542,21 @@ const YourPreferBar = (props) => {
                 </>
               )}
               <Text mt={5}>
-                Theo trong kế hoạch ăn ngày {currentUser.plan} bửa. Chúng tôi sẽ
-                đề xuất những bửa ăn gần với {willEatCalories} calories
+                Theo trong kế hoạch ăn ngày {currentUser.plan} bữa. Chúng tôi sẽ
+                đề xuất những bữa ăn gần với {willEatCalories} calories
               </Text>
             </>
           ))
         ) : (
           <>
-            <Text fontWeight={"bold"} color={"brand.500"} fontFamily={"cursive"}>
-              Hôm nay bạn đã ăn đủ ngày {plan} bửa với {eatenCalories} / {calories} calories trong
+            <Text fontWeight={"bold"} color={"brand.500"}>
+              Hôm nay bạn đã ăn đủ ngày {plan} bữa với {eatenCalories} / {calories} calories trong
               ngày hôm nay.
             </Text>
             <Heading color={"yellow.500"}>
               <Icon boxSize={"2xs"} as={MdEmojiEvents}/>
             </Heading>
-            <Text fontWeight={"bold"} color={"brand.500"} fontFamily={"cursive"}>
+            <Text fontWeight={"bold"} color={"brand.500"}>
               Hẹn bạn lần sau.
             </Text>
           </>
@@ -637,7 +637,7 @@ const YourPreferBar = (props) => {
                         ) : (
                           <>
                             <Heading fontFamily={"cursive"} fontSize={"md"}>
-                              HFS cung cấp bửa ăn
+                              HFS cung cấp bữa ăn
                             </Heading>
                             <Center mt={8} flexDir={"column"}>
                               <Icon mt={2} boxSize={"50px"} as={BsFire} />
@@ -658,7 +658,7 @@ const YourPreferBar = (props) => {
                       ) : (
                         <>
                           <Heading fontFamily={"cursive"} fontSize={"md"}>
-                            HFS cung cấp bửa ăn
+                            HFS cung cấp bữa ăn
                           </Heading>
                           <Center mt={8} flexDir={"column"}>
                             <Icon mt={2} boxSize={"50px"} as={BsFire} />
@@ -1048,7 +1048,7 @@ const YourPreferBar = (props) => {
                           <>
                             <>
                               <Heading fontFamily={"cursive"} fontSize={"md"}>
-                                HFS cung cấp bửa ăn
+                                HFS cung cấp bữa ăn
                               </Heading>
                               <Center mt={8} flexDir={"column"}>
                                 <Icon mt={2} boxSize={"50px"} as={BsFire} />
@@ -1071,7 +1071,7 @@ const YourPreferBar = (props) => {
                         <>
                           <>
                             <Heading fontFamily={"cursive"} fontSize={"md"}>
-                              HFS cung cấp bửa ăn
+                              HFS cung cấp bữa ăn
                             </Heading>
                             <Center mt={8} flexDir={"column"}>
                               <Icon mt={2} boxSize={"50px"} as={BsFire} />
@@ -1465,7 +1465,7 @@ const YourPreferBar = (props) => {
                         <>
                           <>
                             <Heading fontFamily={"cursive"} fontSize={"md"}>
-                              HFS cung cấp bửa ăn
+                              HFS cung cấp bữa ăn
                             </Heading>
                             <Center mt={8} flexDir={"column"}>
                               <Icon mt={2} boxSize={"50px"} as={BsFire} />
@@ -1489,7 +1489,7 @@ const YourPreferBar = (props) => {
                       <Center>
                         <Heading mr={5} fontFamily={"cursive"} fontSize={"md"}>
                           {userToken && today?.length > 0
-                            ? "Bửa ăn đa dạng"
+                            ? "bữa ăn đa dạng"
                             : "HFS Meal"}
                         </Heading>
                         <WrapItem alignItems={"center"}>
@@ -1840,7 +1840,7 @@ const YourPreferBar = (props) => {
                         <>
                           <>
                             <Heading fontFamily={"cursive"} fontSize={"md"}>
-                              HFS cung cấp bửa ăn
+                              HFS cung cấp bữa ăn
                             </Heading>
                             <Center mt={8} flexDir={"column"}>
                               <Icon mt={2} boxSize={"50px"} as={BsFire} />

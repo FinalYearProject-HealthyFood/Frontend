@@ -359,10 +359,11 @@ const IngredientListR = () => {
           )}
         </Box>
       )}
+      <Spacer/>
       {dislikeingredients.length > 0 && (
         <Box>
           <Box mb={5}>
-            <Heading color={"brand.200"} fontFamily={"cursive"} fontSize={"lg"}>
+            <Heading color={"red.300"} fontFamily={"cursive"} fontSize={"lg"}>
               Danh sách thành phần được đánh giá thấp gần đây
             </Heading>
           </Box>

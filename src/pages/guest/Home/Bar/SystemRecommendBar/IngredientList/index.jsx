@@ -112,7 +112,7 @@ const IngredientList = () => {
       {ingredients.length > 0 ? (
         <Box mb={5}>
           <Center mb={5}>
-            <Heading color={"brand.200"} fontFamily={"cursive"} fontSize={"lg"}>
+            <Heading color={"brand.200"} fontSize={"lg"}>
               Danh sách thành phần được đánh giá cao gần đây
             </Heading>
           </Center>
@@ -169,6 +169,9 @@ const IngredientList = () => {
                             bgColor={"brand.100"}
                             h={"150px"}
                             w={"150px"}
+                            onClick={() => {
+                              navigate(`/nutrient/${data.id}`);
+                            }}
                           >
                             <Text
                               fontWeight={"bold"}
@@ -205,21 +208,29 @@ const IngredientList = () => {
                                   index <= data.rate ? "yellow.400" : "gray.200"
                                 }
                                 onClick={() => {
-                                  axiosClient
-                                    .get(`/rate/ingredient/${data.id}`, {
-                                      params: {
-                                        user_id: currentUser.id,
-                                        rating: index,
-                                      },
-                                    })
-                                    .then((res) => {
-                                      showToast(
-                                        "Success!",
-                                        "success",
-                                        `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
-                                      );
-                                      setClickRate(clickRate + 1);
-                                    });
+                                  if (userToken) {
+                                    axiosClient
+                                      .get(`/rate/ingredient/${data.id}`, {
+                                        params: {
+                                          user_id: currentUser.id,
+                                          rating: index,
+                                        },
+                                      })
+                                      .then((res) => {
+                                        showToast(
+                                          "Success!",
+                                          "success",
+                                          `Bạn đã đánh giá sản phẩm ${data.name} ${index} sao`
+                                        );
+                                        setClickRate(clickRate + 1);
+                                      });
+                                  } else {
+                                    showToast(
+                                      "Warning!",
+                                      "warning",
+                                      `Bạn chưa đăng nhập`
+                                    );
+                                  }
                                 }}
                                 _hover={{
                                   color: "red.400",
@@ -309,7 +320,7 @@ const IngredientList = () => {
         </Box>
       ) : (
         <Box>
-          <Heading color={"brand.200"} fontFamily={"cursive"} fontSize={"lg"}>
+          <Heading color={"brand.200"} fontSize={"lg"}>
             Hiện tại không có thành phần ăn nào
           </Heading>
         </Box>

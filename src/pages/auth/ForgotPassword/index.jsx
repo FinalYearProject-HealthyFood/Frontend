@@ -26,15 +26,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../../public/Logo.png";
 import { InfoIcon } from "@chakra-ui/icons";
 
-const Signup = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [password_confirmation, setPassword_confirmation] = useState("");
-  const [toastError, setToastError] = useState({ __html: "" });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ __html: "" });
   const toast = useToast();
   useEffect(()=> {
     if(userToken) {
@@ -51,17 +50,28 @@ const Signup = () => {
       isClosable: true,
       position: "top-right",
       variant: "left-accent",
-      isMultiline: true,
     });
   };
 
   const showToastError = (title, status, description) => {
     toast({
-      render: ({onClose}) => (
-        <Box borderLeft={"2px"} borderLeftColor={"red.500"} p={4} bg="red.100" rounded="md" shadow="md">
-          <CloseButton position="absolute" right={2} top={2} onClick={onClose} />
+      render: ({ onClose }) => (
+        <Box
+          borderLeft={"2px"}
+          borderLeftColor={"red.500"}
+          p={4}
+          bg="red.100"
+          rounded="md"
+          shadow="md"
+        >
+          <CloseButton
+            position="absolute"
+            right={2}
+            top={2}
+            onClick={onClose}
+          />
           <Text justifyItems={"center"} fontWeight="bold" fontSize="lg" mb={2}>
-             <Icon color={"red.500"} as={InfoIcon} /> {title}
+            <Icon color={"red.500"} as={InfoIcon} /> {title}
           </Text>
           {description.map((item, index) => (
             <Text>{item}</Text>
@@ -77,23 +87,23 @@ const Signup = () => {
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    setToastError({ __html: "" });
+    setError({ __html: "" });
     setLoading(true);
-    console.log({ name, email, password, password_confirmation });
     showToast("Warning!", "warning", "Đang xử lý!");
     axiosClient
-      .post("/signup", {
-        name,
-        email,
-        password,
-        password_confirmation,
+      .post("/forgot-password", {
+        email: email,
       })
       .then(({ data }) => {
-        setCurrentUser(data.user);
-        setUserToken(data.token);
-        showToast("Success!", "success", "Tạo tài khoản thành công!");
+        showToast(
+          "Success!",
+          "success",
+          "Gửi mã PIN thành công. Vui lòng check email của bạn!"
+        );
         setLoading(false);
-        navigate("/login");
+        navigate("/reset-password", {
+          state: email,
+        });
       })
       .catch((error) => {
         if (error.response) {
@@ -101,12 +111,12 @@ const Signup = () => {
             (accum, next) => [...accum, ...next],
             []
           );
-          console.log(finalErrors);
-          setToastError({ __html: finalErrors.join("<br>") });
-          console.log(toastError);
+          // finalErrors.map((error) => {
+          //   showToast("Error!", "error", error);
+          // });
           showToastError("Error!", "error", finalErrors);
         }
-        console.error(error);
+        // console.log(error.response.data.errors);
         setLoading(false);
       });
   };
@@ -175,7 +185,7 @@ const Signup = () => {
         >
           <Center mx="10">
             <Heading color={"brand.400"} size={"xl"}>
-              Đăng ký tài khoản
+              Khôi phục mật khẩu
             </Heading>
           </Center>
           <HStack spacing="1" justify="center">
@@ -199,47 +209,15 @@ const Signup = () => {
             bgColor={"white"}
           >
             <form onSubmit={onSubmit}>
-              <Stack spacing={5} w={"300px"}>
+              <Stack spacing={5} w={""}>
                 <FormControl>
                   <FormLabel>Email</FormLabel>
                   <Input
+                    type="email"
                     variant="flushed"
                     placeholder="example@gmail.com"
                     value={email}
-                    name="email"
                     onChange={(ev) => setEmail(ev.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>User name</FormLabel>
-                  <Input
-                    variant="flushed"
-                    placeholder="john"
-                    value={name}
-                    name="name"
-                    onChange={(ev) => setName(ev.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    variant="flushed"
-                    placeholder="password"
-                    value={password}
-                    name="password"
-                    onChange={(ev) => setPassword(ev.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Confirm password</FormLabel>
-                  <Input
-                    type="password"
-                    variant="flushed"
-                    placeholder="password"
-                    name="password_confirmation"
-                    value={password_confirmation}
-                    onChange={(ev) => setPassword_confirmation(ev.target.value)}
                   />
                 </FormControl>
                 <Button
@@ -248,7 +226,7 @@ const Signup = () => {
                   isLoading={loading}
                   type="submit"
                 >
-                  Đăng ký
+                  Gửi mã PIN
                 </Button>
               </Stack>
             </form>
@@ -259,4 +237,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ForgotPassword;

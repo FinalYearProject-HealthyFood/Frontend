@@ -274,7 +274,7 @@ const Info = () => {
               Mức độ vận dộng
             </Text>
             <Text color={"gray.500"} fontWeight={"medium"} mt={4}>
-              Số bửa ăn trong ngày
+              Số bữa ăn trong ngày
             </Text>
           </GridItem>
           <GridItem colSpan={2}>
@@ -359,10 +359,10 @@ const Info = () => {
                   setPlan(e.target.value);
                 }}
               >
-                <option value={1}>1 bửa</option>
-                <option value={2}>2 bửa</option>
-                <option value={3}>3 bửa</option>
-                <option value={4}>4 bửa</option>
+                <option value={1}>1 bữa</option>
+                <option value={2}>2 bữa</option>
+                <option value={3}>3 bữa</option>
+                <option value={4}>4 bữa</option>
               </Select>
             </Flex>
           </GridItem>

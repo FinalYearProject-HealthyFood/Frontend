@@ -25,6 +25,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios";
 import axios from "axios";
 import { api, api_image } from "../../../api";
+import { GiMeat } from "react-icons/gi";
 
 const BottomHeader = () => {
   const { currentUser, userToken, setCurrentUser, setUserToken } =
@@ -221,6 +222,19 @@ const BottomHeader = () => {
             }}
           >
             Giỏ hàng
+          </Button>
+          <Button
+            variant="solid"
+            colorScheme="brand"
+            size="sm"
+            leftIcon={<GiMeat />}
+            boxShadow={"md"}
+            fontSize={"sm"}
+            onClick={() => {
+              navigate("mymeal");
+            }}
+          >
+            Xuất ăn của tôi
           </Button>
         </>
       )}

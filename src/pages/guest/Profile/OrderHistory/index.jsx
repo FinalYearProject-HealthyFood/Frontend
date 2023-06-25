@@ -87,13 +87,23 @@ const OrderHistory = () => {
 
   const deleteMeal = (id) => {
     axios
-      .delete(`${api}/orders/delete/${id}`)
+      .delete(`${api}/orders/delete-pending/${id}`)
       .then((res) => {
         showToast("Success!", "success", "Xóa thành đơn hàng công!");
         setChangeList(changeList + 1);
       })
       .catch((error) => {
-        showToast("Error!", "error", "Lỗi xảy ra khi xóa đơn hàng!");
+        if (error.response) {
+          const finalErrors = Object.values(error.response.data.errors).reduce(
+            (accum, next) => [...accum, ...next],
+            []
+          );
+          finalErrors.map((error) => {
+            showToast("Error!", "error", error);
+          });
+        } else {
+          showToast("Error!", "error", "Lỗi xảy ra khi xóa đơn hàng!");
+        }
       });
   };
 
@@ -180,14 +190,12 @@ const OrderHistory = () => {
                         <Td textAlign={"center"} fontWeight={"bold"}>
                           <Text
                             color={
-                              data.payment_mode == "paypal"
-                                ? "blue"
-                                : "green"
+                              data.payment_mode == "paypal" ? "blue" : "green"
                             }
                           >
                             {data.payment_mode == "paypal"
-                                ? "Đã thanh toán PayPal"
-                                : "Thanh toán khi giao hàng"}
+                              ? "Đã thanh toán PayPal"
+                              : "Thanh toán khi giao hàng"}
                           </Text>
                         </Td>
                         <Td textAlign={"center"}>
@@ -219,7 +227,7 @@ const OrderHistory = () => {
           ) : (
             <Center h={"200px"} flexDirection={"column"}>
               <Icon mb={5} color={"orange"} boxSize={"100px"} as={BsCart4} />
-              <Text fontFamily={"cursive"} color={"brand.500"}>Hiện tại bạn chưa có đơn hàng nào</Text>
+              <Text color={"brand.500"}>Hiện tại bạn chưa có đơn hàng nào</Text>
             </Center>
           )}
           <Flex w={"70%"} justifyContent={"center"}>

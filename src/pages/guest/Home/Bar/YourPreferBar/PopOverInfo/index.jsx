@@ -22,16 +22,11 @@ const PopOverInfo = (props) => {
   return (
     <Popover placement="right">
       <PopoverTrigger>
-        <IconButton
-          color="gray"
-          mr={2}
-          size={"xs"}
-          fontSize={"18px"}
-          variant="unstyled"
-          icon={<InfoIcon />}
-        />
+        <Button mr={2} size={"sm"} colorScheme="yellow">
+          <InfoIcon />
+        </Button>
       </PopoverTrigger>
-      <PopoverContent bgColor={"black"} color="white" >
+      <PopoverContent bgColor={"black"} color="white">
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader fontWeight={"bold"}>Nutrion Fact!</PopoverHeader>

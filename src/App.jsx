@@ -39,6 +39,9 @@ import PaymentSuccess from "./pages/guest/Payment/PaymentSuccess";
 import Contact from "./pages/guest/Contact";
 import FAQ from "./pages/guest/FAQ";
 import FaqManager from "./pages/admin/FaqManager";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import MyMeal from "./pages/guest/MyMeal";
 
 function App() {
   const permission = {
@@ -82,7 +85,7 @@ function App() {
           <Route path="meal/:id" element={<MealDetail />} />
           <Route path="nutrient" element={<Nutrient />} />
           <Route path="nutrient/:id" element={<IngredientDetail />} />
-          <Route path="tdde-calculator">
+          <Route path="tdee-calculator">
             <Route path="" element={<TddeCalculator />} />
             <Route path="result" element={<Tdde />} />
           </Route>
@@ -96,6 +99,7 @@ function App() {
           </Route>
           <Route path="ratings" element={<RatingList />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="mymeal" element={<MyMeal />} />
           <Route path="cart-payment" element={<Payment />} />
         </Route>
         {userToken &&
@@ -127,6 +131,8 @@ function App() {
         <Route path="/">
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
         <Route path="/" element={<MainLayout />}>
           <Route path="*" element={<Page404 />} />

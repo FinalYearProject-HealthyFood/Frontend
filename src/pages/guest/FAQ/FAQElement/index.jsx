@@ -34,11 +34,7 @@ const FAQElement = (props) => {
         <h2>
           <AccordionButton>
             <Box as="span" flex="1" textAlign="left">
-              <Text
-                fontFamily={"cursive"}
-                color={"brand.700"}
-                fontWeight={"bold"}
-              >
+              <Text color={"brand.700"} fontWeight={"bold"} fontSize={"lg"}>
                 {props.data.question}
               </Text>
             </Box>
@@ -46,7 +42,7 @@ const FAQElement = (props) => {
           </AccordionButton>
         </h2>
         <AccordionPanel textAlign="left" pb={4}>
-          <Text fontFamily={"cursive"}>{props.data.answer}</Text>
+          <Text fontSize={"lg"}>{props.data.answer}</Text>
         </AccordionPanel>
       </AccordionItem>
     </>

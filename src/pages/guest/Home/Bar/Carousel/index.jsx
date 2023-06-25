@@ -85,7 +85,7 @@ const Carousel = (props) => {
               <Box
                 cursor={"pointer"}
                 _hover={{
-                  bgColor: "rgba(0, 0, 0, 0.6)",
+                  bgColor: "rgba(0, 0, 0, 0.7)",
                   opacity: "100%",
                   transition: "all 0.2s ease-in-out",
                 }}
@@ -93,7 +93,7 @@ const Carousel = (props) => {
                 transition="1s"
                 position={"absolute"}
                 ml={`${id * -100}%`}
-                bgColor="rgba(0, 0, 0, 0.2)"
+                bgColor="rgba(0, 0, 0, 0.35)"
                 minW="5xl"
                 h="lg"
                 borderLeft={"1px"}
@@ -101,20 +101,22 @@ const Carousel = (props) => {
                 p={20}
               >
                 <Heading
+                  css={{
+                    WebkitTextStroke: "1px black",
+                    // WebkitTextFillColor: "blue",
+                  }}
                   mt={"10%"}
-                  fontFamily={"cursive"}
                   fontWeight={"bold"}
                   color={"white"}
                   noOfLines={2}
                   w={"3xl"}
-                  fontStyle={"italic"}
+                  // fontStyle={"italic"}
                   textShadow={"dark-lg"}
                   dropShadow={"dark-lg"}
                 >
                   {meal.title}
                 </Heading>
                 <Button
-                  fontFamily={"cursive"}
                   fontWeight={"bold"}
                   variant={"outline"}
                   color={"white"}

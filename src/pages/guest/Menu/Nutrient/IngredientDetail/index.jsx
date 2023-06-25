@@ -43,6 +43,7 @@ const IngredientDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const [clickRate, setClickRate] = useState(0);
 
   const showToast = (title, status, description) => {
     toast({
@@ -61,7 +62,7 @@ const IngredientDetail = () => {
       setIngredient(response.data);
       setLoading(false);
     });
-  }, [param.id]);
+  }, [param.id, clickRate]);
   const onSubmit = () => {
     if (userToken) {
       const data = {
@@ -78,9 +79,8 @@ const IngredientDetail = () => {
         .catch((error) => {
           showToast("Error!", "error", "Lỗi xảy ra khi thêm vào giỏ!");
         });
-    }
-    else {
-      navigate("/login")
+    } else {
+      navigate("/login");
     }
   };
   return (
@@ -179,11 +179,23 @@ const IngredientDetail = () => {
                 // py={"10px"}
                 // bg="gray.100"
                 >
-                  <Image
-                    boxShadow={"lg"}
-                    boxSize={"250px"}
-                    src={`${api_image}/storage/${ingredient.image}`}
-                  />
+                  {ingredient.image ? (
+                    <Image
+                      boxShadow={"lg"}
+                      boxSize={"250px"}
+                      src={`${api_image}/storage/${ingredient.image}`}
+                    />
+                  ) : (
+                    <Center bgColor={"brand.100"} h={"250px"} w={"250px"}>
+                      <Text
+                        fontWeight={"bold"}
+                        color={"white"}
+                        fontFamily={"cursive"}
+                      >
+                        HFS Meal
+                      </Text>
+                    </Center>
+                  )}
                 </Center>
               </GridItem>
               <GridItem colSpan={2} bg="white">
@@ -212,7 +224,31 @@ const IngredientDetail = () => {
                           color={
                             index <= ingredient.rate ? "yellow.400" : "gray.200"
                           }
-                          onClick={() => {}}
+                          onClick={() => {
+                            if (userToken) {
+                              axiosClient
+                                .get(`/rate/ingredient/${ingredient.id}`, {
+                                  params: {
+                                    user_id: currentUser.id,
+                                    rating: index,
+                                  },
+                                })
+                                .then((res) => {
+                                  showToast(
+                                    "Success!",
+                                    "success",
+                                    `Bạn đã đánh giá sản phẩm ${ingredient.name} ${index} sao`
+                                  );
+                                  setClickRate(clickRate + 1);
+                                });
+                            } else {
+                              showToast(
+                                "Warning!",
+                                "warning",
+                                `Bạn chưa đăng nhập`
+                              );
+                            }
+                          }}
                           _hover={{
                             color: "red.400",
                           }}

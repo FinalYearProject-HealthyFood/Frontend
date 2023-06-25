@@ -334,10 +334,11 @@ const MealList = () => {
           )}
         </Box>
       )}
+      <Spacer/>
       {dislikemeals.length > 0 && (
         <Box>
           <Box mb={5}>
-            <Heading color={"brand.200"} fontFamily={"cursive"} fontSize={"lg"}>
+            <Heading color={"red.300"} fontFamily={"cursive"} fontSize={"lg"}>
               Danh sách xuất ăn được đánh giá cao gần đây
             </Heading>
           </Box>

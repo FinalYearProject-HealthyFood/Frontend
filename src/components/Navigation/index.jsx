@@ -37,8 +37,8 @@ const Navigation = () => {
           </Menu>
         </Box>
         <Divider orientation="vertical" height="30px" mx={4} />
-        <Link to="/tdde-calculator">
-          <Button variant="ghost">TDDE Calculator</Button>
+        <Link to="/tdee-calculator">
+          <Button variant="ghost">TDEE Calculator</Button>
         </Link>
         <Divider orientation="vertical" height="30px" mx={4} />
         <Link to="/faq">

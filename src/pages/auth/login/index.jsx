@@ -19,7 +19,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,13 +28,18 @@ import { InfoIcon } from "@chakra-ui/icons";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setCurrentUser, setUserToken } = useStateContext();
+  const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ __html: "" });
   const toast = useToast();
+  useEffect(()=> {
+    if(userToken) {
+      navigate("/")
+    }
+  },[])
 
   const showToast = (title, status, description) => {
     toast({
@@ -50,11 +55,23 @@ const Login = () => {
 
   const showToastError = (title, status, description) => {
     toast({
-      render: ({onClose}) => (
-        <Box borderLeft={"2px"} borderLeftColor={"red.500"} p={4} bg="red.100" rounded="md" shadow="md">
-          <CloseButton position="absolute" right={2} top={2} onClick={onClose} />
+      render: ({ onClose }) => (
+        <Box
+          borderLeft={"2px"}
+          borderLeftColor={"red.500"}
+          p={4}
+          bg="red.100"
+          rounded="md"
+          shadow="md"
+        >
+          <CloseButton
+            position="absolute"
+            right={2}
+            top={2}
+            onClick={onClose}
+          />
           <Text justifyItems={"center"} fontWeight="bold" fontSize="lg" mb={2}>
-             <Icon color={"red.500"} as={InfoIcon} /> {title}
+            <Icon color={"red.500"} as={InfoIcon} /> {title}
           </Text>
           {description.map((item, index) => (
             <Text>{item}</Text>
@@ -201,7 +218,7 @@ const Login = () => {
                   />
                 </FormControl>
                 <FormControl>
-                  <FormLabel>password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <Input
                     type="password"
                     variant="flushed"
@@ -210,14 +227,27 @@ const Login = () => {
                     onChange={(ev) => setPassword(ev.target.value)}
                   />
                 </FormControl>
-                <Button
-                  mt={4}
-                  colorScheme="brand"
-                  isLoading={loading}
-                  type="submit"
-                >
-                  Đăng nhập
-                </Button>
+                <Stack>
+                  <Button
+                    mt={4}
+                    colorScheme="brand"
+                    isLoading={loading}
+                    type="submit"
+                  >
+                    Đăng nhập
+                  </Button>
+                  <Flex>
+                    <Button
+                      variant="link"
+                      colorScheme="blue"
+                      onClick={() => {
+                        navigate("/forgot-password");
+                      }}
+                    >
+                      Quên mật thẩu ?
+                    </Button>
+                  </Flex>
+                </Stack>
               </Stack>
             </form>
           </Box>
