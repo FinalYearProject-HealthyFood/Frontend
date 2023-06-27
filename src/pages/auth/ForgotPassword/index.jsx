@@ -25,6 +25,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../../public/Logo.png";
 import { InfoIcon } from "@chakra-ui/icons";
+import LogoHealthy from "../../../assets/Logo.png";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -133,37 +134,42 @@ const ForgotPassword = () => {
         display={"flex"}
       >
         <Box>
-          <Box spacing="1" my={"20px"}>
-            <Heading
-              fontFamily={"cursive"}
-              fontStyle={"italic"}
-              fontSize={"2xl"}
-            >
-              Welcome
-            </Heading>
-            <Flex>
+          <Box align={"center"} spacing="1" my={"20px"}>
+            <Center boxSize={"200px"}>
+              <Image src={LogoHealthy} alt="Logo" />
+            </Center>
+            <Box align={"left"}>
               <Heading
                 fontFamily={"cursive"}
                 fontStyle={"italic"}
                 fontSize={"2xl"}
-                mr={"10px"}
               >
-                to
+                Welcome
               </Heading>
-              <Button
-                fontFamily={"cursive"}
-                color={"brand.500"}
-                fontStyle={"italic"}
-                fontSize={"2xl"}
-                variant="link"
-                cursor={"pointer"}
-                onClick={() => {
-                  navigate("/");
-                }}
-              >
-                Healthy Food Store
-              </Button>
-            </Flex>
+              <Flex>
+                <Heading
+                  fontFamily={"cursive"}
+                  fontStyle={"italic"}
+                  fontSize={"2xl"}
+                  mr={"10px"}
+                >
+                  to
+                </Heading>
+                <Button
+                  fontFamily={"cursive"}
+                  color={"brand.500"}
+                  fontStyle={"italic"}
+                  fontSize={"2xl"}
+                  variant="link"
+                  cursor={"pointer"}
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
+                  Healthy Food Store
+                </Button>
+              </Flex>
+            </Box>
           </Box>
         </Box>
       </Box>

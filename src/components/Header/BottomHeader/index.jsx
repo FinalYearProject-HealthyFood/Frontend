@@ -124,7 +124,8 @@ const BottomHeader = () => {
             variant={"filled"}
             borderRadius={"3xl"}
             color={"green"}
-            boxShadow={"lg"}
+            boxShadow={"base"}
+            focusBorderColor='brand.400'
             value={searchQuery}
             onChange={handleSearchChange}
             // onClick={handleSearchClick}
