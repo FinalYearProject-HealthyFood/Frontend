@@ -322,7 +322,15 @@ const DietRecommender = () => {
             return accumulator + object.zinc * object.OptimalValue;
           }, 0)
         );
-        showToast("Success!", "success", "Tạo thực đơn thành công!");
+        if (response.data.length == 0) {
+          showToast(
+            "Warning!",
+            "warning",
+            "Rất tiếc, chung tôi không thể đáp ứng được yêu cầu của bạn, xin vui lòng sửa lại các yêu cầu để hợp với lượng calories!"
+          );
+        } else {
+          showToast("Success!", "success", "Tạo thực đơn thành công!");
+        }
       });
     console.log(listOrder);
     // setSumCalo(sum)
@@ -828,7 +836,15 @@ const DietRecommender = () => {
                     </Text>
                   </GridItem>
                   <GridItem colSpan={1}>
-                    <Input size={"md"} fontWeight={"medium"} fontSize={"xl"} value={name} onChange={(e)=> {setName(e.target.value)}} />
+                    <Input
+                      size={"md"}
+                      fontWeight={"medium"}
+                      fontSize={"xl"}
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
                   </GridItem>
                 </Grid>
                 <Grid templateColumns="repeat(4, 1fr)">
