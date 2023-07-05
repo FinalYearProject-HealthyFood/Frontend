@@ -36,7 +36,7 @@ const Right = (props) => {
       return "Thiếu cân";
     } else if (score > 18.5 && score <= 24.99) {
       return "Cân nặng bình thường";
-    } else if (score >= 25 && score <= 24.99) {
+    } else if (score >= 25 && score <= 29.99) {
       return "Quá cân";
     } else {
       return "Béo phì";

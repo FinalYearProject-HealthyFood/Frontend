@@ -151,11 +151,19 @@ const Cart = () => {
           .post(`order-items/create-from-cart`, dataSubmit)
           .then(({ data }) => {
             setNumberSlot(numberSlot + 1);
-            showToast("Success!", "warning", "Đã thêm khẩu phần ăn mới vào giỏ!");
+            showToast(
+              "Success!",
+              "warning",
+              "Đã thêm khẩu phần ăn mới vào giỏ!"
+            );
           })
           .catch((error) => {
             console.log(error);
-            showToast("Error!", "error", "Lỗi xảy ra khi thêm khẩu phần ăn mới vào giỏ!");
+            showToast(
+              "Error!",
+              "error",
+              "Lỗi xảy ra khi thêm khẩu phần ăn mới vào giỏ!"
+            );
           });
       }
     } else {
@@ -227,7 +235,31 @@ const Cart = () => {
                               <Td>{index + 1}</Td>
                               <Td>
                                 <Flex>
-                                  {data.image ? (
+                                  {data?.ingredient_id !== null ? (
+                                    data.ingredient.image ? (
+                                      <Image
+                                        boxSize={"100px"}
+                                        src={`${api_image}/storage/${
+                                          data?.ingredient_id !== null
+                                            ? data.ingredient.image
+                                            : data.meal.image
+                                        }`}
+                                      />
+                                    ) : (
+                                      <Center
+                                        bgColor={"brand.100"}
+                                        h={"100px"}
+                                        w={"100px"}
+                                      >
+                                        <Text
+                                          fontWeight={"bold"}
+                                          color={"white"}
+                                        >
+                                          HFS Cart
+                                        </Text>
+                                      </Center>
+                                    )
+                                  ) : data.meal.image ? (
                                     <Image
                                       boxSize={"100px"}
                                       src={`${api_image}/storage/${
@@ -401,7 +433,12 @@ const Cart = () => {
                             <ModalBody>
                               <Box>
                                 <Text>Đặt tên</Text>
-                                <Input value={nameCreate} onChange={(e)=> {setNameCreate(e.target.value)}} />
+                                <Input
+                                  value={nameCreate}
+                                  onChange={(e) => {
+                                    setNameCreate(e.target.value);
+                                  }}
+                                />
                               </Box>
                               <Box>
                                 <Text>Danh sách thành phần ăn:</Text>
@@ -470,7 +507,14 @@ const Cart = () => {
                               >
                                 Hủy
                               </Button>
-                              <Button colorScheme="yellow" onClick={()=> {onSubmit()}} >Tạo</Button>
+                              <Button
+                                colorScheme="yellow"
+                                onClick={() => {
+                                  onSubmit();
+                                }}
+                              >
+                                Tạo
+                              </Button>
                             </ModalFooter>
                           </ModalContent>
                         </Modal>

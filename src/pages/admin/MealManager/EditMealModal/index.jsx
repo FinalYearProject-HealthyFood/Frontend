@@ -94,7 +94,7 @@ const EditMealModal = (props) => {
         showToast(
           "Success!",
           "success",
-          "Chỉnh sửa ảnh thành phần ăn thành công"
+          "Chỉnh sửa ảnh xuất ăn thành công"
         );
         setOnEdit(onEdit + 1);
       })
@@ -203,7 +203,7 @@ const EditMealModal = (props) => {
         showToast(
           "Success!",
           "success",
-          "Chỉnh sửa thông tin thành phần ăn thành công"
+          "Chỉnh sửa thông tin xuất ăn thành công"
         );
         setOnEdit(onEdit + 1);
         onClose();
@@ -239,7 +239,7 @@ const EditMealModal = (props) => {
       <Modal size={"3xl"} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Chỉnh sửa thông tin thành phần ăn</ModalHeader>
+          <ModalHeader>Chỉnh sửa thông tin xuất ăn</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Grid pb={5} gap={15} templateColumns={"repeat(5, 1fr)"}>

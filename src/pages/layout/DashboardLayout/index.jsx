@@ -51,7 +51,7 @@ const DashboardLayout = () => {
     {
       to: "faq",
       icon: FaQuoteRight,
-      text: "Faq",
+      text: "FAQ",
       permissions: ["admin", "manager"],
     },
   ];

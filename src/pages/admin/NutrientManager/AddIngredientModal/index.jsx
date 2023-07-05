@@ -201,7 +201,7 @@ const AddIngredientModal = () => {
       <Modal size={"3xl"} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Chỉnh sửa thông tin thành phần ăn</ModalHeader>
+          <ModalHeader>Thêm thông tin thành phần ăn</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Grid pb={5} gap={15} templateColumns={"repeat(5, 1fr)"}>

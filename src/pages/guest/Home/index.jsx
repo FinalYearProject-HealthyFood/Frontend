@@ -28,6 +28,21 @@ const Home = () => {
       return Math.floor((10 * w + 6.25 * h - 5 * a - 161) * activity);
     }
   };
+  const BMI_Score = (w, h) => {
+    return (w / (h / 100) ** 2).toFixed(2);
+  };
+
+  const Rank_BMI = (score, calo) => {
+    if (score <= 18.5) {
+      return calo + 300;
+    } else if (score > 18.5 && score <= 24.99) {
+      return calo;
+    } else if (score >= 25 && score <= 29.99) {
+      return calo - 300;
+    } else {
+      return calo - 500;
+    }
+  };
   useEffect(() => {
     if (userToken && currentUser.id) {
       if (
@@ -103,7 +118,7 @@ const Home = () => {
           .then((response) => {
             console.log(response.data);
             setEatenCalories(response.data.eatencalories);
-            setCalories(response.data.caloriesperday);
+            setCalories(Rank_BMI( BMI_Score(currentUser.weight, currentUser.height), response.data.caloriesperday));
             setSetWillEatCalories(response.data.calorieswilleat);
             setPlan(response.data.plan);
             setCountDiet(response.data.countdiet);
@@ -190,7 +205,7 @@ const Home = () => {
         twoday={twoday}
         today={today}
         eatenCalories={eatenCalories}
-        willEatCalories={willEatCalories}
+        willEatCalories={calories/plan}
         calories={calories}
         likeList={likeList}
         dislikeList={dislikeList}

@@ -137,7 +137,7 @@ const FaqManager = () => {
               border="2px"
               focusBorderColor="none"
               type="text"
-              placeholder="Tìm kiếm Xuất ăn..."
+              placeholder="Tìm kiếm FAQ..."
             />
           </InputGroup>
         </Flex>

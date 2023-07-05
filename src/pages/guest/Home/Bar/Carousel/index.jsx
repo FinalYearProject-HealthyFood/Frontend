@@ -30,6 +30,21 @@ const Carousel = (props) => {
       return Math.floor((10 * w + 6.25 * h - 5 * a - 161) * activity);
     }
   };
+  const BMI_Score = (w, h) => {
+    return (w / (h / 100) ** 2).toFixed(2);
+  };
+
+  const Rank_BMI = (score, calo) => {
+    if (score <= 18.5) {
+      return calo + 300;
+    } else if (score > 18.5 && score <= 24.99) {
+      return calo;
+    } else if (score >= 25 && score <= 29.99) {
+      return calo - 300;
+    } else {
+      return calo - 500;
+    }
+  };
   useEffect(() => {
     if (userToken && currentUser.id) {
       if (
@@ -40,12 +55,15 @@ const Carousel = (props) => {
         currentUser.gender
       ) {
         setCalories(
-          mifflin_cal(
-            currentUser.weight,
-            currentUser.height,
-            currentUser.age,
-            currentUser.activity,
-            currentUser.gender
+          Rank_BMI(
+            BMI_Score(currentUser.weight, currentUser.height),
+            mifflin_cal(
+              currentUser.weight,
+              currentUser.height,
+              currentUser.age,
+              currentUser.activity,
+              currentUser.gender
+            )
           )
         );
       }

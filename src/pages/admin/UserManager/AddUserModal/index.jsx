@@ -113,7 +113,7 @@ const AddUserModal = (props) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Chỉnh sửa thông tin user</ModalHeader>
+          <ModalHeader>Thêm thông tin user</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack>
@@ -296,7 +296,7 @@ const AddUserModal = (props) => {
               Hủy
             </Button>
             <Button
-              colorScheme="yellow"
+              colorScheme="brand"
               onClick={() => {
                 submit();
               }}
