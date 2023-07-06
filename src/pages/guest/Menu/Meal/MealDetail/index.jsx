@@ -103,7 +103,7 @@ const MealDetail = () => {
                 }}
                 href="#"
               >
-                Chọn khẩu phần ăn
+                Suất ăn
               </BreadcrumbLink>
             </BreadcrumbItem>
 
@@ -154,7 +154,7 @@ const MealDetail = () => {
                 }}
                 href="#"
               >
-                Chọn khẩu phần ăn
+                Suất ăn
               </BreadcrumbLink>
             </BreadcrumbItem>
 

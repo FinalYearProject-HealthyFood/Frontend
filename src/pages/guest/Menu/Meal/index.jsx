@@ -143,7 +143,7 @@ const Meal = () => {
               }}
               isCurrentPage
             >
-              <BreadcrumbLink href="#">Chọn khẩu phần ăn</BreadcrumbLink>
+              <BreadcrumbLink href="#">Suất ăn</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           <VStack mb={"300px"} mt={"100px"} alignItems={"center"}>
@@ -176,7 +176,7 @@ const Meal = () => {
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#">Chọn khẩu phần ăn</BreadcrumbLink>
+              <BreadcrumbLink href="#">Suất ăn</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           {meals.length !== 0 ? (

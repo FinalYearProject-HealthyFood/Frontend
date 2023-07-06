@@ -103,7 +103,7 @@ const IngredientDetail = () => {
                 }}
                 href="#"
               >
-                Tự chọn khẩu phần ăn
+                Thành phần ăn
               </BreadcrumbLink>
             </BreadcrumbItem>
 
@@ -154,7 +154,7 @@ const IngredientDetail = () => {
                 }}
                 href="#"
               >
-                Tự chọn khẩu phần ăn
+                Thành phần ăn
               </BreadcrumbLink>
             </BreadcrumbItem>
 

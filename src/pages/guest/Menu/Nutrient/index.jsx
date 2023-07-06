@@ -141,7 +141,7 @@ const Nutrient = () => {
               }}
               isCurrentPage
             >
-              <BreadcrumbLink href="#">Tự chọn khẩu phần ăn</BreadcrumbLink>
+              <BreadcrumbLink href="#">Thành phần ăn</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           <VStack mb={"300px"} mt={"100px"} alignItems={"center"}>
@@ -179,7 +179,7 @@ const Nutrient = () => {
               }}
               isCurrentPage
             >
-              <BreadcrumbLink href="#">Tự chọn khẩu phần ăn</BreadcrumbLink>
+              <BreadcrumbLink href="#">Thành phần ăn</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           {ingredients.length !== 0 ? (

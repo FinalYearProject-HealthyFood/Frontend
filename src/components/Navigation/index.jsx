@@ -28,10 +28,10 @@ const Navigation = () => {
             <MenuButton fontWeight={"medium"}>Menu</MenuButton>
             <MenuList>
               <MenuItem fontWeight={"medium"}>
-                <Link to="/meal">Chọn khẩu phần ăn</Link>
+                <Link to="/meal">Suất ăn</Link>
               </MenuItem>
               <MenuItem fontWeight={"medium"}>
-                <Link to="/nutrient">Tự chọn khẩu phần ăn</Link>
+                <Link to="/nutrient">Thành phần ăn</Link>
               </MenuItem>
             </MenuList>
           </Menu>
