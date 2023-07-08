@@ -90,8 +90,8 @@ const Signup = () => {
         password_confirmation,
       })
       .then(({ data }) => {
-        setCurrentUser(data.user);
-        setUserToken(data.token);
+        // setCurrentUser(data.user);
+        // setUserToken(data.token);
         showToast("Success!", "success", "Tạo tài khoản thành công!");
         setLoading(false);
         navigate("/login");
