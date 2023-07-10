@@ -205,7 +205,7 @@ const Home = () => {
         twoday={twoday}
         today={today}
         eatenCalories={eatenCalories}
-        willEatCalories={calories/plan}
+        willEatCalories={Math.round(calories/plan)}
         calories={calories}
         likeList={likeList}
         dislikeList={dislikeList}

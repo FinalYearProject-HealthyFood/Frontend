@@ -277,7 +277,7 @@ const DietRecommender = () => {
             return accumulator + object.carb * object.OptimalValue;
           }, 0)
         );
-        setSumFat(
+        setSumSatFat(
           response.data.reduce((accumulator, object) => {
             return accumulator + object.sat_fat * object.OptimalValue;
           }, 0)
